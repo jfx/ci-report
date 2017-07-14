@@ -1,16 +1,36 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div id="welcome">
-                <h1><span>Dashboard</span></h1>
-                <button type="button" class="btn btn-primary">Primary</button>
-                <button id="td_b_action_add" type="button" class="btn btn-secondary btn-sm">
-                    <i class="fa fa-plus-circle"></i>
-                </button>
-            </div>
+{% block title %}{{ parent() }} / {{ projectName }}{% endblock %}
 
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">ci-report</a></li>
+    <li class="breadcrumb-item"><a href="#">{{ projectName }}</a></li>
+    <li class="breadcrumb-item active">Dashboard</li>
+</ol>
+{% endblock %}
+
+{% block container %}
+<div class="row">
+    <div class="col-4">
+        <div class="card card-outline-success">
+            <div class="card-block">
+                <h4 class="card-title text-success">
+                    <button id="td_b_action_add" type="button" class="btn btn-success btn-sm">
+                        <i class="fa fa-check-circle fa-3x"></i>
+                    </button>
+                    &nbsp;#243
+                </h4>
+                <p class="card-text text-success">Passed tests: 25</p>
+                <p class="card-text text-danger">Failed tests: 1</p>
+                <p class="card-text">Duration: 1min 25s</p>
+                <p class="card-text text-muted">Time: 14/07/2017 07:56</p>
+                <div class="text-center">
+                <a href="#" class="btn btn-outline-success">Details</a>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="col-8">col-8</div>
+</div>
 {% endblock %}
