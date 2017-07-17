@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} / {{ projectName }}{% endblock %}
+{% block title %}{{ parent() }} / {{ project.name }}{% endblock %}
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="#">ci-report</a></li>
-    <li class="breadcrumb-item"><a href="#">{{ projectName }}</a></li>
+    <li class="breadcrumb-item"><a href="#">{{ project.name }}</a></li>
     <li class="breadcrumb-item active">Dashboard</li>
 </ol>
 {% endblock %}
@@ -19,11 +19,17 @@
                     <button id="td_b_action_add" type="button" class="btn btn-success btn-sm">
                         <i class="fa fa-check-circle fa-3x"></i>
                     </button>
-                    &nbsp;#243
+                    &nbsp;{{ lastCampaign.percentage }} %
                 </h4>
-                <p class="card-text text-success">Passed tests: 25</p>
-                <p class="card-text text-danger">Failed tests: 1</p>
-                <p class="card-text">Duration: 1min 25s</p>
+                <p class="card-text text-success">#{{ lastCampaign.id }}</p>
+                <p class="card-text text-success">Passed tests: {{ lastCampaign.passed }}
+                    <span class="text-muted">/ {{ lastCampaign.enabled }}</span>
+                </p>
+                <p class="card-text text-danger">Failed tests: {{ lastCampaign.failed }}</p>
+                <p class="card-text text-danger">Errored tests: {{ lastCampaign.errored }}</p>
+                <p class="card-text text-warning">Skipped tests: {{ lastCampaign.skipped }}</p>
+                <p class="card-text text-muted">Disabled tests: {{ lastCampaign.disabled }}</p>
+                <p class="card-text">Duration: {{ lastCampaign.duration }}s</p>
                 <p class="card-text text-muted">Time: 14/07/2017 07:56</p>
                 <div class="text-center">
                 <a href="#" class="btn btn-outline-success">Details</a>
@@ -31,6 +37,40 @@
             </div>
         </div>
     </div>
-    <div class="col-8">col-8</div>
+    <div class="col-8">Graph</div>
+</div>
+<div class="row div-margin-top">
+<div class="col-12">
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#Id</th>
+            <th>%</th>
+            <th><span class="text-success">Passed</span></th>
+            <th><span class="text-danger">Failed</span></th>
+            <th><span class="text-danger">Errored</span></th>
+            <th><span class="text-warning">Skipped</span></th>
+            <th><span class="text-muted">Disabled</span></th>
+            <th>Document</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for campaign in campaigns %}
+        <tr class="table-success">
+            <td>#{{ campaign.id }}</td>
+            <td>{{ campaign.percentage }} %</td>
+            <td>{{ campaign.passed }} / {{ campaign.enabled }}</td>
+            <td>{{ campaign.failed }}</td>
+            <td>{{ campaign.errored }}</td>
+            <td>{{ campaign.skipped }}</td>
+            <td>{{ campaign.disabled }}</td>
+            <td></td>
+        </tr>
+        {% else %}
+            <tr><td colspan="7">No campaign</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
 </div>
 {% endblock %}

@@ -7,38 +7,22 @@ $lato-font-path: '~lato-font/fonts';
 $font-size-base: 15px;
 $font-size-large: ceil(($font-size-base * 1.25)); // ~18px
 $font-size-small: ceil(($font-size-base * 0.85)); // ~12px
-//
-// Style
+
+
 .navbar {
   background-color: #2c3e50;
 }
 
 body {
-  // background-image: url('../images/bg-light.jpg');
   @include lato-font('medium');
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 
-.body-id {
-  // background-image: url('../images/bg.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.div-breadcrumb {
+.div-margin-top {
   padding: 20px 0px 0px 0px;
 }
 
-.float-right {
-  position: absolute;
-  right: 0;
-  padding: 0 15px 0 0;
-}
-
-th {
-  background-color: #2c3e50;
-  color: white;
+.table th, td {
+   text-align: center;   
 }
 
 footer {
