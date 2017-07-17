@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -62,6 +63,13 @@ class Campaign
      * @ORM\Column(name="duration", type="float")
      */
     private $duration;
+
+    /**
+     * @var DateTime Date time of the campaign
+     *
+     * @ORM\Column(name="datetime_campaign", type="datetime")
+     */
+    protected $datetimeCampaign;
 
     /**
      * @var Project
@@ -251,6 +259,30 @@ class Campaign
     public function getDuration()
     {
         return $this->duration;
+    }
+
+    /**
+     * Set datetime of campaign.
+     *
+     * @param DateTime $datetime datetime of campaign.
+     *
+     * @return Campaign
+     */
+    public function setDatetimeCampaign($datetime)
+    {
+        $this->datetimeCampaign = $datetime;
+
+        return $this;
+    }
+
+    /**
+     * Get datetime of campaign.
+     *
+     * @return DateTime
+     */
+    public function getDatetimeCampaign()
+    {
+        return $this->datetimeCampaign;
     }
 
     /**

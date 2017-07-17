@@ -30,7 +30,7 @@
                 <p class="card-text text-warning">Skipped tests: {{ lastCampaign.skipped }}</p>
                 <p class="card-text text-muted">Disabled tests: {{ lastCampaign.disabled }}</p>
                 <p class="card-text">Duration: {{ lastCampaign.duration }}s</p>
-                <p class="card-text text-muted">Time: 14/07/2017 07:56</p>
+                <p class="card-text text-muted">Time: {{ lastCampaign.datetimeCampaign|date('d/m/Y H:i:s') }}</p>
                 <div class="text-center">
                 <a href="#" class="btn btn-outline-success">Details</a>
                 </div>
@@ -51,6 +51,8 @@
             <th><span class="text-danger">Errored</span></th>
             <th><span class="text-warning">Skipped</span></th>
             <th><span class="text-muted">Disabled</span></th>
+            <th>Duration</th>
+            <th><span class="text-muted">Time</span></th>
             <th>Document</th>
         </tr>
     </thead>
@@ -64,10 +66,12 @@
             <td>{{ campaign.errored }}</td>
             <td>{{ campaign.skipped }}</td>
             <td>{{ campaign.disabled }}</td>
+            <td>{{ campaign.duration }}s</td>
+            <td>{{ campaign.datetimeCampaign|date('d/m/Y H:i:s') }}</td>
             <td></td>
         </tr>
         {% else %}
-            <tr><td colspan="7">No campaign</td></tr>
+            <tr><td colspan="10">No campaign</td></tr>
         {% endfor %}
     </tbody>
 </table>
