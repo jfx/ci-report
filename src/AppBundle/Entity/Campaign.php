@@ -32,16 +32,9 @@ class Campaign
     /**
      * @var int
      *
-     * @ORM\Column(name="disabled", type="integer")
+     * @ORM\Column(name="failed", type="integer")
      */
-    private $disabled;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="skipped", type="integer")
-     */
-    private $skipped;
+    private $failed;
 
     /**
      * @var int
@@ -53,9 +46,16 @@ class Campaign
     /**
      * @var int
      *
-     * @ORM\Column(name="failed", type="integer")
+     * @ORM\Column(name="skipped", type="integer")
      */
-    private $failed;
+    private $skipped;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="disabled", type="integer")
+     */
+    private $disabled;
 
     /**
      * @var float
@@ -90,30 +90,6 @@ class Campaign
     }
 
     /**
-     * Set disabled
-     *
-     * @param integer $disabled
-     *
-     * @return Campaign
-     */
-    public function setDisabled($disabled)
-    {
-        $this->disabled = $disabled;
-
-        return $this;
-    }
-
-    /**
-     * Get disabled
-     *
-     * @return int
-     */
-    public function getDisabled()
-    {
-        return $this->disabled;
-    }
-
-    /**
      * Set passed
      *
      * @param integer $passed
@@ -135,54 +111,6 @@ class Campaign
     public function getPassed()
     {
         return $this->passed;
-    }
-
-    /**
-     * Set skipped
-     *
-     * @param integer $skipped
-     *
-     * @return Campaign
-     */
-    public function setSkipped($skipped)
-    {
-        $this->skipped = $skipped;
-
-        return $this;
-    }
-
-    /**
-     * Get skipped
-     *
-     * @return int
-     */
-    public function getSkipped()
-    {
-        return $this->skipped;
-    }
-
-    /**
-     * Set errored
-     *
-     * @param integer $errored
-     *
-     * @return Campaign
-     */
-    public function setErrored($errored)
-    {
-        $this->errored = $errored;
-
-        return $this;
-    }
-
-    /**
-     * Get errored
-     *
-     * @return int
-     */
-    public function getErrored()
-    {
-        return $this->errored;
     }
 
     /**
@@ -210,31 +138,75 @@ class Campaign
     }
 
     /**
-     * Get enabled tests
+     * Set errored
      *
-     * @return int
+     * @param integer $errored
+     *
+     * @return Campaign
      */
-    public function getEnabled()
+    public function setErrored($errored)
     {
-        return $this->passed
-            + $this->failed
-            + $this->errored
-            + $this->skipped;
+        $this->errored = $errored;
+
+        return $this;
     }
 
     /**
-     * Get percentage of successful tests
+     * Get errored
      *
      * @return int
      */
-    public function getPercentage()
+    public function getErrored()
     {
-        if ($this->getEnabled() != 0) {
-            return round($this->passed / $this->getEnabled() * 100);
-        } else {
-            0;
-        }
-        
+        return $this->errored;
+    }
+
+    /**
+     * Set skipped
+     *
+     * @param integer $skipped
+     *
+     * @return Campaign
+     */
+    public function setSkipped($skipped)
+    {
+        $this->skipped = $skipped;
+
+        return $this;
+    }
+
+    /**
+     * Get skipped
+     *
+     * @return int
+     */
+    public function getSkipped()
+    {
+        return $this->skipped;
+    }
+
+    /**
+     * Set disabled
+     *
+     * @param integer $disabled
+     *
+     * @return Campaign
+     */
+    public function setDisabled($disabled)
+    {
+        $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    /**
+     * Get disabled
+     *
+     * @return int
+     */
+    public function getDisabled()
+    {
+        return $this->disabled;
     }
 
     /**
@@ -307,5 +279,33 @@ class Campaign
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * Get enabled tests
+     *
+     * @return int
+     */
+    public function getEnabled()
+    {
+        return $this->passed
+            + $this->failed
+            + $this->errored
+            + $this->skipped;
+    }
+
+    /**
+     * Get percentage of successful tests
+     *
+     * @return int
+     */
+    public function getPercentage()
+    {
+        if ($this->getEnabled() != 0) {
+            return round($this->passed / $this->getEnabled() * 100);
+        } else {
+            0;
+        }
+        
     }
 }
