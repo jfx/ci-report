@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Campaign
@@ -72,8 +73,15 @@ class Campaign
     protected $datetimeCampaign;
 
     /**
+     * @Gedmo\SortablePosition
+     * @ORM\Column(name="position", type="integer")
+     */
+    private $position;
+
+    /**
      * @var Project
-     *
+     * 
+     * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false)
      */
@@ -255,6 +263,40 @@ class Campaign
     public function getDatetimeCampaign()
     {
         return $this->datetimeCampaign;
+    }
+
+    /**
+     * Set order.
+     *
+     * @param int $position The order.
+     *
+     * @return Campaign
+     */
+    public function setPosition($position)
+    {
+        $this->position = $position;
+
+        return $this;
+    }
+
+    /**
+     * Get position.
+     *
+     * @return int
+     */
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    /**
+     * Get reference id.
+     *
+     * @return int
+     */
+    public function getRefId()
+    {
+        return $this->position + 1;
     }
 
     /**

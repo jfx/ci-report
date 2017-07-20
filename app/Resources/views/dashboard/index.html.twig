@@ -21,7 +21,7 @@
                     </button>
                     &nbsp;{{ lastCampaign.percentage }} %
                 </h4>
-                <p class="card-text text-success">#{{ lastCampaign.id }}</p>
+                <p class="card-text text-success">#{{ lastCampaign.refId }}</p>
                 <p class="card-text text-success">Passed tests: {{ lastCampaign.passed }}
                     <span class="text-muted">/ {{ lastCampaign.enabled }}</span>
                 </p>
@@ -59,7 +59,7 @@
     <tbody>
         {% for campaign in campaigns %}
         <tr class="table-success">
-            <td>#{{ campaign.id }}</td>
+            <td>#{{ campaign.refId }}</td>
             <td>{{ campaign.percentage }} %</td>
             <td>{{ campaign.passed }} / {{ campaign.enabled }}</td>
             <td>{{ campaign.failed }}</td>
