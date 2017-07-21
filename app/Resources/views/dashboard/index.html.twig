@@ -13,26 +13,32 @@
 {% block container %}
 <div class="row">
     <div class="col-4">
-        <div class="card card-outline-success">
+        <div class="card card-outline-{{ statusColorClass(lastCampaign.status) }}">
             <div class="card-block">
-                <h4 class="card-title text-success">
-                    <button id="td_b_action_add" type="button" class="btn btn-success btn-sm">
-                        <i class="fa fa-check-circle fa-3x"></i>
+                <h4 class="card-title text-{{ statusColorClass(lastCampaign.status) }}">
+                    <button id="button_status" type="button" class="btn btn-{{ statusColorClass(lastCampaign.status) }} btn-sm">
+                        <i class="fa {{ statusIconClass(lastCampaign.status) }} fa-3x"></i>
                     </button>
                     &nbsp;{{ lastCampaign.percentage }} %
                 </h4>
-                <p class="card-text text-success">#{{ lastCampaign.refId }}</p>
+                <p class="card-text text-{{ statusColorClass(lastCampaign.status) }}">#{{ lastCampaign.refId }}</p>
                 <p class="card-text text-success">Passed tests: {{ lastCampaign.passed }}
                     <span class="text-muted">/ {{ lastCampaign.enabled }}</span>
                 </p>
                 <p class="card-text text-danger">Failed tests: {{ lastCampaign.failed }}</p>
-                <p class="card-text text-danger">Errored tests: {{ lastCampaign.errored }}</p>
-                <p class="card-text text-warning">Skipped tests: {{ lastCampaign.skipped }}</p>
-                <p class="card-text text-muted">Disabled tests: {{ lastCampaign.disabled }}</p>
+                {% if lastCampaign.errored > 0 %}
+                    <p class="card-text text-danger">Errored tests: {{ lastCampaign.errored }}</p>
+                {% endif %}
+                {% if lastCampaign.skipped > 0 %}
+                    <p class="card-text text-warning">Skipped tests: {{ lastCampaign.skipped }}</p>
+                {% endif %}
+                {% if lastCampaign.disabled > 0 %}
+                    <p class="card-text text-muted">Disabled tests: {{ lastCampaign.disabled }}</p>
+                {% endif %}
                 <p class="card-text">Duration: {{ lastCampaign.duration }}s</p>
                 <p class="card-text text-muted">Time: {{ lastCampaign.datetimeCampaign|date('d/m/Y H:i:s') }}</p>
                 <div class="text-center">
-                <a href="#" class="btn btn-outline-success">Details</a>
+                <a href="#" class="btn btn-outline-{{ statusColorClass(lastCampaign.status) }}">Details</a>
                 </div>
             </div>
         </div>
@@ -58,7 +64,7 @@
     </thead>
     <tbody>
         {% for campaign in campaigns %}
-        <tr class="table-success">
+        <tr class="table-{{ statusColorClass(campaign.status) }}">
             <td>#{{ campaign.refId }}</td>
             <td>{{ campaign.percentage }} %</td>
             <td>{{ campaign.passed }} / {{ campaign.enabled }}</td>

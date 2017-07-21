@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Project
 {
+    const DEFAULT_WARNING_LIMIT = 80;
+    const DEFAULT_SUCCESS_LIMIT = 95;
+
     /**
      * @var int Id
      *
@@ -28,6 +31,28 @@ class Project
      */
     private $name;
 
+    /**
+     * @var int warningLimit
+     *
+     * @ORM\Column(name="warning_limit", type="smallint")
+     */
+    private $warningLimit;
+
+    /**
+     * @var int successLimit
+     *
+     * @ORM\Column(name="success_limit", type="smallint")
+     */
+    private $successLimit;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->setWarningLimit(Project::DEFAULT_WARNING_LIMIT);
+        $this->setSuccessLimit(Project::DEFAULT_SUCCESS_LIMIT);
+    }
 
     /**
      * Get id
@@ -61,6 +86,54 @@ class Project
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * Set warning limit
+     *
+     * @param int $warningLimit
+     *
+     * @return Project
+     */
+    public function setWarningLimit($warningLimit)
+    {
+        $this->warningLimit = $warningLimit;
+
+        return $this;
+    }
+
+    /**
+     * Get warning limit
+     *
+     * @return int
+     */
+    public function getWarningLimit()
+    {
+        return $this->warningLimit;
+    }
+
+    /**
+     * Set success limit
+     *
+     * @param int $successLimit
+     *
+     * @return Project
+     */
+    public function setSuccessLimit($successLimit)
+    {
+        $this->successLimit = $successLimit;
+
+        return $this;
+    }
+
+    /**
+     * Get success limit
+     *
+     * @return int
+     */
+    public function getSuccessLimit()
+    {
+        return $this->successLimit;
     }
 }
 

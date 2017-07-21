@@ -105,9 +105,9 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
                 'campaignRef' => 'p2c3',
             ),
             array(
-                'passed' => '79',
-                'failed' => '0',
-                'errored' => '21',
+                'passed' => '95',
+                'failed' => '5',
+                'errored' => '0',
                 'skipped' => '0',
                 'disabled' => '0',
                 'duration' => '1.1',
@@ -116,9 +116,9 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
                 'campaignRef' => 'p3c1',
             ),
             array(
-                'passed' => '80',
-                'failed' => '0',
-                'errored' => '20',
+                'passed' => '79',
+                'failed' => '21',
+                'errored' => '0',
                 'skipped' => '0',
                 'disabled' => '0',
                 'duration' => '1.1',
@@ -127,9 +127,9 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
                 'campaignRef' => 'p3c2',
             ),
             array(
-                'passed' => '95',
-                'failed' => '0',
-                'errored' => '5',
+                'passed' => '80',
+                'failed' => '20',
+                'errored' => '0',
                 'skipped' => '0',
                 'disabled' => '0',
                 'duration' => '1.3',
@@ -138,10 +138,10 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
                 'campaignRef' => 'p3c3',
             ),
             array(
-                'passed' => '79',
+                'passed' => '95',
                 'failed' => '0',
-                'errored' => '0',
-                'skipped' => '21',
+                'errored' => '5',
+                'skipped' => '0',
                 'disabled' => '0',
                 'duration' => '1.1',
                 'datetime' => $ref1Date,
@@ -151,13 +151,46 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
             array(
                 'passed' => '80',
                 'failed' => '0',
-                'errored' => '0',
-                'skipped' => '20',
+                'errored' => '20',
+                'skipped' => '0',
                 'disabled' => '0',
                 'duration' => '1.1',
                 'datetime' => $ref2Date,
                 'project' => 'projectfour-project',
                 'campaignRef' => 'p4c2',
+            ),
+            array(
+                'passed' => '79',
+                'failed' => '0',
+                'errored' => '21',
+                'skipped' => '0',
+                'disabled' => '0',
+                'duration' => '1.3',
+                'datetime' => $ref3Date,
+                'project' => 'projectfour-project',
+                'campaignRef' => 'p4c3',
+            ),
+            array(
+                'passed' => '79',
+                'failed' => '0',
+                'errored' => '0',
+                'skipped' => '21',
+                'disabled' => '0',
+                'duration' => '1.1',
+                'datetime' => $ref1Date,
+                'project' => 'projectfive-project',
+                'campaignRef' => 'p5c1',
+            ),
+            array(
+                'passed' => '80',
+                'failed' => '0',
+                'errored' => '0',
+                'skipped' => '20',
+                'disabled' => '0',
+                'duration' => '1.1',
+                'datetime' => $ref2Date,
+                'project' => 'projectfive-project',
+                'campaignRef' => 'p5c2',
             ),
             array(
                 'passed' => '95',
@@ -167,8 +200,8 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
                 'disabled' => '0',
                 'duration' => '1.3',
                 'datetime' => $ref3Date,
-                'project' => 'projectfour-project',
-                'campaignRef' => 'p4c3',
+                'project' => 'projectfive-project',
+                'campaignRef' => 'p5c3',
             ),
             array(
                 'passed' => '50',
@@ -178,13 +211,14 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
                 'disabled' => '50',
                 'duration' => '1.3',
                 'datetime' => $ref4Date,
-                'project' => 'projectfour-project',
-                'campaignRef' => 'p4c4',
+                'project' => 'projectfive-project',
+                'campaignRef' => 'p5c4',
             ),
         );
         $objectList = array();
         foreach ($dataArray as $i => $data) {
-            $objectList[$i] = new Campaign();
+            $project = $this->getReference($data['project']);
+            $objectList[$i] = new Campaign($this->getReference($data['project']));
             $objectList[$i]->setPassed($data['passed']);
             $objectList[$i]->setFailed($data['failed']);
             $objectList[$i]->setErrored($data['errored']);
@@ -192,7 +226,6 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
             $objectList[$i]->setDisabled($data['disabled']);
             $objectList[$i]->setDuration($data['duration']);
             $objectList[$i]->setDatetimeCampaign($data['datetime']);
-            $objectList[$i]->setProject($this->getReference($data['project']));
 
             $manager->persist($objectList[$i]);
             $ref = $data['campaignRef'].'-campaign';

@@ -32,6 +32,9 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
             array(
                 'name' => 'ProjectFive',
             ),
+            array(
+                'name' => 'ProjectSix',
+            ),
         );
         $objectList = array();
         foreach ($dataArray as $i => $data) {
