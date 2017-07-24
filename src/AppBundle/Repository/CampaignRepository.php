@@ -33,4 +33,28 @@ class CampaignRepository extends SortableRepository
 
         return $result;
     }
+
+    /**
+     * Get a campaign for a project and its refId.
+     *
+     * @param Project $project The project.
+     * @param int     $refId   RefId of the campaign in the project.
+     *
+     * @return Array List of campaigns.
+     */
+    public function findCampaignByProjectAndRefId(Project $project, $refId)
+    {
+        $position = $refId - 1;
+
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.project', 'p')
+            ->where('p.id = :projectId')
+            ->andWhere('c.position = :position')
+            ->setParameter('projectId', $project->getId())
+            ->setParameter('position', $position);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
 }

@@ -4,15 +4,14 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
-// use AppBundle\Repository\CampaignRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class DashboardController extends Controller
+class ProjectController extends Controller
 {
     /**
-     * @Route("/project/{pid}", name="dashboard")
+     * @Route("/project/{pid}", name="project-view")
      */
     public function indexAction($pid)
     {
@@ -26,7 +25,7 @@ class DashboardController extends Controller
             );
         }
 
-        $campaignsList =  $this->getDoctrine()
+        $campaignsList = $this->getDoctrine()
             ->getRepository(Campaign::class)
             ->findCampaignsByProject($project);
 
@@ -37,7 +36,7 @@ class DashboardController extends Controller
         }
 
         return $this->render(
-            'dashboard/index.html.twig',
+            'project/view.html.twig',
             [
                 'project' => $project,
                 'lastCampaign' => $lastCampaign,

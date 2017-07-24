@@ -217,7 +217,6 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
         );
         $objectList = array();
         foreach ($dataArray as $i => $data) {
-            $project = $this->getReference($data['project']);
             $objectList[$i] = new Campaign($this->getReference($data['project']));
             $objectList[$i]->setPassed($data['passed']);
             $objectList[$i]->setFailed($data['failed']);

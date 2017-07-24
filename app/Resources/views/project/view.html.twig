@@ -4,8 +4,8 @@
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">ci-report</a></li>
-    <li class="breadcrumb-item"><a href="#">{{ project.name }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('homepage') }}">ci-report</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('project-view', {'pid': project.id}) }}">{{ project.name }}</a></li>
     <li class="breadcrumb-item active">Dashboard</li>
 </ol>
 {% endblock %}
@@ -38,14 +38,22 @@
                 <p class="card-text">Duration: {{ lastCampaign.duration }}s</p>
                 <p class="card-text text-muted">Time: {{ lastCampaign.datetimeCampaign|date('d/m/Y H:i:s') }}</p>
                 <div class="text-center">
-                <a href="#" class="btn btn-outline-{{ statusColorClass(lastCampaign.status) }}">Details</a>
+                <a href="{{ path('campaign-view', {'pid': project.id, 'refId': lastCampaign.refId}) }}" class="btn btn-outline-{{ statusColorClass(lastCampaign.status) }}">Details</a>
                 </div>
             </div>
         </div>
     </div>
     <div class="col-8">Graph</div>
 </div>
+
 <div class="row div-margin-top">
+<div class="col-12">
+<h5>Campaigns</h5>
+<hr>
+</div>
+</div>
+
+<div class="row">
 <div class="col-12">
 <table class="table table-bordered">
     <thead>
@@ -65,7 +73,7 @@
     <tbody>
         {% for campaign in campaigns %}
         <tr class="table-{{ statusColorClass(campaign.status) }}">
-            <td>#{{ campaign.refId }}</td>
+            <td><a href="{{ path('campaign-view', {'pid': project.id, 'refId': campaign.refId}) }}">#{{ campaign.refId }}</a></td>
             <td>{{ campaign.percentage }} %</td>
             <td>{{ campaign.passed }} / {{ campaign.enabled }}</td>
             <td>{{ campaign.failed }}</td>
