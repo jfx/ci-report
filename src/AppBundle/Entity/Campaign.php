@@ -17,10 +17,6 @@ class Campaign
     const DEFAULT_WARNING_LIMIT = 80;
     const DEFAULT_SUCCESS_LIMIT = 95;
 
-    const STATUS_FAILED = 1;
-    const STATUS_WARNING = 2;
-    const STATUS_SUCCESS = 3;
-
     /**
      * @var int
      *
@@ -435,16 +431,16 @@ class Campaign
     /**
      * Get campaign status
      *
-     * @return int Campaign::STATUS_FAILED|Campaign::STATUS_WARNING|Campaign::STATUS_SUCCESS
+     * @return int Status::FAILED|Status::WARNING|Status::SUCCESS
      */
     public function getStatus()
     {
         if ($this->getPercentage() < $this->getWarningLimit()) {
-            return Campaign::STATUS_FAILED;
+            return Status::FAILED;
         } elseif ($this->getPercentage() <  $this->getSuccessLimit()) {
-            return Campaign::STATUS_WARNING;
+            return Status::WARNING;
         } else {
-            return Campaign::STATUS_SUCCESS;
+            return Status::SUCCESS;
         }
     }
 }

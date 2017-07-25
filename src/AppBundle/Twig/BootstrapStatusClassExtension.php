@@ -2,7 +2,7 @@
 
 namespace AppBundle\Twig;
 
-use AppBundle\Entity\Campaign;
+use AppBundle\Entity\Status;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
@@ -26,23 +26,35 @@ class BootstrapStatusClassExtension extends Twig_Extension
 
     public function getStatusColorClass($status)
     {
-        if ($status == Campaign::STATUS_FAILED) {
-            return BootstrapStatusClassExtension::BOOTSTRAP_DANGER;
-        } elseif ($status == Campaign::STATUS_WARNING) {
-            return BootstrapStatusClassExtension::BOOTSTRAP_WARNING;
-        } else {
-            return BootstrapStatusClassExtension::BOOTSTRAP_SUCCESS;
+        switch ($status) {
+            case Status::FAILED:
+            case Status::ERROR:
+                $color = BootstrapStatusClassExtension::BOOTSTRAP_DANGER;
+                break;
+            case Status::WARNING:
+            case Status::SKIPPED:
+                $color = BootstrapStatusClassExtension::BOOTSTRAP_WARNING;
+                break;
+            default:
+                $color = BootstrapStatusClassExtension::BOOTSTRAP_SUCCESS;
         }
+        return $color;
     }
 
     public function getStatusIconClass($status)
     {
-        if ($status == Campaign::STATUS_FAILED) {
-            return BootstrapStatusClassExtension::FA_DANGER;
-        } elseif ($status == Campaign::STATUS_WARNING) {
-            return BootstrapStatusClassExtension::FA_WARNING;
-        } else {
-            return BootstrapStatusClassExtension::FA_SUCCESS;
+        switch ($status) {
+            case Status::FAILED:
+            case Status::ERROR:
+                $icon = BootstrapStatusClassExtension::FA_DANGER;
+                break;
+            case Status::WARNING:
+            case Status::SKIPPED:
+                $icon = BootstrapStatusClassExtension::FA_WARNING;
+                break;
+            default:
+                $icon = BootstrapStatusClassExtension::FA_SUCCESS;
         }
+        return $icon;
     }
 }

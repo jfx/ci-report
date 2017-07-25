@@ -14,10 +14,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Suite
 {
-    const STATUS_FAILED = 1;
-    const STATUS_WARNING = 2;
-    const STATUS_SUCCESS = 3;
-
     /**
      * @var int
      *
@@ -399,16 +395,16 @@ class Suite
     /**
      * Get suite status
      *
-     * @return int Suite::STATUS_FAILED|Suite::STATUS_WARNING|Suite::STATUS_SUCCESS
+     * @return int Status::FAILED|Status::WARNING|Status::SUCCESS
      */
     public function getStatus()
     {
         if ($this->getPercentage() < $this->campaign->getWarningLimit()) {
-            return Suite::STATUS_FAILED;
+            return Status::FAILED;
         } elseif ($this->getPercentage() <  $this->campaign->getSuccessLimit()) {
-            return Suite::STATUS_WARNING;
+            return Status::WARNING;
         } else {
-            return Suite::STATUS_SUCCESS;
+            return Status::SUCCESS;
         }
     }
 }
