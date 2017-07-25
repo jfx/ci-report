@@ -27,7 +27,7 @@ class CampaignRepository extends SortableRepository
             ->innerJoin('c.project', 'p')
             ->where('p.id = :projectId')
             ->setParameter('projectId', $project->getId())
-            ->orderBy('c.datetimeCampaign', 'DESC', 'c.position', 'DESC');
+            ->orderBy('c.position', 'DESC');
 
         $result = $qb->getQuery()->getResult();
 
@@ -52,6 +52,54 @@ class CampaignRepository extends SortableRepository
             ->andWhere('c.position = :position')
             ->setParameter('projectId', $project->getId())
             ->setParameter('position', $position);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
+
+    /**
+     * Get previous campaign for a campaign.
+     *
+     * @param Project   $project  The project.
+     * @param Campaign  $campaign The campaign.
+     *
+     * @return Campaign.
+     */
+    public function findPrevCampaignByProject(Project $project, Campaign $campaign)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.project', 'p')
+            ->where('p.id = :projectId')
+            ->andWhere('c.position < :position')
+            ->setParameter('projectId', $project->getId())
+            ->setParameter('position', $campaign->getPosition())
+            ->orderBy('c.position', 'DESC')
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
+
+    /**
+     * Get next campaign for a campaign.
+     *
+     * @param Project   $project  The project.
+     * @param Campaign  $campaign The campaign.
+     *
+     * @return Campaign.
+     */
+    public function findNextCampaignByProject(Project $project, Campaign $campaign)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.project', 'p')
+            ->where('p.id = :projectId')
+            ->andWhere('c.position > :position')
+            ->setParameter('projectId', $project->getId())
+            ->setParameter('position', $campaign->getPosition())
+            ->orderBy('c.position', 'ASC')
+            ->setMaxResults(1);
 
         $result = $qb->getQuery()->getOneOrNullResult();
 

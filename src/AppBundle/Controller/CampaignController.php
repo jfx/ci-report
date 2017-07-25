@@ -34,6 +34,13 @@ class CampaignController extends Controller
             );
         }
 
+        $prevCampaign = $this->getDoctrine()
+            ->getRepository(Campaign::class)
+            ->findPrevCampaignByProject($project, $campaign);
+        $nextCampaign = $this->getDoctrine()
+            ->getRepository(Campaign::class)
+            ->findNextCampaignByProject($project, $campaign);
+
         $suitesList = $this->getDoctrine()
             ->getRepository(Suite::class)
             ->findSuitesByCampaign($campaign);
@@ -43,6 +50,8 @@ class CampaignController extends Controller
             [
                 'project' => $project,
                 'campaign' => $campaign,
+                'prevCampaign' => $prevCampaign,
+                'nextCampaign' => $nextCampaign,
                 'suites' => $suitesList,
             ]
         );

@@ -7,6 +7,19 @@
     <li class="breadcrumb-item"><a href="{{ path('homepage') }}">ci-report</a></li>
     <li class="breadcrumb-item"><a href="{{ path('project-view', {'pid': project.id}) }}">{{ project.name }}</a></li>
     <li class="breadcrumb-item active">Campaign #{{ campaign.refId }}</li>
+    &nbsp;
+    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="Previous Next">
+        {% if prevCampaign %}
+        <a href="{{ path('campaign-view', {'pid': project.id, 'refId': prevCampaign.refId}) }}" class="btn btn-secondary">Prev</a>
+        {% else %}
+        <button type="button" class="btn btn-secondary" disabled>Prev</button>
+        {% endif %}
+        {% if nextCampaign %}
+        <a href="{{ path('campaign-view', {'pid': project.id, 'refId': nextCampaign.refId}) }}" class="btn btn-secondary">Next</a>
+        {% else %}
+        <button type="button" class="btn btn-secondary" disabled>Next</button>
+        {% endif %}
+    </div>
 </ol>
 {% endblock %}
 
@@ -38,59 +51,72 @@
 </div>
 
 <div class="row div-margin-top">
-<div class="col-12">
-<h5>Failed or errored tests</h5>
-<hr>
-</div>
+    <div class="col-12">
+        <h5>Failed or errored tests</h5>
+        <hr>
+    </div>
 </div>
 
 <div class="row div-margin-top">
-<div class="col-12">
-<h5>Suites</h5>
-<hr>
-</div>
+    <div class="col-12">
+        <h5>Suites</h5>
+        <hr>
+    </div>
 </div>
 
 <div class="row">
-<div class="col-12">
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>#Id</th>
-            <th>Name</th>
-            <th>%</th>
-            <th><span class="text-success">Passed</span></th>
-            <th><span class="text-danger">Failed</span></th>
-            <th><span class="text-danger">Errored</span></th>
-            <th><span class="text-warning">Skipped</span></th>
-            <th><span class="text-muted">Disabled</span></th>
-            <th>Duration</th>
-            <th><span class="text-muted">Time</span></th>
-            <th>Document</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for suite in suites %}
-        <tr class="table-{{ statusColorClass(suite.status) }}">
-            <td><a href="{{ path('campaign-view', {'pid': campaign.id, 'refId': suite.refId}) }}">#{{ suite.refId }}</a></td>
-            <td>{{ suite.name }}</td>
-            <td>{{ suite.percentage }} %</td>
-            <td>{{ suite.passed }} / {{ suite.enabled }}</td>
-            <td>{{ suite.failed }}</td>
-            <td>{{ suite.errored }}</td>
-            <td>{{ suite.skipped }}</td>
-            <td>{{ suite.disabled }}</td>
-            <td>{{ suite.duration }}s</td>
-            <td>{{ suite.datetimeSuite|date('d/m/Y H:i:s') }}</td>
-            <td></td>
-        </tr>
-        {% else %}
-            <tr><td colspan="11">No suite</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
+    <div class="col-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>#Id</th>
+                    <th>Name</th>
+                    <th>%</th>
+                    <th><span class="text-success">Passed</span></th>
+                    <th><span class="text-danger">Failed</span></th>
+                    <th><span class="text-danger">Errored</span></th>
+                    <th><span class="text-warning">Skipped</span></th>
+                    <th><span class="text-muted">Disabled</span></th>
+                    <th>Duration</th>
+                    <th><span class="text-muted">Time</span></th>
+                    <th>Document</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for suite in suites %}
+                <tr class="table-{{ statusColorClass(suite.status) }}">
+                    <td><a href="{{ path('campaign-view', {'pid': project.id, 'refId': suite.refId}) }}">#{{ suite.refId }}</a></td>
+                    <td>{{ suite.name }}</td>
+                    <td>{{ suite.percentage }} %</td>
+                    <td>{{ suite.passed }} / {{ suite.enabled }}</td>
+                    <td>{{ suite.failed }}</td>
+                    <td>{{ suite.errored }}</td>
+                    <td>{{ suite.skipped }}</td>
+                    <td>{{ suite.disabled }}</td>
+                    <td>{{ suite.duration }}s</td>
+                    <td>{{ suite.datetimeSuite|date('d/m/Y H:i:s') }}</td>
+                    <td></td>
+                </tr>
+                {% else %}
+                    <tr><td colspan="11">No suite</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
-<a href="{{ path('project-view', {'pid': project.id}) }}" class="btn btn-outline-secondary">Back to project</a>
-</div>
+        <a href="{{ path('project-view', {'pid': project.id}) }}" class="btn btn-secondary">Back to project</a>
+
+        <div class="btn-group" role="group" aria-label="Previous Next">
+            {% if prevCampaign %}
+            <a href="{{ path('campaign-view', {'pid': project.id, 'refId': prevCampaign.refId}) }}" class="btn btn-secondary">Prev</a>
+            {% else %}
+            <button type="button" class="btn btn-secondary" disabled>Prev</button>
+            {% endif %}
+            {% if nextCampaign %}
+            <a href="{{ path('campaign-view', {'pid': project.id, 'refId': nextCampaign.refId}) }}" class="btn btn-secondary">Next</a>
+            {% else %}
+            <button type="button" class="btn btn-secondary" disabled>Next</button>
+            {% endif %}
+        </div>
+    </div>
 </div>
 {% endblock %}
