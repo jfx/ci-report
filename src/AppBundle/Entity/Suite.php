@@ -119,7 +119,7 @@ class Suite
      *
      * @param string $name
      *
-     * @return Project
+     * @return Suite
      */
     public function setName($name)
     {

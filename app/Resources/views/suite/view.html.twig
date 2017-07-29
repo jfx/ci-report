@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} / {{ project.name }} / Campaign #{{ campaign.refId }} / Suite #{{ suite.refId }}{% endblock %}
+
+{% block breadcrumb %}
+<ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ path('homepage') }}">ci-report</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('project-view', {'pid': project.id}) }}">{{ project.name }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('campaign-view', {'pid': project.id, 'refId': campaign.refId}) }}">Campaign #{{ campaign.refId }}</a></li>
+    <li class="breadcrumb-item active">Suite #{{ suite.refId }}</li>
+    &nbsp;
+    <div class="btn-group btn-group-sm pull-right" role="group" aria-label="Previous Next">
+        {% if prevSuite %}
+        <a href="{{ path('suite-view', {'pid': project.id, 'crefId': campaign.refId, 'srefId': prevSuite.refId}) }}" class="btn btn-secondary">Prev</a>
+        {% else %}
+        <button type="button" class="btn btn-secondary" disabled>Prev</button>
+        {% endif %}
+        {% if nextSuite %}
+        <a href="{{ path('suite-view', {'pid': project.id, 'crefId': campaign.refId, 'srefId': nextSuite.refId}) }}" class="btn btn-secondary">Next</a>
+        {% else %}
+        <button type="button" class="btn btn-secondary" disabled>Next</button>
+        {% endif %}
+    </div>
+</ol>
+{% endblock %}
+
+{% block container %}
+<div class="row">
+    <div class="col-4">
+        <div class="card card-outline-{{ statusColorClass(suite.status) }}">
+            <div class="card-block">
+                <h4 class="card-title text-{{ statusColorClass(suite.status) }}">
+                    <button id="button_status" type="button" class="btn btn-{{ statusColorClass(suite.status) }} btn-sm">
+                        <i class="fa {{ statusIconClass(suite.status) }} fa-3x"></i>
+                    </button>
+                    &nbsp;{{ suite.percentage }} %
+                </h4>
+                <p class="card-text text-{{ statusColorClass(suite.status) }}">#{{ suite.refId }}</p>
+                <p class="card-text text-success">Passed tests: {{ suite.passed }}
+                    <span class="text-muted">/ {{ suite.enabled }}</span>
+                </p>
+                <p class="card-text text-danger">Failed tests: {{ suite.failed }}</p>
+                <p class="card-text text-danger">Errored tests: {{ suite.errored }}</p>
+                <p class="card-text text-warning">Skipped tests: {{ suite.skipped }}</p>
+                <p class="card-text text-muted">Disabled tests: {{ suite.disabled }}</p>
+                <p class="card-text">Duration: {{ suite.duration }}s</p>
+                <p class="card-text text-muted">Time: {{ suite.datetimeSuite|date('d/m/Y H:i:s') }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-8">Graph</div>
+</div>
+
+<div class="row div-margin-top">
+    <div class="col-12">
+        <h5>Failed or errored tests</h5>
+        <hr>
+    </div>
+</div>
+
+<div class="row div-margin-top">
+    <div class="col-12">
+        <h5>Tests</h5>
+        <hr>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Package / Class / Name</th>
+                    <th><span class="text-success">Passed</span></th>
+                    <th><span class="text-danger">Failed</span></th>
+                    <th><span class="text-danger">Errored</span></th>
+                    <th><span class="text-warning">Skipped</span></th>
+                    <th>Duration</th>
+                    <th>Message</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in tests %}
+                <tr class="table-{{ statusColorClass(test.status) }}">
+                    <td>{{ test.name }}</td>
+                    <td>{{ test.passed }}</td>
+                    <td>{{ test.failed }}</td>
+                    <td>{{ test.errored }}</td>
+                    <td>{{ test.skipped }}</td>
+                    <td>{{ test.duration }}s</td>
+                    <td></td>
+                </tr>
+                {% else %}
+                    <tr><td colspan="7">No test</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('campaign-view', {'pid': project.id, 'refId': campaign.refId}) }}" class="btn btn-secondary">Back to campaign</a>
+
+        <div class="btn-group" role="group" aria-label="Previous Next">
+            {% if prevSuite %}
+            <a href="{{ path('suite-view', {'pid': project.id, 'crefId': campaign.refId, 'srefId': prevSuite.refId}) }}" class="btn btn-secondary">Prev</a>
+            {% else %}
+            <button type="button" class="btn btn-secondary" disabled>Prev</button>
+            {% endif %}
+            {% if nextSuite %}
+            <a href="{{ path('suite-view', {'pid': project.id, 'crefId': campaign.refId, 'srefId': nextSuite.refId}) }}" class="btn btn-secondary">Next</a>
+            {% else %}
+            <button type="button" class="btn btn-secondary" disabled>Next</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

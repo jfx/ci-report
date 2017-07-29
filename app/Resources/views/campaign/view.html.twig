@@ -85,7 +85,7 @@
             <tbody>
                 {% for suite in suites %}
                 <tr class="table-{{ statusColorClass(suite.status) }}">
-                    <td><a href="{{ path('campaign-view', {'pid': project.id, 'refId': suite.refId}) }}">#{{ suite.refId }}</a></td>
+                    <td><a href="{{ path('suite-view', {'pid': project.id, 'crefId': campaign.refId, 'srefId': suite.refId}) }}">#{{ suite.refId }}</a></td>
                     <td>{{ suite.name }}</td>
                     <td>{{ suite.percentage }} %</td>
                     <td>{{ suite.passed }} / {{ suite.enabled }}</td>

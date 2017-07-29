@@ -3,7 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Campaign;
-use AppBundle\Entity\Project;
+use AppBundle\Entity\Suite;
 use Gedmo\Sortable\Entity\Repository\SortableRepository;
 
 /**
@@ -52,6 +52,54 @@ class SuiteRepository extends SortableRepository
             ->andWhere('s.position = :position')
             ->setParameter('campaignId', $campaign->getId())
             ->setParameter('position', $position);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
+
+    /**
+     * Get previous suite for a suite.
+     *
+     * @param Campaign $campaign The campaign.
+     * @param Suite    $suite    The suite.
+     *
+     * @return Suite.
+     */
+    public function findPrevSuiteByCampaign(Campaign $campaign, Suite $suite)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->innerJoin('s.campaign', 'c')
+            ->where('c.id = :campaignId')
+            ->andWhere('s.position < :position')
+            ->setParameter('campaignId', $campaign->getId())
+            ->setParameter('position', $suite->getPosition())
+            ->orderBy('s.position', 'DESC')
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
+
+    /**
+     * Get next campaign for a campaign.
+     *
+     * @param Campaign $campaign The campaign.
+     * @param Suite    $suite    The suite.
+     *
+     * @return Suite.
+     */
+    public function findNextSuiteByCampaign(Campaign $campaign, Suite $suite)
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->innerJoin('s.campaign', 'c')
+            ->where('c.id = :campaignId')
+            ->andWhere('s.position > :position')
+            ->setParameter('campaignId', $campaign->getId())
+            ->setParameter('position', $suite->getPosition())
+            ->orderBy('s.position', 'ASC')
+            ->setMaxResults(1);
 
         $result = $qb->getQuery()->getOneOrNullResult();
 
