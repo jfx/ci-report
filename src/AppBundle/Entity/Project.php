@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Project
+ * Project.
  *
  * @ORM\Table(name="cir_project")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
@@ -46,16 +46,16 @@ class Project
     private $successLimit;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
-        $this->setWarningLimit(Project::DEFAULT_WARNING_LIMIT);
-        $this->setSuccessLimit(Project::DEFAULT_SUCCESS_LIMIT);
+        $this->setWarningLimit(self::DEFAULT_WARNING_LIMIT);
+        $this->setSuccessLimit(self::DEFAULT_SUCCESS_LIMIT);
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -65,7 +65,7 @@ class Project
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -79,7 +79,7 @@ class Project
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -89,7 +89,7 @@ class Project
     }
 
     /**
-     * Set warning limit
+     * Set warning limit.
      *
      * @param int $warningLimit
      *
@@ -103,7 +103,7 @@ class Project
     }
 
     /**
-     * Get warning limit
+     * Get warning limit.
      *
      * @return int
      */
@@ -113,7 +113,7 @@ class Project
     }
 
     /**
-     * Set success limit
+     * Set success limit.
      *
      * @param int $successLimit
      *
@@ -127,7 +127,7 @@ class Project
     }
 
     /**
-     * Get success limit
+     * Get success limit.
      *
      * @return int
      */
@@ -136,4 +136,3 @@ class Project
         return $this->successLimit;
     }
 }
-

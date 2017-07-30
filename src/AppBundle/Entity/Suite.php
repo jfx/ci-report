@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Suite
+ * Suite.
  *
  * @ORM\Table(name="cir_suite")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SuiteRepository")
@@ -87,7 +87,7 @@ class Suite
 
     /**
      * @var Campaign
-     * 
+     *
      * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Campaign")
      * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", nullable=false)
@@ -95,7 +95,7 @@ class Suite
     private $campaign;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Campaign $campaign
      */
@@ -105,7 +105,7 @@ class Suite
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -115,7 +115,7 @@ class Suite
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -129,7 +129,7 @@ class Suite
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -137,11 +137,11 @@ class Suite
     {
         return $this->name;
     }
-    
+
     /**
-     * Set passed
+     * Set passed.
      *
-     * @param integer $passed
+     * @param int $passed
      *
      * @return Suite
      */
@@ -153,7 +153,7 @@ class Suite
     }
 
     /**
-     * Get passed
+     * Get passed.
      *
      * @return int
      */
@@ -163,9 +163,9 @@ class Suite
     }
 
     /**
-     * Set failed
+     * Set failed.
      *
-     * @param integer $failed
+     * @param int $failed
      *
      * @return Suite
      */
@@ -177,7 +177,7 @@ class Suite
     }
 
     /**
-     * Get failed
+     * Get failed.
      *
      * @return int
      */
@@ -187,9 +187,9 @@ class Suite
     }
 
     /**
-     * Set errored
+     * Set errored.
      *
-     * @param integer $errored
+     * @param int $errored
      *
      * @return Suite
      */
@@ -201,7 +201,7 @@ class Suite
     }
 
     /**
-     * Get errored
+     * Get errored.
      *
      * @return int
      */
@@ -211,9 +211,9 @@ class Suite
     }
 
     /**
-     * Set skipped
+     * Set skipped.
      *
-     * @param integer $skipped
+     * @param int $skipped
      *
      * @return Suite
      */
@@ -225,7 +225,7 @@ class Suite
     }
 
     /**
-     * Get skipped
+     * Get skipped.
      *
      * @return int
      */
@@ -235,9 +235,9 @@ class Suite
     }
 
     /**
-     * Set disabled
+     * Set disabled.
      *
-     * @param integer $disabled
+     * @param int $disabled
      *
      * @return Suite
      */
@@ -249,7 +249,7 @@ class Suite
     }
 
     /**
-     * Get disabled
+     * Get disabled.
      *
      * @return int
      */
@@ -259,7 +259,7 @@ class Suite
     }
 
     /**
-     * Set duration
+     * Set duration.
      *
      * @param float $duration
      *
@@ -273,7 +273,7 @@ class Suite
     }
 
     /**
-     * Get duration
+     * Get duration.
      *
      * @return float
      */
@@ -341,7 +341,7 @@ class Suite
     }
 
     /**
-     * Set campaign
+     * Set campaign.
      *
      * @param Campaign $campaign
      *
@@ -355,7 +355,7 @@ class Suite
     }
 
     /**
-     * Get campaign
+     * Get campaign.
      *
      * @return Campaign
      */
@@ -365,7 +365,7 @@ class Suite
     }
 
     /**
-     * Get enabled tests
+     * Get enabled tests.
      *
      * @return int
      */
@@ -378,7 +378,7 @@ class Suite
     }
 
     /**
-     * Get percentage of successful tests
+     * Get percentage of successful tests.
      *
      * @return int
      */
@@ -389,11 +389,10 @@ class Suite
         } else {
             0;
         }
-        
     }
 
     /**
-     * Get suite status
+     * Get suite status.
      *
      * @return int Status::FAILED|Status::WARNING|Status::SUCCESS
      */
@@ -401,7 +400,7 @@ class Suite
     {
         if ($this->getPercentage() < $this->campaign->getWarningLimit()) {
             return Status::FAILED;
-        } elseif ($this->getPercentage() <  $this->campaign->getSuccessLimit()) {
+        } elseif ($this->getPercentage() < $this->campaign->getSuccessLimit()) {
             return Status::WARNING;
         } else {
             return Status::SUCCESS;

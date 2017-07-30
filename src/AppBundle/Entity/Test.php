@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Test
+ * Test.
  *
  * @ORM\Table(name="cir_test")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TestRepository")
@@ -102,7 +102,7 @@ class Test
 
     /**
      * @var Suite
-     * 
+     *
      * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Suite")
      * @ORM\JoinColumn(name="suite_id", referencedColumnName="id", nullable=false)
@@ -110,7 +110,7 @@ class Test
     private $suite;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Suite $suite
      */
@@ -120,7 +120,7 @@ class Test
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -130,7 +130,7 @@ class Test
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
      *
@@ -144,7 +144,7 @@ class Test
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -154,7 +154,7 @@ class Test
     }
 
     /**
-     * Set classname
+     * Set classname.
      *
      * @param string $classname
      *
@@ -168,7 +168,7 @@ class Test
     }
 
     /**
-     * Get classname
+     * Get classname.
      *
      * @return string
      */
@@ -178,7 +178,7 @@ class Test
     }
 
     /**
-     * Set package
+     * Set package.
      *
      * @param string $package
      *
@@ -192,7 +192,7 @@ class Test
     }
 
     /**
-     * Get package
+     * Get package.
      *
      * @return string
      */
@@ -202,7 +202,7 @@ class Test
     }
 
     /**
-     * Set full class name
+     * Set full class name.
      *
      * @return Test
      */
@@ -211,22 +211,22 @@ class Test
         if (substr_count($fullClassName, '.') > 0) {
             $index = strrpos($fullClassName, '.');
             $this->setPackage(substr($fullClassName, 0, $index));
-            $this->setClassName(substr($fullClassName, $index+1));
+            $this->setClassName(substr($fullClassName, $index + 1));
         } else {
-            $this->setPackage(Test::DEFAULT_PACKAGE);
+            $this->setPackage(self::DEFAULT_PACKAGE);
             $this->setClassName($fullClassName);
         }
     }
 
     /**
-     * Set passed
+     * Set passed.
      *
      * @return Test
      */
     public function setpassed()
     {
-        $this->passed  = 1;
-        $this->failed  = 0;
+        $this->passed = 1;
+        $this->failed = 0;
         $this->errored = 0;
         $this->skipped = 0;
 
@@ -234,7 +234,7 @@ class Test
     }
 
     /**
-     * Get passed
+     * Get passed.
      *
      * @return int
      */
@@ -244,14 +244,14 @@ class Test
     }
 
     /**
-     * Set failed
+     * Set failed.
      *
      * @return Test
      */
     public function setFailed()
     {
-        $this->passed  = 0;
-        $this->failed  = 1;
+        $this->passed = 0;
+        $this->failed = 1;
         $this->errored = 0;
         $this->skipped = 0;
 
@@ -259,7 +259,7 @@ class Test
     }
 
     /**
-     * Get failed
+     * Get failed.
      *
      * @return int
      */
@@ -269,14 +269,14 @@ class Test
     }
 
     /**
-     * Set errored
+     * Set errored.
      *
      * @return Test
      */
     public function setErrored()
     {
-        $this->passed  = 0;
-        $this->failed  = 0;
+        $this->passed = 0;
+        $this->failed = 0;
         $this->errored = 1;
         $this->skipped = 0;
 
@@ -284,7 +284,7 @@ class Test
     }
 
     /**
-     * Get errored
+     * Get errored.
      *
      * @return int
      */
@@ -294,14 +294,14 @@ class Test
     }
 
     /**
-     * Set skipped
+     * Set skipped.
      *
      * @return Test
      */
     public function setSkipped()
     {
-        $this->passed  = 0;
-        $this->failed  = 0;
+        $this->passed = 0;
+        $this->failed = 0;
         $this->errored = 0;
         $this->skipped = 1;
 
@@ -309,7 +309,7 @@ class Test
     }
 
     /**
-     * Get skipped
+     * Get skipped.
      *
      * @return int
      */
@@ -319,7 +319,7 @@ class Test
     }
 
     /**
-     * Set status
+     * Set status.
      *
      * @param int $status
      *
@@ -339,12 +339,12 @@ class Test
                 break;
             case Status::SKIPPED:
                 $this->setSkipped();
-                break;                               
+                break;
         }
     }
 
     /**
-     * Get status
+     * Get status.
      *
      * @return int
      */
@@ -362,7 +362,7 @@ class Test
     }
 
     /**
-     * Set duration
+     * Set duration.
      *
      * @param float $duration
      *
@@ -376,7 +376,7 @@ class Test
     }
 
     /**
-     * Get duration
+     * Get duration.
      *
      * @return float
      */
@@ -386,7 +386,7 @@ class Test
     }
 
     /**
-     * Set system out message 
+     * Set system out message.
      *
      * @param string $systemOut
      *
@@ -400,7 +400,7 @@ class Test
     }
 
     /**
-     * Get system out message
+     * Get system out message.
      *
      * @return string
      */
@@ -410,7 +410,7 @@ class Test
     }
 
     /**
-     * Set system error message 
+     * Set system error message.
      *
      * @param string $systemErr
      *
@@ -424,7 +424,7 @@ class Test
     }
 
     /**
-     * Get system error message
+     * Get system error message.
      *
      * @return string
      */
@@ -468,7 +468,7 @@ class Test
     }
 
     /**
-     * Set suite
+     * Set suite.
      *
      * @param Suite $suite
      *
@@ -482,7 +482,7 @@ class Test
     }
 
     /**
-     * Get suite
+     * Get suite.
      *
      * @return Suite
      */

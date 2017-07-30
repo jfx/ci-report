@@ -30,7 +30,7 @@ EOT;
         $dataArray = array(
             array(
                 'count' => '12',
-                'fullClassName' => [
+                'fullClassName' => array(
                     'className2',
                     'className2',
                     'className1',
@@ -43,8 +43,8 @@ EOT;
                     'io.ci-report.className4',
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
-                ],
-                'status' => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ),
+                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => '1',
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -52,7 +52,7 @@ EOT;
             ),
             array(
                 'count' => '13',
-                'fullClassName' => [
+                'fullClassName' => array(
                     'className2',
                     'className2',
                     'className1',
@@ -66,8 +66,8 @@ EOT;
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
-                ],
-                'status' => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ),
+                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => '1',
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -75,7 +75,7 @@ EOT;
             ),
             array(
                 'count' => '13',
-                'fullClassName' => [
+                'fullClassName' => array(
                     'className2',
                     'className2',
                     'className1',
@@ -89,8 +89,8 @@ EOT;
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
-                ],
-                'status' => [1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ),
+                'status' => array(1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => '1',
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -98,7 +98,7 @@ EOT;
             ),
             array(
                 'count' => '13',
-                'fullClassName' => [
+                'fullClassName' => array(
                     'className2',
                     'className2',
                     'className1',
@@ -112,8 +112,8 @@ EOT;
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
-                ],
-                'status' => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ),
+                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => '1',
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -121,7 +121,7 @@ EOT;
             ),
             array(
                 'count' => '13',
-                'fullClassName' => [
+                'fullClassName' => array(
                     'className2',
                     'className2',
                     'className1',
@@ -135,8 +135,8 @@ EOT;
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
-                ],
-                'status' => [1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ),
+                'status' => array(1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => '1',
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -144,7 +144,7 @@ EOT;
             ),
             array(
                 'count' => '13',
-                'fullClassName' => [
+                'fullClassName' => array(
                     'className2',
                     'className2',
                     'className1',
@@ -158,8 +158,8 @@ EOT;
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
-                ],
-                'status' => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ),
+                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => '1',
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -167,7 +167,7 @@ EOT;
             ),
             array(
                 'count' => '13',
-                'fullClassName' => [
+                'fullClassName' => array(
                     'className2',
                     'className2',
                     'className1',
@@ -181,8 +181,8 @@ EOT;
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
-                ],
-                'status' => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ),
+                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => '1',
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -190,7 +190,7 @@ EOT;
             ),
             array(
                 'count' => '13',
-                'fullClassName' => [
+                'fullClassName' => array(
                     'className2',
                     'className2',
                     'className1',
@@ -204,8 +204,8 @@ EOT;
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
-                ],
-                'status' => [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                ),
+                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => '1',
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -223,12 +223,12 @@ EOT;
             $this->fillInTestArray(79, 0, 0, 21, 'p5c1s1-suite'),
             $this->fillInTestArray(80, 0, 0, 20, 'p5c2s1-suite'),
             $this->fillInTestArray(95, 0, 0, 5, 'p5c3s1-suite'),
-            $this->fillInTestArray(50, 0, 0, 0, 'p5c4s1-suite')
+            $this->fillInTestArray(50, 0, 0, 0, 'p5c4s1-suite'),
         );
 
         $objectList = array();
         foreach ($dataArray as $i => $data) {
-            for ($j = 0; $j < $data['count']; $j++) {
+            for ($j = 0; $j < $data['count']; ++$j) {
                 $k = $i.$j;
                 $objectList[$k] = new Test($this->getReference($data['suite']));
                 $objectList[$k]->setName('Test '.$j.' in '.$data['suite']);
@@ -252,7 +252,7 @@ EOT;
      * @param int    $errored Amount of errored tests.
      * @param int    $skipped Amount of skipped tests.
      * @param string $suite   Suite reference.
-     * 
+     *
      * @return array
      */
     public function fillInTestArray($passed, $failed, $errored, $skipped, $suite)
@@ -265,23 +265,23 @@ EOT;
         $fillInArray['suite'] = $suite;
 
         $arrayFullClassName = array();
-        for ($i = 0; $i < $count; $i++) {
+        for ($i = 0; $i < $count; ++$i) {
             $index = $i % 10;
             $arrayFullClassName[] = 'io.ci-report.className'.$index;
         }
         $fillInArray['fullClassName'] = $arrayFullClassName;
 
         $arrayStatus = array();
-        for ($i = 0; $i < $passed; $i++) {
+        for ($i = 0; $i < $passed; ++$i) {
             $arrayStatus[] = 1;
         }
-        for ($i = 0; $i < $failed; $i++) {
+        for ($i = 0; $i < $failed; ++$i) {
             $arrayStatus[] = 2;
         }
-        for ($i = 0; $i < $errored; $i++) {
+        for ($i = 0; $i < $errored; ++$i) {
             $arrayStatus[] = 4;
         }
-        for ($i = 0; $i < $skipped; $i++) {
+        for ($i = 0; $i < $skipped; ++$i) {
             $arrayStatus[] = 8;
         }
         $fillInArray['status'] = $arrayStatus;

@@ -8,7 +8,6 @@ use AppBundle\Entity\Suite;
 use AppBundle\Entity\Test;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class SuiteController extends Controller
 {
@@ -57,14 +56,14 @@ class SuiteController extends Controller
 
         return $this->render(
             'suite/view.html.twig',
-            [
+            array(
                 'project' => $project,
                 'campaign' => $campaign,
                 'suite' => $suite,
                 'prevSuite' => $prevSuite,
                 'nextSuite' => $nextSuite,
                 'tests' => $testsList,
-            ]
+            )
         );
     }
 }
