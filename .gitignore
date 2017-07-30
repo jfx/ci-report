@@ -17,3 +17,4 @@
 /web/bundles/
 /node_modules/
 /nbproject/private/
+/.php_cs.cache

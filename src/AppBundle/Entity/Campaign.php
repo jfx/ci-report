@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Campaign
+ * Campaign.
  *
  * @ORM\Table(name="cir_campaign")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CampaignRepository")
@@ -97,7 +97,7 @@ class Campaign
 
     /**
      * @var Project
-     * 
+     *
      * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false)
@@ -105,7 +105,7 @@ class Campaign
     private $project;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param Project $project
      */
@@ -117,7 +117,7 @@ class Campaign
     }
 
     /**
-     * Get id
+     * Get id.
      *
      * @return int
      */
@@ -127,7 +127,7 @@ class Campaign
     }
 
     /**
-     * Set warning limit
+     * Set warning limit.
      *
      * @param int $warningLimit
      *
@@ -141,7 +141,7 @@ class Campaign
     }
 
     /**
-     * Get warning limit
+     * Get warning limit.
      *
      * @return int
      */
@@ -151,7 +151,7 @@ class Campaign
     }
 
     /**
-     * Set success limit
+     * Set success limit.
      *
      * @param int $successLimit
      *
@@ -165,7 +165,7 @@ class Campaign
     }
 
     /**
-     * Get success limit
+     * Get success limit.
      *
      * @return int
      */
@@ -175,9 +175,9 @@ class Campaign
     }
 
     /**
-     * Set passed
+     * Set passed.
      *
-     * @param integer $passed
+     * @param int $passed
      *
      * @return Campaign
      */
@@ -189,7 +189,7 @@ class Campaign
     }
 
     /**
-     * Get passed
+     * Get passed.
      *
      * @return int
      */
@@ -199,9 +199,9 @@ class Campaign
     }
 
     /**
-     * Set failed
+     * Set failed.
      *
-     * @param integer $failed
+     * @param int $failed
      *
      * @return Campaign
      */
@@ -213,7 +213,7 @@ class Campaign
     }
 
     /**
-     * Get failed
+     * Get failed.
      *
      * @return int
      */
@@ -223,9 +223,9 @@ class Campaign
     }
 
     /**
-     * Set errored
+     * Set errored.
      *
-     * @param integer $errored
+     * @param int $errored
      *
      * @return Campaign
      */
@@ -237,7 +237,7 @@ class Campaign
     }
 
     /**
-     * Get errored
+     * Get errored.
      *
      * @return int
      */
@@ -247,9 +247,9 @@ class Campaign
     }
 
     /**
-     * Set skipped
+     * Set skipped.
      *
-     * @param integer $skipped
+     * @param int $skipped
      *
      * @return Campaign
      */
@@ -261,7 +261,7 @@ class Campaign
     }
 
     /**
-     * Get skipped
+     * Get skipped.
      *
      * @return int
      */
@@ -271,9 +271,9 @@ class Campaign
     }
 
     /**
-     * Set disabled
+     * Set disabled.
      *
-     * @param integer $disabled
+     * @param int $disabled
      *
      * @return Campaign
      */
@@ -285,7 +285,7 @@ class Campaign
     }
 
     /**
-     * Get disabled
+     * Get disabled.
      *
      * @return int
      */
@@ -295,7 +295,7 @@ class Campaign
     }
 
     /**
-     * Set duration
+     * Set duration.
      *
      * @param float $duration
      *
@@ -309,7 +309,7 @@ class Campaign
     }
 
     /**
-     * Get duration
+     * Get duration.
      *
      * @return float
      */
@@ -377,7 +377,7 @@ class Campaign
     }
 
     /**
-     * Set project
+     * Set project.
      *
      * @param Project $project
      *
@@ -391,7 +391,7 @@ class Campaign
     }
 
     /**
-     * Get project
+     * Get project.
      *
      * @return Project
      */
@@ -401,7 +401,7 @@ class Campaign
     }
 
     /**
-     * Get enabled tests
+     * Get enabled tests.
      *
      * @return int
      */
@@ -414,7 +414,7 @@ class Campaign
     }
 
     /**
-     * Get percentage of successful tests
+     * Get percentage of successful tests.
      *
      * @return int
      */
@@ -425,11 +425,10 @@ class Campaign
         } else {
             0;
         }
-        
     }
 
     /**
-     * Get campaign status
+     * Get campaign status.
      *
      * @return int Status::FAILED|Status::WARNING|Status::SUCCESS
      */
@@ -437,7 +436,7 @@ class Campaign
     {
         if ($this->getPercentage() < $this->getWarningLimit()) {
             return Status::FAILED;
-        } elseif ($this->getPercentage() <  $this->getSuccessLimit()) {
+        } elseif ($this->getPercentage() < $this->getSuccessLimit()) {
             return Status::WARNING;
         } else {
             return Status::SUCCESS;

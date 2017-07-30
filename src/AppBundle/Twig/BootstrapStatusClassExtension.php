@@ -29,15 +29,16 @@ class BootstrapStatusClassExtension extends Twig_Extension
         switch ($status) {
             case Status::FAILED:
             case Status::ERROR:
-                $color = BootstrapStatusClassExtension::BOOTSTRAP_DANGER;
+                $color = self::BOOTSTRAP_DANGER;
                 break;
             case Status::WARNING:
             case Status::SKIPPED:
-                $color = BootstrapStatusClassExtension::BOOTSTRAP_WARNING;
+                $color = self::BOOTSTRAP_WARNING;
                 break;
             default:
-                $color = BootstrapStatusClassExtension::BOOTSTRAP_SUCCESS;
+                $color = self::BOOTSTRAP_SUCCESS;
         }
+
         return $color;
     }
 
@@ -46,15 +47,16 @@ class BootstrapStatusClassExtension extends Twig_Extension
         switch ($status) {
             case Status::FAILED:
             case Status::ERROR:
-                $icon = BootstrapStatusClassExtension::FA_DANGER;
+                $icon = self::FA_DANGER;
                 break;
             case Status::WARNING:
             case Status::SKIPPED:
-                $icon = BootstrapStatusClassExtension::FA_WARNING;
+                $icon = self::FA_WARNING;
                 break;
             default:
-                $icon = BootstrapStatusClassExtension::FA_SUCCESS;
+                $icon = self::FA_SUCCESS;
         }
+
         return $icon;
     }
 }

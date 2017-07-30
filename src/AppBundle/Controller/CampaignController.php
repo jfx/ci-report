@@ -7,7 +7,6 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\Suite;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 
 class CampaignController extends Controller
 {
@@ -47,13 +46,13 @@ class CampaignController extends Controller
 
         return $this->render(
             'campaign/view.html.twig',
-            [
+            array(
                 'project' => $project,
                 'campaign' => $campaign,
                 'prevCampaign' => $prevCampaign,
                 'nextCampaign' => $nextCampaign,
                 'suites' => $suitesList,
-            ]
+            )
         );
     }
 }

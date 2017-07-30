@@ -16,7 +16,7 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-     $dataArray = array(
+        $dataArray = array(
             array(
                 'name' => 'ProjectOne',
             ),
