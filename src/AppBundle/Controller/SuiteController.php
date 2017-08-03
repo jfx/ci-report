@@ -56,7 +56,7 @@ class SuiteController extends Controller
             ->findSuiteByCampaignAndRefId($campaign, $srefId);
         if (!$suite) {
             throw $this->createNotFoundException(
-                'No suite found for campaign #'.$crefid.' and suite #'.$srefId
+                'No suite found for campaign #'.$crefId.' and suite #'.$srefId
             );
         }
 
