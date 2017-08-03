@@ -108,6 +108,7 @@ class Campaign
 
     /**
      * @Gedmo\SortablePosition
+     *
      * @ORM\Column(name="position", type="integer")
      */
     private $position;
@@ -116,6 +117,7 @@ class Campaign
      * @var Project
      *
      * @Gedmo\SortableGroup
+     *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false)
      */
@@ -437,11 +439,11 @@ class Campaign
      */
     public function getPercentage()
     {
-        if ($this->getEnabled() != 0) {
+        if ($this->getEnabled() !== 0) {
             return round($this->passed / $this->getEnabled() * 100);
-        } else {
-            0;
         }
+
+        return 0;
     }
 
     /**
@@ -453,10 +455,11 @@ class Campaign
     {
         if ($this->getPercentage() < $this->getWarningLimit()) {
             return Status::FAILED;
-        } elseif ($this->getPercentage() < $this->getSuccessLimit()) {
-            return Status::WARNING;
-        } else {
-            return Status::SUCCESS;
         }
+        if ($this->getPercentage() < $this->getSuccessLimit()) {
+            return Status::WARNING;
+        }
+
+        return Status::SUCCESS;
     }
 }
