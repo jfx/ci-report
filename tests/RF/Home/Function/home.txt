@@ -1,0 +1,7 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../Conf/home.txt
+
+*** Keywords ***
+I go to Dashboard
+    Go to    ${URL}${location_home}

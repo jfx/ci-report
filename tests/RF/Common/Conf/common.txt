@@ -1,0 +1,14 @@
+*** Variables ***
+${URL}            \    # Set in "I go to site" keyword
+${URL_LOCAL}      http://localhost:8000
+${URL_REMOTE}     http://localhost:4202
+${ENV}            DEV
+${REMOTE}         False
+${GRID}           False
+${BROWSER}        gc
+${HUB}            http://xyz.xyz.xyz.xyz:4444/wd/hub
+${DC_VERSION}     ${EMPTY}
+${DC_OS}          LINUX
+${SHORT_SLEEP}    2s
+${TIMEOUT}        20s
+${BIN_DIR}        ${CURDIR}/../../../../bin

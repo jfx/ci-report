@@ -167,9 +167,9 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
             array(
                 'name' => 'Name of suite 1 for campaign 3 Project 2',
                 'passed' => '95',
-                'failed' => '5',
+                'failed' => '4',
                 'errored' => '0',
-                'skipped' => '0',
+                'skipped' => '1',
                 'disabled' => '0',
                 'duration' => '1.1',
                 'datetime' => $ref3Date,

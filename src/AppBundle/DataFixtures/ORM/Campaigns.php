@@ -112,9 +112,9 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
             ),
             array(
                 'passed' => '95',
-                'failed' => '5',
+                'failed' => '4',
                 'errored' => '0',
-                'skipped' => '0',
+                'skipped' => '1',
                 'disabled' => '0',
                 'duration' => '1.3',
                 'datetime' => $ref3Date,

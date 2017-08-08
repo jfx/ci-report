@@ -1,0 +1,40 @@
+*** Settings ***
+Library           Selenium2Library
+Resource          ../Conf/dashboard.txt
+
+*** Keywords ***
+I go to project dahsboard
+    [Arguments]    ${project_id}
+    Go to    ${URL}${location_dashboard}/${project_id}
+
+I check last campaign displayed values
+    [Arguments]    &{campaign}
+    Element Should Contain    p-id    \#${campaign.id}
+    ${enabled} =    Evaluate    ${campaign.passed}+${campaign.failed}+${campaign.errored}+${campaign.skipped}
+    Element Should Contain    p-passed    ${campaign.passed} / ${enabled}
+    Element Should Contain    p-failed    ${campaign.failed}
+    Run Keyword If    ${campaign.errored} == 0    Element Should Not Be Visible    p-errored
+    Run Keyword Unless    ${campaign.errored} == 0    Element Should Contain    p-errored    ${campaign.errored}
+    Run Keyword If    ${campaign.skipped} == 0    Element Should Not Be Visible    p-skipped
+    Run Keyword Unless    ${campaign.skipped} == 0    Element Should Contain    p-skipped    ${campaign.skipped}
+    Run Keyword If    ${campaign.disabled} == 0    Element Should Not Be Visible    p-disabled
+    Run Keyword Unless    ${campaign.disabled} == 0    Element Should Contain    p-disabled    ${campaign.disabled}
+    Element Should Contain    p-duration    ${campaign.duration}
+    Element Should Contain    p-time    ${campaign.time}
+
+The table row should contain values of campaign
+    [Arguments]    ${row_table}    &{campaign}
+    ${row} =    Evaluate    ${row_table} + 1
+    Table Cell Should Contain    t-campaign    ${row}    1    \#${campaign.id}
+    ${enabled} =    Evaluate    ${campaign.passed}+${campaign.failed}+${campaign.errored}+${campaign.skipped}
+    ${percent} =    Get Table Cell    t-campaign    ${row}    2
+    ${percent_expect} =    Evaluate    ${campaign.passed}/${enabled}*100
+    ${percent_expect_rounded} =    Convert To Integer    ${percent_expect}
+    Should Be Equal    ${percent}    ${percent_expect_rounded} %
+    Table Cell Should Contain    t-campaign    ${row}    3    ${campaign.passed} / ${enabled}
+    Table Cell Should Contain    t-campaign    ${row}    4    ${campaign.failed}
+    Table Cell Should Contain    t-campaign    ${row}    5    ${campaign.errored}
+    Table Cell Should Contain    t-campaign    ${row}    6    ${campaign.skipped}
+    Table Cell Should Contain    t-campaign    ${row}    7    ${campaign.disabled}
+    Table Cell Should Contain    t-campaign    ${row}    8    ${campaign.duration}
+    Table Cell Should Contain    t-campaign    ${row}    9    ${campaign.time}

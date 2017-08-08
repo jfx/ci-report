@@ -230,7 +230,7 @@ EOT;
             ),
             $this->fillInTestArray(79, 21, 0, 0, 'p2c1s1-suite'),
             $this->fillInTestArray(80, 20, 0, 0, 'p2c2s1-suite'),
-            $this->fillInTestArray(95, 5, 0, 0, 'p2c3s1-suite'),
+            $this->fillInTestArray(95, 4, 1, 0, 'p2c3s1-suite'),
             $this->fillInTestArray(95, 5, 0, 0, 'p3c1s1-suite'),
             $this->fillInTestArray(79, 21, 0, 0, 'p3c2s1-suite'),
             $this->fillInTestArray(80, 20, 0, 0, 'p3c3s1-suite'),

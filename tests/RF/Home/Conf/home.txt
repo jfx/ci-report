@@ -1,0 +1,2 @@
+*** Variables ***
+${location_home}    /

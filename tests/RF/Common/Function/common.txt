@@ -1,0 +1,52 @@
+*** Settings ***
+Library           OperatingSystem
+Library           Process
+Library           Selenium2Library
+Library           String
+Resource          ../Conf/common.txt
+
+*** Keywords ***
+Set URL
+    [Arguments]    ${env_url}
+    Set Global Variable    ${URL}    ${env_url}
+
+I go to site
+    Run Keyword If    ${REMOTE}    Set URL    ${URL_REMOTE}
+    Run Keyword Unless    ${REMOTE}    Set URL    ${URL_LOCAL}
+    Run Keyword If    ${GRID}    Open Browser    ${URL}    ${BROWSER}    remote_url=${HUB}
+    Run Keyword Unless    ${GRID}    Open Browser    ${URL}    ${BROWSER}
+    Maximize Browser Window
+    Run Keyword If    '${ENV}' == 'DEV'    Wait Until Page Contains Element    xpath=//a[@title='Close Toolbar']
+    Run Keyword If    '${ENV}' == 'DEV'    Click element    xpath=//a[@title='Close Toolbar']
+
+Load DB
+    Run Keyword If    '${ENV}' == 'LOCAL'    Load local DB
+    Run Keyword If    '${ENV}' == 'REMOTE'    Load remote DB
+
+Load local DB
+    Log    -- Load Local DB --
+    ${rc} =    Run And Return Rc    ${BIN_DIR}/initDB.sh
+    Should Be Equal As Integers    ${rc}    0
+
+Load remote DB
+    Log    -- Load Remote DB --
+    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadRemoteDB.sh
+    Should Be Equal As Integers    ${rc}    0
+
+Setup
+    I go to site
+
+Teardown
+    Log    -- Teardown --
+    Close All Browsers
+    Terminate All Processes
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'EDIT'    Load DB
+
+the breadcrumb should contain
+    [Arguments]    @{list}
+    ${i} =    Set variable    0
+    : FOR    ${item}    IN    @{list}
+    \    ${i} =    Evaluate    ${i} + 1
+    \    ${level} =    Get Text    br_lvl${i}
+    \    Should Be Equal As Strings    ${item}    ${level}

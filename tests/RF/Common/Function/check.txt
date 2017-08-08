@@ -1,0 +1,33 @@
+*** Settings ***
+Library           OperatingSystem
+Library           Process
+Library           Selenium2Library
+Library           String
+Resource          ../Conf/common.txt
+
+*** Keywords ***
+The table should contain X rows
+    [Arguments]    ${table_id}    ${expected}
+    ${count} =    Get Matching Xpath Count    //table[@id='${table_id}']//tbody/tr
+    Should Be Equal    ${count}    ${expected}
+
+The table header should contain values
+    [Arguments]    ${table_id}    @{values}
+    : FOR    ${item}    IN    @{values}
+    \    Table header should contain    ${table_id}    ${item}
+
+The table column should contain values
+    [Arguments]    ${table_id}    ${column}    @{values}
+    : FOR    ${item}    IN    @{values}
+    \    Table Column Should Contain    ${table_id}    ${column}    ${item}
+
+The table row should contain values
+    [Arguments]    ${table_id}    ${row}    @{values}
+    : FOR    ${item}    IN    @{values}
+    \    Table row Should Contain    ${table_id}    ${row}    ${item}
+
+I check table cell value
+    [Arguments]    ${table}    ${row_table}    ${column}    ${expected}
+    ${row} =    Evaluate    ${row_table} + 1
+    ${check} =    Get Table Cell    ${table}    ${row}    ${column}
+    Should Be Equal    ${check}    ${expected}
