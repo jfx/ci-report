@@ -4,20 +4,20 @@
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ path('homepage') }}">ci-report</a></li>
-    <li class="breadcrumb-item"><a href="{{ path('project-view', {'pid': project.id}) }}">{{ project.name }}</a></li>
-    <li class="breadcrumb-item active">Campaign #{{ campaign.refId }}</li>
+    <li class="breadcrumb-item"><a id="br_lvl1" href="{{ path('homepage') }}">ci-report</a></li>
+    <li class="breadcrumb-item"><a id="br_lvl2" href="{{ path('project-view', {'pid': project.id}) }}">{{ project.name }}</a></li>
+    <li id="br_lvl3" class="breadcrumb-item active">Campaign #{{ campaign.refId }}</li>
     &nbsp;
     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="Previous Next">
         {% if prevCampaign %}
-        <a href="{{ path('campaign-view', {'pid': project.id, 'refId': prevCampaign.refId}) }}" class="btn btn-secondary">Prev</a>
+        <a id="a-top-prev" href="{{ path('campaign-view', {'pid': project.id, 'refId': prevCampaign.refId}) }}" class="btn btn-secondary">Prev</a>
         {% else %}
-        <button type="button" class="btn btn-secondary" disabled>Prev</button>
+        <button id="b-top-prev" type="button" class="btn btn-secondary" disabled>Prev</button>
         {% endif %}
         {% if nextCampaign %}
-        <a href="{{ path('campaign-view', {'pid': project.id, 'refId': nextCampaign.refId}) }}" class="btn btn-secondary">Next</a>
+        <a id="a-top-next" href="{{ path('campaign-view', {'pid': project.id, 'refId': nextCampaign.refId}) }}" class="btn btn-secondary">Next</a>
         {% else %}
-        <button type="button" class="btn btn-secondary" disabled>Next</button>
+        <button id="b-top-next" type="button" class="btn btn-secondary" disabled>Next</button>
         {% endif %}
     </div>
 </ol>
@@ -34,16 +34,16 @@
                     </button>
                     &nbsp;{{ campaign.percentage }} %
                 </h4>
-                <p class="card-text text-{{ statusColorClass(campaign.status) }}">#{{ campaign.refId }}</p>
-                <p class="card-text text-success">Passed tests: {{ campaign.passed }}
+                <p id="p-id" class="card-text text-{{ statusColorClass(campaign.status) }}">#{{ campaign.refId }}</p>
+                <p id="p-passed" class="card-text text-success">Passed tests: {{ campaign.passed }}
                     <span class="text-muted">/ {{ campaign.enabled }}</span>
                 </p>
-                <p class="card-text text-danger">Failed tests: {{ campaign.failed }}</p>
-                <p class="card-text text-danger">Errored tests: {{ campaign.errored }}</p>
-                <p class="card-text text-warning">Skipped tests: {{ campaign.skipped }}</p>
-                <p class="card-text text-muted">Disabled tests: {{ campaign.disabled }}</p>
-                <p class="card-text">Duration: {{ campaign.duration }}s</p>
-                <p class="card-text text-muted">Time: {{ campaign.datetimeCampaign|date('d/m/Y H:i:s') }}</p>
+                <p id="p-failed" class="card-text text-danger">Failed tests: {{ campaign.failed }}</p>
+                <p id="p-errored" class="card-text text-danger">Errored tests: {{ campaign.errored }}</p>
+                <p id="p-skipped" class="card-text text-warning">Skipped tests: {{ campaign.skipped }}</p>
+                <p id="p-disabled" class="card-text text-muted">Disabled tests: {{ campaign.disabled }}</p>
+                <p id="p-duration" class="card-text">Duration: {{ campaign.duration }}s</p>
+                <p id="p-time" class="card-text text-muted">Time: {{ campaign.datetimeCampaign|date('d/m/Y H:i:s') }}</p>
             </div>
         </div>
     </div>
@@ -66,7 +66,7 @@
 
 <div class="row">
     <div class="col-12">
-        <table class="table table-bordered">
+        <table id="t-suite" class="table table-bordered">
             <thead>
                 <tr>
                     <th>#Id</th>
@@ -84,8 +84,8 @@
             </thead>
             <tbody>
                 {% for suite in suites %}
-                <tr class="table-{{ statusColorClass(suite.status) }}">
-                    <td><a href="{{ path('suite-view', {'pid': project.id, 'crefId': campaign.refId, 'srefId': suite.refId}) }}">#{{ suite.refId }}</a></td>
+                <tr id="tr-suite-{{ suite.refId }}" class="table-{{ statusColorClass(suite.status) }}">
+                    <td><a id="a-suite-{{ suite.refId }}" href="{{ path('suite-view', {'pid': project.id, 'crefId': campaign.refId, 'srefId': suite.refId}) }}">#{{ suite.refId }}</a></td>
                     <td>{{ suite.name }}</td>
                     <td>{{ suite.percentage }} %</td>
                     <td>{{ suite.passed }} / {{ suite.enabled }}</td>
@@ -103,18 +103,18 @@
             </tbody>
         </table>
 
-        <a href="{{ path('project-view', {'pid': project.id}) }}" class="btn btn-secondary">Back to project</a>
+        <a id="a-project" href="{{ path('project-view', {'pid': project.id}) }}" class="btn btn-secondary">Back to project</a>
 
         <div class="btn-group" role="group" aria-label="Previous Next">
             {% if prevCampaign %}
-            <a href="{{ path('campaign-view', {'pid': project.id, 'refId': prevCampaign.refId}) }}" class="btn btn-secondary">Prev</a>
+            <a id="a-bottom-prev" href="{{ path('campaign-view', {'pid': project.id, 'refId': prevCampaign.refId}) }}" class="btn btn-secondary">Prev</a>
             {% else %}
-            <button type="button" class="btn btn-secondary" disabled>Prev</button>
+            <button id="b-bottom-prev" type="button" class="btn btn-secondary" disabled>Prev</button>
             {% endif %}
             {% if nextCampaign %}
-            <a href="{{ path('campaign-view', {'pid': project.id, 'refId': nextCampaign.refId}) }}" class="btn btn-secondary">Next</a>
+            <a id="a-bottom-next" href="{{ path('campaign-view', {'pid': project.id, 'refId': nextCampaign.refId}) }}" class="btn btn-secondary">Next</a>
             {% else %}
-            <button type="button" class="btn btn-secondary" disabled>Next</button>
+            <button id="b-bottom-next" type="button" class="btn btn-secondary" disabled>Next</button>
             {% endif %}
         </div>
     </div>

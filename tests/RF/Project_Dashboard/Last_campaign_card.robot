@@ -1,6 +1,7 @@
 *** Settings ***
 Resource          ../Common/Function/common.txt
 Resource          Function/dashboard.txt
+Resource          ../Campaign/Function/campaign.txt
 
 *** Test Cases ***
 Last campaign for a project should be displayed
@@ -72,5 +73,5 @@ Button Details should go to last campaign page
     [Setup]    Setup
     Given I go to project dahsboard    ${P1C4.pid}
     When Click Link    a-details
-    Then Location Should Be    ${URL}${location_dashboard}/${P1C4.pid}/campaign/${P1C4.id}
+    Then I should be on campaign page    &{P1C4}
     [Teardown]    Teardown

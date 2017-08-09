@@ -2,6 +2,7 @@
 Resource          ../Common/Function/common.txt
 Resource          ../Common/Function/check.txt
 Resource          Function/dashboard.txt
+Resource          ../Campaign/Function/campaign.txt
 
 *** Test Cases ***
 Table should have a header
@@ -28,7 +29,7 @@ Click on #Id should go to campaign page
     [Setup]    Setup
     Given I go to project dahsboard    ${P1C4.pid}
     When Click Link    a-campaign-${P1C4.id}
-    Then Location Should Be    ${URL}${location_dashboard}/${P1C4.pid}/campaign/${P1C4.id}
+    Then I should be on campaign page    &{P1C4}
     [Teardown]    Teardown
 
 Check failed value cell

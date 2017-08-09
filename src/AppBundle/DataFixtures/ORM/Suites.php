@@ -45,7 +45,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
 
         $dataArray = array(
             array(
-                'name' => 'Name of suite 1 for campaign 1',
+                'name' => 'Name of suite 1 for campaign 1 Project 1',
                 'passed' => '12',
                 'failed' => '0',
                 'errored' => '0',
@@ -57,7 +57,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'suiteRef' => 'p1c1s1',
             ),
             array(
-                'name' => 'Name of suite 2 for campaign 1',
+                'name' => 'Name of suite 2 for campaign 1 Project 1',
                 'passed' => '13',
                 'failed' => '0',
                 'errored' => '0',
@@ -69,7 +69,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'suiteRef' => 'p1c1s2',
             ),
             array(
-                'name' => 'Name of suite 1 for campaign 2',
+                'name' => 'Name of suite 1 for campaign 2 Project 1',
                 'passed' => '12',
                 'failed' => '0',
                 'errored' => '1',
@@ -81,7 +81,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'suiteRef' => 'p1c2s1',
             ),
             array(
-                'name' => 'Name of suite 2 for campaign 2',
+                'name' => 'Name of suite 2 for campaign 2 Project 1',
                 'passed' => '13',
                 'failed' => '0',
                 'errored' => '0',
@@ -93,7 +93,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'suiteRef' => 'p1c2s2',
             ),
             array(
-                'name' => 'Name of suite 1 for campaign 3',
+                'name' => 'Name of suite 1 for campaign 3 Project 1',
                 'passed' => '12',
                 'failed' => '1',
                 'errored' => '0',
@@ -105,7 +105,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'suiteRef' => 'p1c3s1',
             ),
             array(
-                'name' => 'Name of suite 2 for campaign 3',
+                'name' => 'Name of suite 2 for campaign 3 Project 1',
                 'passed' => '13',
                 'failed' => '0',
                 'errored' => '0',
@@ -117,7 +117,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'suiteRef' => 'p1c3s2',
             ),
             array(
-                'name' => 'Name of suite 1 for campaign 4',
+                'name' => 'Name of suite 1 for campaign 4 Project 1',
                 'passed' => '13',
                 'failed' => '0',
                 'errored' => '0',
@@ -129,7 +129,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'suiteRef' => 'p1c4s1',
             ),
             array(
-                'name' => 'Name of suite 2 for campaign 4',
+                'name' => 'Name of suite 2 for campaign 4 Project 1',
                 'passed' => '13',
                 'failed' => '0',
                 'errored' => '0',

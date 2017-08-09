@@ -1,11 +1,23 @@
 *** Settings ***
 Library           Selenium2Library
 Resource          ../Conf/dashboard.txt
+Resource          ../../Campaign/Conf/campaign.txt
 
 *** Keywords ***
+Get project dashboard location
+    [Arguments]    ${project_id}
+    ${location} =    Set Variable    ${URL}${location_dashboard}/${project_id}
+    [Return]    ${location}
+
 I go to project dahsboard
     [Arguments]    ${project_id}
-    Go to    ${URL}${location_dashboard}/${project_id}
+    ${location} =    Get project dashboard location    ${project_id}
+    Go to    ${location}
+
+I should be on project dashboard
+    [Arguments]    ${project_id}
+    ${location} =    Get project dashboard location    ${project_id}
+    Location Should Be    ${location}
 
 I check last campaign displayed values
     [Arguments]    &{campaign}

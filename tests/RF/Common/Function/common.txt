@@ -50,3 +50,7 @@ the breadcrumb should contain
     \    ${i} =    Evaluate    ${i} + 1
     \    ${level} =    Get Text    br_lvl${i}
     \    Should Be Equal As Strings    ${item}    ${level}
+
+I click on breadcrumb level
+    [Arguments]    ${level}
+    Click Link    id=br_lvl${level}
