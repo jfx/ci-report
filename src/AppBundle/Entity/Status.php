@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2017 Francois-Xavier Soubirou.
  *
@@ -17,16 +18,35 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+
 namespace AppBundle\Entity;
 
 /**
  * Status class.
  */
-class Status
-{
+class Status {
+
     const SUCCESS = 1;
     const FAILED = 2;
     const ERROR = 4;
     const SKIPPED = 8;
     const WARNING = 16;
+    Const LABEL = array(
+        1 => "Passed",
+        2 => "Failed",
+        4 => "Errored",
+        8 => "Skipped",
+        16 => "Warning",
+    );
+
+    /**
+     * Get label status.
+     *
+     * @param int $status
+     *
+     * @return string
+     */
+    static public function getLabel(int $status) {
+        return Status::LABEL[$status];
+    }
 }

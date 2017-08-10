@@ -4,7 +4,7 @@ Resource          Function/campaign.txt
 Resource          ../Project_Dashboard/Function/dashboard.txt
 
 *** Test Cases ***
-Title of window should contain project name
+Title of window should contain project name and campaign ID
     [Setup]    Setup
     When I go to campaign page    &{P1C4}
     Then Title Should Be    ci-report / ${P1.name} / Campaign #${P1C4.id}

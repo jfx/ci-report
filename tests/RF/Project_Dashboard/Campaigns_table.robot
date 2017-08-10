@@ -56,19 +56,19 @@ Check disabled value cell
     Then I check table cell value    t-campaign    1    7    ${P5C4.disabled}
     [Teardown]    Teardown
 
-A row campaign with more or equal 95% should have successfull color
+A row campaign with more or equal 95% should have green background color
     [Setup]    Setup
     When I go to project dahsboard    ${P1C4.pid}
     Then Page Should Contain Element    xpath=//tr[@id="tr-campaign-${P1C4.id}" and @class="table-success"]
     [Teardown]    Teardown
 
-A row campaign between 80% and 95% should have warning color
+A row campaign between 80% and 95% should have yellow background color
     [Setup]    Setup
     When I go to project dahsboard    ${P3C3.pid}
     Then Page Should Contain Element    xpath=//tr[@id="tr-campaign-${P3C3.id}" and @class="table-warning"]
     [Teardown]    Teardown
 
-A row campaign under 80% should have failed color
+A row campaign under 80% should have red background color
     [Setup]    Setup
     When I go to project dahsboard    ${P4C3.pid}
     Then Page Should Contain Element    xpath=//tr[@id="tr-campaign-${P4C3.id}" and @class="table-danger"]

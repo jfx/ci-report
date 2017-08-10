@@ -379,6 +379,16 @@ class Test
     }
 
     /**
+     * Get label of status.
+     *
+     * @return string
+     */
+    public function getLabelStatus()
+    {
+        return Status::getLabel($this->getStatus());
+    }
+    
+    /**
      * Set duration.
      *
      * @param float $duration
