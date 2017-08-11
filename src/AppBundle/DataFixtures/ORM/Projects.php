@@ -48,22 +48,22 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
     {
         $dataArray = array(
             array(
-                'name' => 'ProjectOne',
+                'name' => 'Project One',
             ),
             array(
-                'name' => 'ProjectTwo',
+                'name' => 'Project Two',
             ),
             array(
-                'name' => 'ProjectThree',
+                'name' => 'Project Three',
             ),
             array(
-                'name' => 'ProjectFour',
+                'name' => 'Project Four',
             ),
             array(
-                'name' => 'ProjectFive',
+                'name' => 'Project Five',
             ),
             array(
-                'name' => 'ProjectSix',
+                'name' => 'Project Six',
             ),
         );
         $objectList = array();
@@ -72,7 +72,7 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
             $objectList[$i]->setName($data['name']);
 
             $manager->persist($objectList[$i]);
-            $ref = strtolower($data['name']).'-project';
+            $ref = strtolower(str_replace(' ', '', $data['name'])).'-project';
             $this->addReference($ref, $objectList[$i]);
         }
         $manager->flush();

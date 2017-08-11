@@ -22,11 +22,10 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Project controller class.
@@ -38,47 +37,28 @@ use Symfony\Component\HttpFoundation\Response;
  * @license   http://www.gnu.org/licenses/   GPLv3
  *
  * @see      https://ci-report.io
+ *
+ * @Rest\Route("/api")
  */
-class ProjectController extends Controller
+class ProjectApiController extends Controller
 {
     /**
      * Index action.
      *
-     * @param int $pid Id of project
+     * @return View
      *
-     * @return Response A Response instance
-     *
-     * @Route("/project/{pid}", name="project-view")
+     * @Rest\Get("/projects")
+     * @Rest\View()
      */
-    public function indexAction(int $pid): Response
+    public function getProjectsAction(): View
     {
-        $project = $this->getDoctrine()
-                ->getRepository(Project::class)
-                ->find($pid);
+        $projects = $this->getDoctrine()
+            ->getRepository(Project::class)
+            ->findAll();
 
-        if (!$project) {
-            throw $this->createNotFoundException(
-                sprintf('No project found for id #%d', $pid)
-            );
-        }
+        $view = View::create($projects);
+        $view->setFormat('json');
 
-        $campaignsList = $this->getDoctrine()
-                ->getRepository(Campaign::class)
-                ->findCampaignsByProject($project);
-
-        if (count($campaignsList) > 0) {
-            $lastCampaign = $campaignsList[0];
-        } else {
-            $lastCampaign = null;
-        }
-
-        return $this->render(
-            'project/view.html.twig',
-            array(
-                'project' => $project,
-                'lastCampaign' => $lastCampaign,
-                'campaigns' => $campaignsList,
-            )
-        );
+        return $view;
     }
 }

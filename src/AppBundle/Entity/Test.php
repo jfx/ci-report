@@ -246,6 +246,8 @@ class Test
             $this->setPackage(self::DEFAULT_PACKAGE);
             $this->setClassName($fullClassName);
         }
+
+        return $this;
     }
 
     /**
@@ -371,6 +373,8 @@ class Test
                 $this->setSkipped();
                 break;
         }
+
+        return $this;
     }
 
     /**

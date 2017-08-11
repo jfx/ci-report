@@ -220,7 +220,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setErrored(int $errored): string
+    public function setErrored(int $errored): Suite
     {
         $this->errored = $errored;
 
@@ -268,7 +268,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setDisabled(int $disabled): string
+    public function setDisabled(int $disabled): Suite
     {
         $this->disabled = $disabled;
 

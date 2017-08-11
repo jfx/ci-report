@@ -14,7 +14,7 @@ class SuiteControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertContains(
-            'ci-report / ProjectOne / Campaign #1 / Suite #1',
+            'ci-report / Project One / Campaign #1 / Suite #1',
             $crawler->filter('title')->text()
         );
     }

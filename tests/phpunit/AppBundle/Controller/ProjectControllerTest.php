@@ -14,7 +14,7 @@ class ProjectControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertContains(
-            'ci-report / ProjectOne',
+            'ci-report / Project One',
             $crawler->filter('title')->text()
         );
     }

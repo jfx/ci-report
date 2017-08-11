@@ -75,7 +75,7 @@ EOT;
                     'io.ci-report.package.className5',
                 ),
                 'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                'duration' => '1',
+                'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
                 'suite' => 'p1c1s1-suite',
@@ -98,7 +98,7 @@ EOT;
                     'io.ci-report.package.className6',
                 ),
                 'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                'duration' => '1',
+                'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
                 'suite' => 'p1c1s2-suite',
@@ -121,7 +121,7 @@ EOT;
                     'io.ci-report.package.className6',
                 ),
                 'status' => array(1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                'duration' => '1',
+                'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
                 'suite' => 'p1c2s1-suite',
@@ -144,7 +144,7 @@ EOT;
                     'io.ci-report.package.className6',
                 ),
                 'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                'duration' => '1',
+                'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
                 'suite' => 'p1c2s2-suite',
@@ -167,7 +167,7 @@ EOT;
                     'io.ci-report.package.className6',
                 ),
                 'status' => array(1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                'duration' => '1',
+                'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
                 'suite' => 'p1c3s1-suite',
@@ -190,7 +190,7 @@ EOT;
                     'io.ci-report.package.className6',
                 ),
                 'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                'duration' => '1',
+                'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
                 'suite' => 'p1c3s2-suite',
@@ -213,7 +213,7 @@ EOT;
                     'io.ci-report.package.className6',
                 ),
                 'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                'duration' => '1',
+                'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
                 'suite' => 'p1c4s1-suite',
@@ -236,7 +236,7 @@ EOT;
                     'io.ci-report.package.className6',
                 ),
                 'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-                'duration' => '1',
+                'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
                 'suite' => 'p1c4s2-suite',
@@ -264,7 +264,7 @@ EOT;
                 $objectList[$k]->setName('Test '.$j.' in '.$data['suite']);
                 $objectList[$k]->setFullClassName($data['fullClassName'][$j]);
                 $objectList[$k]->setStatus($data['status'][$j]);
-                $objectList[$k]->setDuration($data['duration'].'.'.$j);
+                $objectList[$k]->setDuration($data['duration'] + 0.1 * $j);
                 $objectList[$k]->setSystemOut($k.' : '.$data['systemOut']);
                 $objectList[$k]->setSystemErr($k.' : '.$data['systemErr']);
 
@@ -316,7 +316,7 @@ EOT;
         }
         $fillInArray['status'] = $arrayStatus;
 
-        $fillInArray['duration'] = '1';
+        $fillInArray['duration'] = 1;
         $fillInArray['systemOut'] = 'systemOutMessage';
         $fillInArray['systemErr'] = 'systemErrMessage';
 
