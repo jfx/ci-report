@@ -18,35 +18,45 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
 /**
  * Status class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
  */
-class Status {
-
+class Status
+{
     const SUCCESS = 1;
     const FAILED = 2;
     const ERROR = 4;
     const SKIPPED = 8;
     const WARNING = 16;
-    Const LABEL = array(
-        1 => "Passed",
-        2 => "Failed",
-        4 => "Errored",
-        8 => "Skipped",
-        16 => "Warning",
+    const LABEL = array(
+        1 => 'Passed',
+        2 => 'Failed',
+        4 => 'Errored',
+        8 => 'Skipped',
+        16 => 'Warning',
     );
 
     /**
      * Get label status.
      *
-     * @param int $status
+     * @param int $status Status id
      *
      * @return string
      */
-    static public function getLabel(int $status) {
-        return Status::LABEL[$status];
+    public static function getLabel(int $status): string
+    {
+        return self::LABEL[$status];
     }
 }

@@ -17,13 +17,23 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Test.
+ * Test entity class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
  *
  * @ORM\Table(name="cir_test")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TestRepository")
@@ -42,21 +52,21 @@ class Test
     private $id;
 
     /**
-     * @var string Name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=256)
      */
     private $name;
 
     /**
-     * @var string classname
+     * @var string
      *
      * @ORM\Column(name="classname", type="string", length=256)
      */
     private $className;
 
     /**
-     * @var string package
+     * @var string
      *
      * @ORM\Column(name="package", type="string", length=256)
      */
@@ -129,9 +139,9 @@ class Test
     /**
      * Constructor.
      *
-     * @param Suite $suite
+     * @param Suite $suite The suite
      */
-    public function __construct($suite)
+    public function __construct(Suite $suite)
     {
         $this->setSuite($suite);
     }
@@ -141,7 +151,7 @@ class Test
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -149,11 +159,11 @@ class Test
     /**
      * Set name.
      *
-     * @param string $name
+     * @param string $name Name
      *
      * @return Test
      */
-    public function setName($name)
+    public function setName(string $name): Test
     {
         $this->name = $name;
 
@@ -165,19 +175,19 @@ class Test
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Set classname.
+     * Set class name.
      *
-     * @param string $classname
+     * @param string $classname Class name
      *
      * @return Test
      */
-    public function setClassName($classname)
+    public function setClassName(string $classname): Test
     {
         $this->className = $classname;
 
@@ -185,11 +195,11 @@ class Test
     }
 
     /**
-     * Get classname.
+     * Get class name.
      *
      * @return string
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }
@@ -197,11 +207,11 @@ class Test
     /**
      * Set package.
      *
-     * @param string $package
+     * @param string $package Package of the test
      *
      * @return Test
      */
-    public function setPackage($package)
+    public function setPackage(string $package): Test
     {
         $this->package = $package;
 
@@ -213,17 +223,19 @@ class Test
      *
      * @return string
      */
-    public function getPackage()
+    public function getPackage(): string
     {
         return $this->package;
     }
 
     /**
-     * Set full class name.
+     * Set full class name including package.
+     *
+     * @param string $fullClassName The full class name
      *
      * @return Test
      */
-    public function setFullClassName($fullClassName)
+    public function setFullClassName(string $fullClassName): Test
     {
         if (substr_count($fullClassName, '.') > 0) {
             $index = strrpos($fullClassName, '.');
@@ -236,11 +248,11 @@ class Test
     }
 
     /**
-     * Set passed.
+     * Set test to passed.
      *
      * @return Test
      */
-    public function setpassed()
+    public function setpassed(): Test
     {
         $this->passed = 1;
         $this->failed = 0;
@@ -251,21 +263,21 @@ class Test
     }
 
     /**
-     * Get passed.
+     * Return 1 if test is passed.
      *
      * @return int
      */
-    public function getPassed()
+    public function getPassed(): int
     {
         return $this->passed;
     }
 
     /**
-     * Set failed.
+     * Set test to failed.
      *
      * @return Test
      */
-    public function setFailed()
+    public function setFailed(): Test
     {
         $this->passed = 0;
         $this->failed = 1;
@@ -276,21 +288,21 @@ class Test
     }
 
     /**
-     * Get failed.
+     * Return 1 if test is failed.
      *
      * @return int
      */
-    public function getFailed()
+    public function getFailed(): int
     {
         return $this->failed;
     }
 
     /**
-     * Set errored.
+     * Set test to errored.
      *
      * @return Test
      */
-    public function setErrored()
+    public function setErrored(): Test
     {
         $this->passed = 0;
         $this->failed = 0;
@@ -301,21 +313,21 @@ class Test
     }
 
     /**
-     * Get errored.
+     * Return 1 if test is errored.
      *
      * @return int
      */
-    public function getErrored()
+    public function getErrored(): int
     {
         return $this->errored;
     }
 
     /**
-     * Set skipped.
+     * Set test to skipped.
      *
      * @return Test
      */
-    public function setSkipped()
+    public function setSkipped(): Test
     {
         $this->passed = 0;
         $this->failed = 0;
@@ -326,23 +338,23 @@ class Test
     }
 
     /**
-     * Get skipped.
+     * Return 1 if test is skipped.
      *
      * @return int
      */
-    public function getSkipped()
+    public function getSkipped(): int
     {
         return $this->skipped;
     }
 
     /**
-     * Set status.
+     * Set status of test.
      *
-     * @param int $status
+     * @param int $status Status (const of Status class)
      *
      * @return Test
      */
-    public function setStatus($status)
+    public function setStatus(int $status): Test
     {
         switch ($status) {
             case Status::SUCCESS:
@@ -361,11 +373,11 @@ class Test
     }
 
     /**
-     * Get status.
+     * Return  status (const of Status class).
      *
      * @return int
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         if ($this->passed > 0) {
             return Status::SUCCESS;
@@ -383,19 +395,19 @@ class Test
      *
      * @return string
      */
-    public function getLabelStatus()
+    public function getLabelStatus(): string
     {
         return Status::getLabel($this->getStatus());
     }
-    
+
     /**
-     * Set duration.
+     * Set duration in seconds.
      *
-     * @param float $duration
+     * @param float $duration Duration
      *
-     * @return Suite
+     * @return Test
      */
-    public function setDuration($duration)
+    public function setDuration(float $duration): Test
     {
         $this->duration = $duration;
 
@@ -403,11 +415,11 @@ class Test
     }
 
     /**
-     * Get duration.
+     * Get duration in seconds.
      *
      * @return float
      */
-    public function getDuration()
+    public function getDuration(): float
     {
         return $this->duration;
     }
@@ -415,11 +427,11 @@ class Test
     /**
      * Set system out message.
      *
-     * @param string $systemOut
+     * @param string $systemOut The message
      *
      * @return Test
      */
-    public function setSystemOut($systemOut)
+    public function setSystemOut(string $systemOut): Test
     {
         $this->systemOut = $systemOut;
 
@@ -431,7 +443,7 @@ class Test
      *
      * @return string
      */
-    public function getSystemOut()
+    public function getSystemOut(): string
     {
         return $this->systemOut;
     }
@@ -439,11 +451,11 @@ class Test
     /**
      * Set system error message.
      *
-     * @param string $systemErr
+     * @param string $systemErr The message
      *
      * @return Test
      */
-    public function setSystemErr($systemErr)
+    public function setSystemErr(string $systemErr): Test
     {
         $this->systemErr = $systemErr;
 
@@ -455,7 +467,7 @@ class Test
      *
      * @return string
      */
-    public function getSystemErr()
+    public function getSystemErr(): string
     {
         return $this->systemErr;
     }
@@ -465,9 +477,9 @@ class Test
      *
      * @param int $position The order.
      *
-     * @return Suite
+     * @return Test
      */
-    public function setPosition($position)
+    public function setPosition(int $position): Test
     {
         $this->position = $position;
 
@@ -479,7 +491,7 @@ class Test
      *
      * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
@@ -489,7 +501,7 @@ class Test
      *
      * @return int
      */
-    public function getRefId()
+    public function getRefId(): int
     {
         return $this->position + 1;
     }
@@ -499,9 +511,9 @@ class Test
      *
      * @param Suite $suite
      *
-     * @return Suite
+     * @return Test
      */
-    public function setSuite($suite)
+    public function setSuite(Suite $suite): Test
     {
         $this->suite = $suite;
 
@@ -513,7 +525,7 @@ class Test
      *
      * @return Suite
      */
-    public function getSuite()
+    public function getSuite(): Suite
     {
         return $this->suite;
     }

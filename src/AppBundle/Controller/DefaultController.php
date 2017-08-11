@@ -17,18 +17,35 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Default controller class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
+ */
 class DefaultController extends Controller
 {
     /**
+     * Index action.
+     *
+     * @return Response A Response instance
+     *
      * @Route("/", name="homepage")
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', array(

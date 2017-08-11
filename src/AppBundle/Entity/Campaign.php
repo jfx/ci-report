@@ -17,6 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use DateTime;
@@ -24,7 +26,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Campaign.
+ * Campaign entity class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
  *
  * @ORM\Table(name="cir_campaign")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CampaignRepository")
@@ -44,14 +54,14 @@ class Campaign
     private $id;
 
     /**
-     * @var int warningLimit
+     * @var int
      *
      * @ORM\Column(name="warning_limit", type="smallint")
      */
     private $warningLimit;
 
     /**
-     * @var int successLimit
+     * @var int
      *
      * @ORM\Column(name="success_limit", type="smallint")
      */
@@ -100,7 +110,7 @@ class Campaign
     private $duration;
 
     /**
-     * @var DateTime Date time of the campaign
+     * @var DateTime
      *
      * @ORM\Column(name="datetime_campaign", type="datetime")
      */
@@ -128,7 +138,7 @@ class Campaign
      *
      * @param Project $project
      */
-    public function __construct($project)
+    public function __construct(Project $project)
     {
         $this->setWarningLimit($project->getWarningLimit());
         $this->setSuccessLimit($project->getSuccessLimit());
@@ -140,7 +150,7 @@ class Campaign
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -148,11 +158,11 @@ class Campaign
     /**
      * Set warning limit.
      *
-     * @param int $warningLimit
+     * @param int $warningLimit Warning limit
      *
-     * @return Project
+     * @return Campaign
      */
-    public function setWarningLimit($warningLimit)
+    public function setWarningLimit(int $warningLimit): Campaign
     {
         $this->warningLimit = $warningLimit;
 
@@ -164,7 +174,7 @@ class Campaign
      *
      * @return int
      */
-    public function getWarningLimit()
+    public function getWarningLimit(): int
     {
         return $this->warningLimit;
     }
@@ -172,11 +182,11 @@ class Campaign
     /**
      * Set success limit.
      *
-     * @param int $successLimit
+     * @param int $successLimit Success limit
      *
-     * @return Project
+     * @return Campaign
      */
-    public function setSuccessLimit($successLimit)
+    public function setSuccessLimit(int $successLimit): Campaign
     {
         $this->successLimit = $successLimit;
 
@@ -188,19 +198,19 @@ class Campaign
      *
      * @return int
      */
-    public function getSuccessLimit()
+    public function getSuccessLimit(): int
     {
         return $this->successLimit;
     }
 
     /**
-     * Set passed.
+     * Set passed tests count.
      *
-     * @param int $passed
+     * @param int $passed Passed tests
      *
      * @return Campaign
      */
-    public function setpassed($passed)
+    public function setpassed(int $passed): Campaign
     {
         $this->passed = $passed;
 
@@ -208,23 +218,23 @@ class Campaign
     }
 
     /**
-     * Get passed.
+     * Get passed tests count.
      *
      * @return int
      */
-    public function getPassed()
+    public function getPassed(): int
     {
         return $this->passed;
     }
 
     /**
-     * Set failed.
+     * Set failed tests count.
      *
-     * @param int $failed
+     * @param int $failed Failed tests
      *
      * @return Campaign
      */
-    public function setFailed($failed)
+    public function setFailed(int $failed): Campaign
     {
         $this->failed = $failed;
 
@@ -232,23 +242,23 @@ class Campaign
     }
 
     /**
-     * Get failed.
+     * Get failed tests count.
      *
      * @return int
      */
-    public function getFailed()
+    public function getFailed(): int
     {
         return $this->failed;
     }
 
     /**
-     * Set errored.
+     * Set errored tests count.
      *
-     * @param int $errored
+     * @param int $errored Errored tests
      *
      * @return Campaign
      */
-    public function setErrored($errored)
+    public function setErrored(int $errored): Campaign
     {
         $this->errored = $errored;
 
@@ -256,23 +266,23 @@ class Campaign
     }
 
     /**
-     * Get errored.
+     * Get errored tests count.
      *
      * @return int
      */
-    public function getErrored()
+    public function getErrored(): int
     {
         return $this->errored;
     }
 
     /**
-     * Set skipped.
+     * Set skipped tests count.
      *
-     * @param int $skipped
+     * @param int $skipped Skipped tests
      *
      * @return Campaign
      */
-    public function setSkipped($skipped)
+    public function setSkipped(int $skipped): Campaign
     {
         $this->skipped = $skipped;
 
@@ -280,23 +290,23 @@ class Campaign
     }
 
     /**
-     * Get skipped.
+     * Get skipped tests count.
      *
      * @return int
      */
-    public function getSkipped()
+    public function getSkipped(): int
     {
         return $this->skipped;
     }
 
     /**
-     * Set disabled.
+     * Set disabled tests count.
      *
-     * @param int $disabled
+     * @param int $disabled Disabled tests
      *
      * @return Campaign
      */
-    public function setDisabled($disabled)
+    public function setDisabled(int $disabled): Campaign
     {
         $this->disabled = $disabled;
 
@@ -304,23 +314,23 @@ class Campaign
     }
 
     /**
-     * Get disabled.
+     * Get disabled tests count.
      *
      * @return int
      */
-    public function getDisabled()
+    public function getDisabled(): int
     {
         return $this->disabled;
     }
 
     /**
-     * Set duration.
+     * Set duration of campaign in seconds.
      *
-     * @param float $duration
+     * @param float $duration Duration
      *
      * @return Campaign
      */
-    public function setDuration($duration)
+    public function setDuration(float $duration): Campaign
     {
         $this->duration = $duration;
 
@@ -328,11 +338,11 @@ class Campaign
     }
 
     /**
-     * Get duration.
+     * Get duration in seconds.
      *
      * @return float
      */
-    public function getDuration()
+    public function getDuration(): float
     {
         return $this->duration;
     }
@@ -344,7 +354,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setDatetimeCampaign($datetime)
+    public function setDatetimeCampaign(DateTime $datetime): Campaign
     {
         $this->datetimeCampaign = $datetime;
 
@@ -356,7 +366,7 @@ class Campaign
      *
      * @return DateTime
      */
-    public function getDatetimeCampaign()
+    public function getDatetimeCampaign(): Datetime
     {
         return $this->datetimeCampaign;
     }
@@ -368,7 +378,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setPosition($position)
+    public function setPosition(int $position): Campaign
     {
         $this->position = $position;
 
@@ -380,7 +390,7 @@ class Campaign
      *
      * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
@@ -390,7 +400,7 @@ class Campaign
      *
      * @return int
      */
-    public function getRefId()
+    public function getRefId(): int
     {
         return $this->position + 1;
     }
@@ -402,7 +412,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setProject($project)
+    public function setProject(Project $project): Campaign
     {
         $this->project = $project;
 
@@ -414,7 +424,7 @@ class Campaign
      *
      * @return Project
      */
-    public function getProject()
+    public function getProject(): Project
     {
         return $this->project;
     }
@@ -424,7 +434,7 @@ class Campaign
      *
      * @return int
      */
-    public function getEnabled()
+    public function getEnabled(): int
     {
         return $this->passed
             + $this->failed
@@ -435,9 +445,9 @@ class Campaign
     /**
      * Get percentage of successful tests.
      *
-     * @return int
+     * @return float
      */
-    public function getPercentage()
+    public function getPercentage(): float
     {
         if ($this->getEnabled() !== 0) {
             return round($this->passed / $this->getEnabled() * 100);
@@ -451,7 +461,7 @@ class Campaign
      *
      * @return int Status::FAILED|Status::WARNING|Status::SUCCESS
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         if ($this->getPercentage() < $this->getWarningLimit()) {
             return Status::FAILED;

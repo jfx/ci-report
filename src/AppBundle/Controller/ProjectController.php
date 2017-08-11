@@ -17,19 +17,39 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Project controller class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
+ */
 class ProjectController extends Controller
 {
     /**
+     * Index action.
+     *
+     * @param int $pid Id of project
+     *
+     * @return Response A Response instance
+     *
      * @Route("/project/{pid}", name="project-view")
      */
-    public function indexAction($pid)
+    public function indexAction(int $pid): Response
     {
         $project = $this->getDoctrine()
             ->getRepository(Project::class)

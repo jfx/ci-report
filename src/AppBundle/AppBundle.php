@@ -17,10 +17,23 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * App bundle class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io")
+ */
 class AppBundle extends Bundle
 {
 }

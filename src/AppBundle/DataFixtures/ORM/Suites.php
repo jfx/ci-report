@@ -17,6 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Suite;
@@ -25,6 +27,17 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * Suite fixtures load class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
+ */
 class Suites extends AbstractFixture implements OrderedFixtureInterface
 {
     /**
@@ -321,7 +334,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
      *
      * @return int
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 30;
     }

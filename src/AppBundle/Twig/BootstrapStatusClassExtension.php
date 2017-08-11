@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2017 Francois-Xavier Soubirou.
  *
@@ -17,23 +18,40 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Twig;
 
 use AppBundle\Entity\Status;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
+/**
+ * Status class Twig extension.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
+ */
 class BootstrapStatusClassExtension extends Twig_Extension
 {
     const BOOTSTRAP_SUCCESS = 'success';
     const BOOTSTRAP_WARNING = 'warning';
     const BOOTSTRAP_DANGER = 'danger';
-
     const FA_SUCCESS = 'fa-check-circle';
     const FA_WARNING = 'fa-exclamation-circle';
     const FA_DANGER = 'fa-times-circle';
 
-    public function getFunctions()
+    /**
+     * Returns a list of functions to add to the existing list.
+     *
+     * @return Twig_Function[]
+     */
+    public function getFunctions(): array
     {
         return array(
             new Twig_SimpleFunction('statusColorClass', array($this, 'getStatusColorClass')),
@@ -41,7 +59,14 @@ class BootstrapStatusClassExtension extends Twig_Extension
         );
     }
 
-    public function getStatusColorClass($status)
+    /**
+     * Return Bootstrap style class of status.
+     *
+     * @param int $status Status id (const of Status class)
+     *
+     * @return string
+     */
+    public function getStatusColorClass(int $status): string
     {
         switch ($status) {
             case Status::FAILED:
@@ -59,7 +84,14 @@ class BootstrapStatusClassExtension extends Twig_Extension
         return $color;
     }
 
-    public function getStatusIconClass($status)
+    /**
+     * Return Font Awesome icon of status.
+     *
+     * @param int $status Status id (const of Status class)
+     *
+     * @return string
+     */
+    public function getStatusIconClass($status): string
     {
         switch ($status) {
             case Status::FAILED:

@@ -17,6 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use DateTime;
@@ -24,7 +26,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * Suite.
+ * Suite entity class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
  *
  * @ORM\Table(name="cir_suite")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\SuiteRepository")
@@ -41,7 +51,7 @@ class Suite
     private $id;
 
     /**
-     * @var string Name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=50)
      */
@@ -90,7 +100,7 @@ class Suite
     private $duration;
 
     /**
-     * @var DateTime Date time of the suite
+     * @var DateTime
      *
      * @ORM\Column(name="datetime_suite", type="datetime")
      */
@@ -116,7 +126,7 @@ class Suite
      *
      * @param Campaign $campaign
      */
-    public function __construct($campaign)
+    public function __construct(Campaign $campaign)
     {
         $this->setCampaign($campaign);
     }
@@ -126,7 +136,7 @@ class Suite
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -134,11 +144,11 @@ class Suite
     /**
      * Set name.
      *
-     * @param string $name
+     * @param string $name Name
      *
      * @return Suite
      */
-    public function setName($name)
+    public function setName(string $name): Suite
     {
         $this->name = $name;
 
@@ -150,19 +160,19 @@ class Suite
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Set passed.
+     * Set passed tests count.
      *
-     * @param int $passed
+     * @param int $passed Passed tests
      *
      * @return Suite
      */
-    public function setpassed($passed)
+    public function setpassed(int $passed): Suite
     {
         $this->passed = $passed;
 
@@ -170,23 +180,23 @@ class Suite
     }
 
     /**
-     * Get passed.
+     * Get passed tests count.
      *
      * @return int
      */
-    public function getPassed()
+    public function getPassed(): int
     {
         return $this->passed;
     }
 
     /**
-     * Set failed.
+     * Set failed tests count.
      *
-     * @param int $failed
+     * @param int $failed Failed tests
      *
      * @return Suite
      */
-    public function setFailed($failed)
+    public function setFailed(int $failed): Suite
     {
         $this->failed = $failed;
 
@@ -194,23 +204,23 @@ class Suite
     }
 
     /**
-     * Get failed.
+     * Get failed tests count.
      *
      * @return int
      */
-    public function getFailed()
+    public function getFailed(): int
     {
         return $this->failed;
     }
 
     /**
-     * Set errored.
+     * Set errored tests count.
      *
-     * @param int $errored
+     * @param int $errored Errored tests
      *
      * @return Suite
      */
-    public function setErrored($errored)
+    public function setErrored(int $errored): string
     {
         $this->errored = $errored;
 
@@ -218,23 +228,23 @@ class Suite
     }
 
     /**
-     * Get errored.
+     * Get errored tests count.
      *
      * @return int
      */
-    public function getErrored()
+    public function getErrored(): int
     {
         return $this->errored;
     }
 
     /**
-     * Set skipped.
+     * Set skipped tests count.
      *
-     * @param int $skipped
+     * @param int $skipped Skipped tests
      *
      * @return Suite
      */
-    public function setSkipped($skipped)
+    public function setSkipped(int $skipped): Suite
     {
         $this->skipped = $skipped;
 
@@ -242,23 +252,23 @@ class Suite
     }
 
     /**
-     * Get skipped.
+     * Get skipped tests count.
      *
      * @return int
      */
-    public function getSkipped()
+    public function getSkipped(): int
     {
         return $this->skipped;
     }
 
     /**
-     * Set disabled.
+     * Set disabled tests count.
      *
-     * @param int $disabled
+     * @param int $disabled Disable tests
      *
      * @return Suite
      */
-    public function setDisabled($disabled)
+    public function setDisabled(int $disabled): string
     {
         $this->disabled = $disabled;
 
@@ -266,23 +276,23 @@ class Suite
     }
 
     /**
-     * Get disabled.
+     * Get disabled tests count.
      *
      * @return int
      */
-    public function getDisabled()
+    public function getDisabled(): int
     {
         return $this->disabled;
     }
 
     /**
-     * Set duration.
+     * Set duration of the suite in second.
      *
-     * @param float $duration
+     * @param float $duration Duration
      *
      * @return Suite
      */
-    public function setDuration($duration)
+    public function setDuration(float $duration): Suite
     {
         $this->duration = $duration;
 
@@ -290,11 +300,11 @@ class Suite
     }
 
     /**
-     * Get duration.
+     * Get duration of the suite in seconds.
      *
      * @return float
      */
-    public function getDuration()
+    public function getDuration(): float
     {
         return $this->duration;
     }
@@ -302,11 +312,11 @@ class Suite
     /**
      * Set datetime of suite.
      *
-     * @param DateTime $datetime datetime of suite.
+     * @param DateTime $datetime Datetime of suite.
      *
      * @return Suite
      */
-    public function setDatetimeSuite($datetime)
+    public function setDatetimeSuite(Datetime $datetime): Suite
     {
         $this->datetimeSuite = $datetime;
 
@@ -318,7 +328,7 @@ class Suite
      *
      * @return DateTime
      */
-    public function getDatetimeSuite()
+    public function getDatetimeSuite(): Datetime
     {
         return $this->datetimeSuite;
     }
@@ -330,7 +340,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setPosition($position)
+    public function setPosition(int $position): Suite
     {
         $this->position = $position;
 
@@ -342,7 +352,7 @@ class Suite
      *
      * @return int
      */
-    public function getPosition()
+    public function getPosition(): int
     {
         return $this->position;
     }
@@ -352,7 +362,7 @@ class Suite
      *
      * @return int
      */
-    public function getRefId()
+    public function getRefId(): int
     {
         return $this->position + 1;
     }
@@ -360,11 +370,11 @@ class Suite
     /**
      * Set campaign.
      *
-     * @param Campaign $campaign
+     * @param Campaign $campaign Campaign
      *
      * @return Campaign
      */
-    public function setCampaign($campaign)
+    public function setCampaign(Campaign $campaign): Suite
     {
         $this->campaign = $campaign;
 
@@ -376,7 +386,7 @@ class Suite
      *
      * @return Campaign
      */
-    public function getCampaign()
+    public function getCampaign(): Campaign
     {
         return $this->campaign;
     }
@@ -386,7 +396,7 @@ class Suite
      *
      * @return int
      */
-    public function getEnabled()
+    public function getEnabled(): int
     {
         return $this->passed
             + $this->failed
@@ -397,9 +407,9 @@ class Suite
     /**
      * Get percentage of successful tests.
      *
-     * @return int
+     * @return float
      */
-    public function getPercentage()
+    public function getPercentage(): float
     {
         if ($this->getEnabled() != 0) {
             return round($this->passed / $this->getEnabled() * 100);
@@ -413,7 +423,7 @@ class Suite
      *
      * @return int Status::FAILED|Status::WARNING|Status::SUCCESS
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         if ($this->getPercentage() < $this->campaign->getWarningLimit()) {
             return Status::FAILED;

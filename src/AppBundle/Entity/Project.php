@@ -17,12 +17,22 @@
  * You should have received a copy of the GNU General Public License
  * along with ci-report. If not, see <http://www.gnu.org/licenses/>.
  */
+declare(strict_types=1);
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Project.
+ * Project entity class.
+ *
+ * @category  ci-report app
+ *
+ * @author    Francois-Xavier Soubirou <soubirou@yahoo.fr>
+ * @copyright 2017 Francois-Xavier Soubirou
+ * @license   http://www.gnu.org/licenses/   GPLv3
+ *
+ * @see      https://ci-report.io
  *
  * @ORM\Table(name="cir_project")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
@@ -33,7 +43,7 @@ class Project
     const DEFAULT_SUCCESS_LIMIT = 95;
 
     /**
-     * @var int Id
+     * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
@@ -42,21 +52,21 @@ class Project
     private $id;
 
     /**
-     * @var string Name
+     * @var string
      *
      * @ORM\Column(name="name", type="string", length=50, unique=true)
      */
     private $name;
 
     /**
-     * @var int warningLimit
+     * @var int
      *
      * @ORM\Column(name="warning_limit", type="smallint")
      */
     private $warningLimit;
 
     /**
-     * @var int successLimit
+     * @var int
      *
      * @ORM\Column(name="success_limit", type="smallint")
      */
@@ -76,7 +86,7 @@ class Project
      *
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -88,7 +98,7 @@ class Project
      *
      * @return Project
      */
-    public function setName($name)
+    public function setName(string $name): Project
     {
         $this->name = $name;
 
@@ -100,7 +110,7 @@ class Project
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -112,7 +122,7 @@ class Project
      *
      * @return Project
      */
-    public function setWarningLimit($warningLimit)
+    public function setWarningLimit(int $warningLimit): Project
     {
         $this->warningLimit = $warningLimit;
 
@@ -124,7 +134,7 @@ class Project
      *
      * @return int
      */
-    public function getWarningLimit()
+    public function getWarningLimit(): int
     {
         return $this->warningLimit;
     }
@@ -136,7 +146,7 @@ class Project
      *
      * @return Project
      */
-    public function setSuccessLimit($successLimit)
+    public function setSuccessLimit(int $successLimit): Project
     {
         $this->successLimit = $successLimit;
 
@@ -148,7 +158,7 @@ class Project
      *
      * @return int
      */
-    public function getSuccessLimit()
+    public function getSuccessLimit(): int
     {
         return $this->successLimit;
     }
