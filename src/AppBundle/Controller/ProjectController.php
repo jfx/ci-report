@@ -57,7 +57,7 @@ class ProjectController extends Controller
 
         if (!$project) {
             throw $this->createNotFoundException(
-                'No project found for id '.$pid
+                sprintf('No project found for id #%d', $pid)
             );
         }
 

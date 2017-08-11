@@ -58,7 +58,7 @@ class CampaignController extends Controller
             ->find($pid);
         if (!$project) {
             throw $this->createNotFoundException(
-                'No project found for id '.$pid
+                sprintf('No project found for id #%d', $pid)
             );
         }
 
@@ -67,7 +67,11 @@ class CampaignController extends Controller
             ->findCampaignByProjectAndRefId($project, $refId);
         if (!$campaign) {
             throw $this->createNotFoundException(
-                'No campaign found for project id '.$pid.' and campaign #'.$refId
+                sprintf(
+                    'No campaign found for project id #%d and campaign #%d',
+                    $pid,
+                    $refId
+                )
             );
         }
 

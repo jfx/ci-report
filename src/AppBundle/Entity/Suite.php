@@ -411,11 +411,11 @@ class Suite
      */
     public function getPercentage(): float
     {
-        if ($this->getEnabled() != 0) {
+        if ($this->getEnabled() > 0) {
             return round($this->passed / $this->getEnabled() * 100);
-        } else {
-            0;
         }
+
+        return 0;
     }
 
     /**
@@ -427,10 +427,11 @@ class Suite
     {
         if ($this->getPercentage() < $this->campaign->getWarningLimit()) {
             return Status::FAILED;
-        } elseif ($this->getPercentage() < $this->campaign->getSuccessLimit()) {
-            return Status::WARNING;
-        } else {
-            return Status::SUCCESS;
         }
+        if ($this->getPercentage() < $this->campaign->getSuccessLimit()) {
+            return Status::WARNING;
+        }
+
+        return Status::SUCCESS;
     }
 }

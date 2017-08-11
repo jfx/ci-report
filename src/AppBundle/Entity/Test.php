@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2017 Francois-Xavier Soubirou.
  *
@@ -381,13 +382,15 @@ class Test
     {
         if ($this->passed > 0) {
             return Status::SUCCESS;
-        } elseif ($this->failed > 0) {
-            return Status::FAILED;
-        } elseif ($this->skipped > 0) {
-            return Status::SKIPPED;
-        } else {
-            return Status::ERROR;
         }
+        if ($this->failed > 0) {
+            return Status::FAILED;
+        }
+        if ($this->skipped > 0) {
+            return Status::SKIPPED;
+        }
+
+        return Status::ERROR;
     }
 
     /**

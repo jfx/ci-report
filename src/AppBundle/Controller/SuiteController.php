@@ -60,7 +60,7 @@ class SuiteController extends Controller
             ->find($pid);
         if (!$project) {
             throw $this->createNotFoundException(
-                'No project found for id '.$pid
+                sprintf('No project found for id #%d', $pid)
             );
         }
 
@@ -69,7 +69,11 @@ class SuiteController extends Controller
             ->findCampaignByProjectAndRefId($project, $crefId);
         if (!$campaign) {
             throw $this->createNotFoundException(
-                'No campaign found for project id '.$pid.' and campaign #'.$crefId
+                sprintf(
+                    'No campaign found for project id #%d and campaign #%d',
+                    $pid,
+                    $crefId
+                )
             );
         }
 
@@ -78,7 +82,11 @@ class SuiteController extends Controller
             ->findSuiteByCampaignAndRefId($campaign, $srefId);
         if (!$suite) {
             throw $this->createNotFoundException(
-                'No suite found for campaign #'.$crefId.' and suite #'.$srefId
+                sprintf(
+                    'No suite found for campaign #%d and suite #%d',
+                    $crefId,
+                    $srefId
+                )
             );
         }
 

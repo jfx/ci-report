@@ -3,7 +3,7 @@
     <description>ci-report coding standard</description>
 
     <rule ref="../vendor/escapestudios/symfony2-coding-standard/Symfony/">
-
+        <exclude name="Symfony.Commenting.Annotations.Invalid"/>
     </rule>
     
     <!-- Use Unix newlines -->
