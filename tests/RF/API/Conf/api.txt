@@ -1,0 +1,2 @@
+*** Variables ***
+${api_prefix}    /api

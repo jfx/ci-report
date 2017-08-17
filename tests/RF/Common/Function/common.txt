@@ -7,12 +7,11 @@ Resource          ../Conf/common.txt
 
 *** Keywords ***
 Set URL
-    [Arguments]    ${env_url}
-    Set Global Variable    ${URL}    ${env_url}
+    Run Keyword If    ${REMOTE}    Set Global Variable    ${URL}    ${URL_REMOTE}
+    Run Keyword Unless    ${REMOTE}    Set Global Variable    ${URL}    ${URL_LOCAL}
 
 I go to site
-    Run Keyword If    ${REMOTE}    Set URL    ${URL_REMOTE}
-    Run Keyword Unless    ${REMOTE}    Set URL    ${URL_LOCAL}
+    Set URL
     Run Keyword If    ${GRID}    Open Browser    ${URL}    ${BROWSER}    remote_url=${HUB}
     Run Keyword Unless    ${GRID}    Open Browser    ${URL}    ${BROWSER}
     Maximize Browser Window
@@ -25,7 +24,7 @@ Load DB
 
 Load local DB
     Log    -- Load Local DB --
-    ${rc} =    Run And Return Rc    ${BIN_DIR}/initDB.sh
+    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadTestDB.sh
     Should Be Equal As Integers    ${rc}    0
 
 Load remote DB

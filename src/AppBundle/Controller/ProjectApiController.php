@@ -24,8 +24,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Project;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Project controller class.
@@ -43,22 +44,40 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class ProjectApiController extends Controller
 {
     /**
-     * Index action.
+     * Get list of projects.
      *
-     * @return View
+     * @return array
      *
      * @Rest\Get("/projects")
      * @Rest\View()
      */
-    public function getProjectsAction(): View
+    public function getProjectsAction(): array
     {
         $projects = $this->getDoctrine()
             ->getRepository(Project::class)
             ->findAll();
 
-        $view = View::create($projects);
-        $view->setFormat('json');
+        return $projects;
+    }
 
-        return $view;
+    /**
+     * Create a project.
+     *
+     * @param Project $project Project to create
+     *
+     * @return Project
+     *
+     * @Rest\Post("/projects")
+     * @ParamConverter("project", converter="fos_rest.request_body")
+     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     */
+    public function postProjectsAction(Project $project): Project
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $em->persist($project);
+        $em->flush();
+
+        return $project;
     }
 }

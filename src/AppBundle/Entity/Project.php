@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Project entity class.
@@ -36,6 +37,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="cir_project")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
+ *
+ * @Serializer\ExclusionPolicy("ALL")
  */
 class Project
 {
@@ -55,6 +58,8 @@ class Project
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50, unique=true)
+     *
+     * @Serializer\Expose
      */
     private $name;
 
@@ -62,6 +67,8 @@ class Project
      * @var int
      *
      * @ORM\Column(name="warning_limit", type="smallint")
+     *
+     * @Serializer\Expose
      */
     private $warningLimit;
 
@@ -69,6 +76,8 @@ class Project
      * @var int
      *
      * @ORM\Column(name="success_limit", type="smallint")
+     *
+     * @Serializer\Expose
      */
     private $successLimit;
 

@@ -1,0 +1,34 @@
+*** Settings ***
+Library           Collections
+Library           RequestsLibrary
+Resource          ../Conf/api.txt
+Resource          ../../Common/Function/common.txt
+
+*** Keywords ***
+I create an API session named "cir"
+    Set URL
+    Create Session    cir    ${URL}${api_prefix}
+
+Label item of list should be equal
+    [Arguments]    ${list}    ${label}    ${value}
+    ${found} =    Set Variable    False
+    : FOR    ${item}    IN    @{list}
+    \    ${status} =    Run Keyword And Return Status    Should Be Equal As Strings    ${item[${label}]}    ${value}
+    \    ${found} =    Set Variable If    ${found} or ${status}    True    False
+    Log    ${label}: ${value} -> ${found}
+    Should Be True    ${found}
+
+Item of list should not countains label
+    [Arguments]    ${list}    ${key}
+    ${found} =    Set Variable    False
+    : FOR    ${item}    IN    @{list}
+    \    ${status} =    Run Keyword And Return Status    Dictionary Should Contain Key    ${item}    ${key}
+    \    ${found} =    Set Variable If    ${found} or ${status}    True    False
+    Log    ${key} -> ${found}
+    Run Keyword And Expect Error    *    Should Be True    ${found}
+
+Teardown API
+    Log    -- Teardown --
+    Delete All Sessions
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'EDIT'    Load DB
