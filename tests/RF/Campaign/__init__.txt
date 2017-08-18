@@ -1,2 +1,2 @@
 *** Settings ***
-Force Tags        campaign
+Force Tags        campaign    GUI

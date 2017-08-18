@@ -1,3 +1,5 @@
 *** Variables ***
 ${location_dashboard}    /project
+${DEFAULT_WARNING_LIMIT}    80
+${DEFAULT_SUCCESS_LIMIT}    95
 &{P1}             id=1    name=Project One    warning_limit=80    success_limit=95

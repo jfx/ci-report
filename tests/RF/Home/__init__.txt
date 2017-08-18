@@ -1,2 +1,2 @@
 *** Settings ***
-Force Tags        home
+Force Tags        home    GUI

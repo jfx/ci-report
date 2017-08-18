@@ -1,8 +1,10 @@
 *** Settings ***
 Library           OperatingSystem
 Library           Process
-Library           Selenium2Library
 Library           String
+Library           Selenium2Library
+Library           DatabaseLibrary
+Library           RequestsLibrary
 Resource          ../Conf/common.txt
 
 *** Keywords ***
@@ -10,7 +12,7 @@ Set URL
     Run Keyword If    ${REMOTE}    Set Global Variable    ${URL}    ${URL_REMOTE}
     Run Keyword Unless    ${REMOTE}    Set Global Variable    ${URL}    ${URL_LOCAL}
 
-I go to site
+I open browser
     Set URL
     Run Keyword If    ${GRID}    Open Browser    ${URL}    ${BROWSER}    remote_url=${HUB}
     Run Keyword Unless    ${GRID}    Open Browser    ${URL}    ${BROWSER}
@@ -18,9 +20,13 @@ I go to site
     Run Keyword If    '${ENV}' == 'DEV'    Wait Until Page Contains Element    xpath=//a[@title='Close Toolbar']
     Run Keyword If    '${ENV}' == 'DEV'    Click element    xpath=//a[@title='Close Toolbar']
 
+I create an API session named "cir"
+    Set URL
+    Create Session    cir    ${URL}${api_prefix}
+
 Load DB
-    Run Keyword If    '${ENV}' == 'LOCAL'    Load local DB
-    Run Keyword If    '${ENV}' == 'REMOTE'    Load remote DB
+    Run Keyword If    ${DB_REMOTE}    Load remote DB
+    Run Keyword Unless    ${DB_REMOTE}    Load local DB
 
 Load local DB
     Log    -- Load Local DB --
@@ -33,12 +39,24 @@ Load remote DB
     Should Be Equal As Integers    ${rc}    0
 
 Setup
-    I go to site
+    Log    -- Setup --
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'DB'    Connect To Database    dbapiModuleName=MySQLdb    dbHost=${DB.host}    dbPort=${DB.port}
+    \    ...    dbName=${DB.name}    dbUsername=${DB.user}    dbPassword=${DB.password}
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'GUI'    I open browser
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'API'    I create an API session named "cir"
 
 Teardown
     Log    -- Teardown --
-    Close All Browsers
-    Terminate All Processes
+    Comment    Terminate All Processes
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'API'    Delete All Sessions
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'GUI'    Close All Browsers
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'DB'    Disconnect from Database
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'EDIT'    Load DB
 

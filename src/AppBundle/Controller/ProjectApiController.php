@@ -75,6 +75,13 @@ class ProjectApiController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
+        if (null === $project->getWarningLimit()) {
+            $project->setWarningLimit(Project::DEFAULT_WARNING_LIMIT);
+        }
+        if (null === $project->getSuccessLimit()) {
+            $project->setSuccessLimit(Project::DEFAULT_SUCCESS_LIMIT);
+        }
+
         $em->persist($project);
         $em->flush();
 

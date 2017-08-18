@@ -2,15 +2,19 @@
 Library           Collections
 Library           RequestsLibrary
 Resource          ../Conf/api.txt
+Resource          ../../Project_Dashboard/Conf/dashboard.txt
 Resource          ../../Common/Function/common.txt
 
 *** Keywords ***
-I create an API session named "cir"
-    Set URL
-    Create Session    cir    ${URL}${api_prefix}
+Response content should have x items
+    [Arguments]    ${content}    ${expected}
+    ${list} =    To Json    ${content}
+    ${length} =    Get Length    ${list}
+    Should Be Equal As Integers    ${expected}    ${length}
 
 Label item of list should be equal
-    [Arguments]    ${list}    ${label}    ${value}
+    [Arguments]    ${content}    ${label}    ${value}
+    ${list} =    To Json    ${content}
     ${found} =    Set Variable    False
     : FOR    ${item}    IN    @{list}
     \    ${status} =    Run Keyword And Return Status    Should Be Equal As Strings    ${item[${label}]}    ${value}
@@ -19,16 +23,11 @@ Label item of list should be equal
     Should Be True    ${found}
 
 Item of list should not countains label
-    [Arguments]    ${list}    ${key}
+    [Arguments]    ${content}    ${key}
+    ${list} =    To Json    ${content}
     ${found} =    Set Variable    False
     : FOR    ${item}    IN    @{list}
     \    ${status} =    Run Keyword And Return Status    Dictionary Should Contain Key    ${item}    ${key}
     \    ${found} =    Set Variable If    ${found} or ${status}    True    False
     Log    ${key} -> ${found}
     Run Keyword And Expect Error    *    Should Be True    ${found}
-
-Teardown API
-    Log    -- Teardown --
-    Delete All Sessions
-    : FOR    ${tag}    IN    @{TEST TAGS}
-    \    Run Keyword If    '${tag}' == 'EDIT'    Load DB
