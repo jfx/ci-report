@@ -149,7 +149,7 @@ class Project
      *
      * @return int
      */
-    public function getWarningLimit()
+    public function getWarningLimit(): ?int
     {
         return $this->warningLimit;
     }
@@ -173,7 +173,7 @@ class Project
      *
      * @return int
      */
-    public function getSuccessLimit()
+    public function getSuccessLimit(): ?int
     {
         return $this->successLimit;
     }

@@ -66,7 +66,7 @@ class CampaignRepository extends SortableRepository
      *
      * @return Campaign|null
      */
-    public function findCampaignByProjectAndRefId(Project $project, int $refId)
+    public function findCampaignByProjectAndRefId(Project $project, int $refId): ?Campaign
     {
         $position = $refId - 1;
 
@@ -90,7 +90,7 @@ class CampaignRepository extends SortableRepository
      *
      * @return Campaign|null
      */
-    public function findPrevCampaignByProject(Project $project, Campaign $campaign)
+    public function findPrevCampaignByProject(Project $project, Campaign $campaign): ?Campaign
     {
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.project', 'p')
@@ -114,7 +114,7 @@ class CampaignRepository extends SortableRepository
      *
      * @return Campaign|null
      */
-    public function findNextCampaignByProject(Project $project, Campaign $campaign)
+    public function findNextCampaignByProject(Project $project, Campaign $campaign): ?Campaign
     {
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.project', 'p')

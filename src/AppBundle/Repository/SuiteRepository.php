@@ -66,7 +66,7 @@ class SuiteRepository extends SortableRepository
      *
      * @return Suite|null
      */
-    public function findSuiteByCampaignAndRefId(Campaign $campaign, int $refId)
+    public function findSuiteByCampaignAndRefId(Campaign $campaign, int $refId): ?Suite
     {
         $position = $refId - 1;
 
@@ -90,7 +90,7 @@ class SuiteRepository extends SortableRepository
      *
      * @return Suite|null
      */
-    public function findPrevSuiteByCampaign(Campaign $campaign, Suite $suite)
+    public function findPrevSuiteByCampaign(Campaign $campaign, Suite $suite): ?Suite
     {
         $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.campaign', 'c')
@@ -114,7 +114,7 @@ class SuiteRepository extends SortableRepository
      *
      * @return Suite|null
      */
-    public function findNextSuiteByCampaign(Campaign $campaign, Suite $suite)
+    public function findNextSuiteByCampaign(Campaign $campaign, Suite $suite): ?Suite
     {
         $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.campaign', 'c')
