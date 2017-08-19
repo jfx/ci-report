@@ -28,6 +28,26 @@ Create project without limit values
     Check If Exists In Database    select id from cir_project where name="Project Created" and warning_limit=${DEFAULT_WARNING_LIMIT} and success_limit=${DEFAULT_SUCCESS_LIMIT}
     [Teardown]    Teardown
 
+Create project without name returns bad request message
+    [Setup]    Setup
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    warning_limit=90    success_limit=100
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    name
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
+    [Teardown]    Teardown
+
+Create project with an existing name returns bad request message
+    [Setup]    Setup
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=Project One    warning_limit=90    success_limit=100
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    name
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value is already used.
+    [Teardown]    Teardown
+
 Create project should not contain not expose fields
     [Tags]    EDIT    DB
     [Setup]    Setup

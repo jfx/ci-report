@@ -23,6 +23,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Project entity class.
@@ -37,6 +39,8 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @ORM\Table(name="cir_project")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
+ *
+ * @UniqueEntity("name")
  *
  * @Serializer\ExclusionPolicy("ALL")
  */
@@ -58,6 +62,8 @@ class Project
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50, unique=true)
+     *
+     * @Assert\NotBlank
      *
      * @Serializer\Expose
      */
