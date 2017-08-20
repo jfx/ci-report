@@ -372,7 +372,7 @@ class Suite
      *
      * @param Campaign $campaign Campaign
      *
-     * @return Campaign
+     * @return Suite
      */
     public function setCampaign(Campaign $campaign): Suite
     {

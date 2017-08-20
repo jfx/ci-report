@@ -74,3 +74,10 @@ Projects list should not contain not expose fields
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Item of list should not countains label    ${resp.content}    id
     [Teardown]    Teardown
+
+Projects undefined route returns 404
+    [Setup]    Setup
+    ${resp} =    When Get Request    cir    /projects/X
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+    [Teardown]    Teardown

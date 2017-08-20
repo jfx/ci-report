@@ -68,7 +68,7 @@ class ProjectApiController extends FOSRestController
      * @param Project                 $project    Project to create
      * @param ConstraintViolationList $violations List of violations
      *
-     * @return Project
+     * @return Project|View
      *
      * @Rest\Post("/projects")
      * @ParamConverter("project", converter="fos_rest.request_body")

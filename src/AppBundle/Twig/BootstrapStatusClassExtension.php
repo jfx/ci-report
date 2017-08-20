@@ -49,7 +49,7 @@ class BootstrapStatusClassExtension extends Twig_Extension
     /**
      * Returns a list of functions to add to the existing list.
      *
-     * @return Twig_Function[]
+     * @return array
      */
     public function getFunctions(): array
     {
