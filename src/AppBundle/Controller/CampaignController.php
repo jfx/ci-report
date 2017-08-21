@@ -24,6 +24,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Suite;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,32 +45,25 @@ class CampaignController extends Controller
     /**
      * Index action.
      *
-     * @param int $pid   Id of project
-     * @param int $refId Reference Id of campaign
+     * @param Project $project Id of project
+     * @param int     $refId   Reference Id of campaign
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{pid}/campaign/{refId}", name="campaign-view")
+     * @Route("/project/{prefId}/campaign/{refId}", name="campaign-view")
+     *
+     * @ParamConverter("project", options={"mapping": {"prefId": "refId"}})
      */
-    public function indexAction(int $pid, int $refId): Response
+    public function indexAction(Project $project, int $refId): Response
     {
-        $project = $this->getDoctrine()
-            ->getRepository(Project::class)
-            ->find($pid);
-        if (!$project) {
-            throw $this->createNotFoundException(
-                sprintf('No project found for id #%d', $pid)
-            );
-        }
-
         $campaign = $this->getDoctrine()
             ->getRepository(Campaign::class)
             ->findCampaignByProjectAndRefId($project, $refId);
         if (!$campaign) {
             throw $this->createNotFoundException(
                 sprintf(
-                    'No campaign found for project id #%d and campaign #%d',
-                    $pid,
+                    'No campaign found for project refId %s and campaign #%d',
+                    $project->getRefId(),
                     $refId
                 )
             );

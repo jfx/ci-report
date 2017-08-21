@@ -24,6 +24,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,24 +45,16 @@ class ProjectController extends Controller
     /**
      * Index action.
      *
-     * @param int $pid Id of project
+     * @param Project $project The project
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{pid}", name="project-view")
+     * @Route("/project/{refId}", name="project-view")
+     *
+     * @ParamConverter("project", options={"mapping": {"refId": "refId"}})
      */
-    public function indexAction(int $pid): Response
+    public function indexAction(Project $project): Response
     {
-        $project = $this->getDoctrine()
-                ->getRepository(Project::class)
-                ->find($pid);
-
-        if (!$project) {
-            throw $this->createNotFoundException(
-                sprintf('No project found for id #%d', $pid)
-            );
-        }
-
         $campaignsList = $this->getDoctrine()
                 ->getRepository(Campaign::class)
                 ->findCampaignsByProject($project);

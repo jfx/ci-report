@@ -59,7 +59,7 @@ class CampaignRepository extends SortableRepository
     }
 
     /**
-     * Get a campaign for a project and its refId.
+     * Get a campaign for a project refId and its refId.
      *
      * @param Project $project The project
      * @param int     $refId   RefId of the campaign in the project

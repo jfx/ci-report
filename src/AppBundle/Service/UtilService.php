@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright (c) 2017 Francois-Xavier Soubirou.
  *
@@ -19,12 +20,10 @@
  */
 declare(strict_types=1);
 
-namespace AppBundle\Repository;
-
-use Doctrine\ORM\EntityRepository;
+namespace AppBundle\Service;
 
 /**
- * Project repository class.
+ * Util service class.
  *
  * @category  ci-report app
  *
@@ -34,28 +33,28 @@ use Doctrine\ORM\EntityRepository;
  *
  * @see      https://ci-report.io
  */
-class ProjectRepository extends EntityRepository
+class UtilService
 {
     /**
-     * Check if refId already exists.
+     * Slugify a string.
+     * Code from : http://ourcodeworld.com/articles/read/253/creating-url-slugs-properly-in-php-including-transliteration-support-for-utf-8.
      *
-     * @param string $refId RefId to test
+     * @param string $string String to convert
      *
-     * @return bool
+     * @return string
      */
-    public function refIdExists(string $refId): bool
+    public function toAscii(string $string): string
     {
-        $qb = $this->createQueryBuilder('p')
-            ->select('count(p.id)')
-            ->where('p.refId = :refId')
-            ->setParameter('refId', $refId);
+        $clean1 = htmlentities($string, ENT_QUOTES, 'UTF-8');
+        $clean2 = preg_replace(
+            '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
+            '$1',
+            $clean1
+        );
+        $clean3 = html_entity_decode($clean2, ENT_QUOTES, 'UTF-8');
+        $clean4 = preg_replace('~[^0-9a-z]+~i', '-', $clean3);
+        $clean5 = strtolower(trim($clean4, '-'));
 
-        $result = $qb->getQuery()->getSingleScalarResult();
-
-        if ($result > 0) {
-            return true;
-        }
-
-        return false;
+        return $clean5;
     }
 }

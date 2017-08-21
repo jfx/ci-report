@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Project;
+use AppBundle\Service\UtilService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
@@ -82,6 +83,20 @@ class ProjectApiController extends FOSRestController
         }
 
         $em = $this->getDoctrine()->getManager();
+        $repository = $this->getDoctrine()->getRepository(Project::class);
+
+        $utilService = new UtilService();
+        $slug = $utilService->toAscii($project->getName());
+
+        $root = $slug;
+        $separator = '-';
+        $ext = 0;
+
+        while ($repository->refIdExists($slug)) {
+            ++$ext;
+            $slug = $root.$separator.$ext;
+        }
+        $project->setRefId($slug);
 
         if (null === $project->getWarningLimit()) {
             $project->setWarningLimit(Project::DEFAULT_WARNING_LIMIT);

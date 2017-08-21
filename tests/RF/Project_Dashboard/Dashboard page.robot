@@ -5,6 +5,6 @@ Resource          Function/dashboard.txt
 *** Test Cases ***
 Title of window should contain project name
     [Setup]    Setup
-    When I go to project dahsboard    ${P1.id}
+    When I go to project dahsboard    ${P1.refid}
     Then Title Should Be    ci-report / ${P1.name}
     [Teardown]    Teardown

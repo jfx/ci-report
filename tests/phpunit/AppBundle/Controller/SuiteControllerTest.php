@@ -10,7 +10,7 @@ class SuiteControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/project/1/campaign/1/suite/1');
+        $crawler = $client->request('GET', '/project/project-one/campaign/1/suite/1');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertContains(

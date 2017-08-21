@@ -10,6 +10,7 @@ Create project with limit values
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     And Dictionary Should Contain Item    ${resp.json()}    name    Project Created
+    And Dictionary Should Contain Item    ${resp.json()}    ref_id    project-created
     And Dictionary Should Contain Item    ${resp.json()}    warning_limit    90
     And Dictionary Should Contain Item    ${resp.json()}    success_limit    100
     Check If Exists In Database    select id from cir_project where name="Project Created" and warning_limit=90 and success_limit=100
@@ -23,9 +24,23 @@ Create project without limit values
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     And Dictionary Should Contain Item    ${resp.json()}    name    Project Created
+    And Dictionary Should Contain Item    ${resp.json()}    ref_id    project-created
     And Dictionary Should Contain Item    ${resp.json()}    warning_limit    ${DEFAULT_WARNING_LIMIT}
     And Dictionary Should Contain Item    ${resp.json()}    success_limit    ${DEFAULT_SUCCESS_LIMIT}
     Check If Exists In Database    select id from cir_project where name="Project Created" and warning_limit=${DEFAULT_WARNING_LIMIT} and success_limit=${DEFAULT_SUCCESS_LIMIT}
+    [Teardown]    Teardown
+
+Create project with duplicate refId increments it by one
+    [Tags]    EDIT
+    [Setup]    Setup
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=Project-One
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Dictionary Should Contain Item    ${resp.json()}    name    Project-One
+    And Dictionary Should Contain Item    ${resp.json()}    ref_id    project-one-1
+    And Dictionary Should Contain Item    ${resp.json()}    warning_limit    ${DEFAULT_WARNING_LIMIT}
+    And Dictionary Should Contain Item    ${resp.json()}    success_limit    ${DEFAULT_SUCCESS_LIMIT}
     [Teardown]    Teardown
 
 Create project without name returns bad request message

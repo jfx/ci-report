@@ -6,7 +6,7 @@ Resource          ../Campaign/Function/campaign.txt
 *** Test Cases ***
 Last campaign for a project should be displayed
     [Setup]    Setup
-    When I go to project dahsboard    ${P1.id}
+    When I go to project dahsboard    ${P1.refid}
     Then Element Should Contain    css=p.card-text    \#${P1C4.id}
     [Teardown]    Teardown
 

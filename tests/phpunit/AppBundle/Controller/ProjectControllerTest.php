@@ -10,7 +10,7 @@ class ProjectControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/project/1');
+        $crawler = $client->request('GET', '/project/project-one');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertContains(

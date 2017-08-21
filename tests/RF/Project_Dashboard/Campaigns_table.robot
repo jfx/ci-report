@@ -7,14 +7,14 @@ Resource          ../Campaign/Function/campaign.txt
 *** Test Cases ***
 Table should have a header
     [Setup]    Setup
-    When I go to project dahsboard    ${P1.id}
+    When I go to project dahsboard    ${P1.refid}
     Then The table header should contain values    t-campaign    \#Id    %    Passed    Failed    Errored
     ...    Skipped    Disabled    Duration    Time    Document
     [Teardown]    Teardown
 
 Table should list all campaigns
     [Setup]    Setup
-    When I go to project dahsboard    ${P1.id}
+    When I go to project dahsboard    ${P1.refid}
     Then The table should contain X rows    t-campaign    4
     And The table column should contain values    t-campaign    1    \#1    \#2    \#3    \#4
     [Teardown]    Teardown

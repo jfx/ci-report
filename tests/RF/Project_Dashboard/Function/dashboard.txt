@@ -5,18 +5,18 @@ Resource          ../../Campaign/Conf/campaign.txt
 
 *** Keywords ***
 Get project dashboard location
-    [Arguments]    ${project_id}
-    ${location} =    Set Variable    ${URL}${location_dashboard}/${project_id}
+    [Arguments]    ${refid}
+    ${location} =    Set Variable    ${URL}${location_dashboard}/${refid}
     [Return]    ${location}
 
 I go to project dahsboard
-    [Arguments]    ${project_id}
-    ${location} =    Get project dashboard location    ${project_id}
+    [Arguments]    ${refid}
+    ${location} =    Get project dashboard location    ${refid}
     Go to    ${location}
 
 I should be on project dashboard
-    [Arguments]    ${project_id}
-    ${location} =    Get project dashboard location    ${project_id}
+    [Arguments]    ${refid}
+    ${location} =    Get project dashboard location    ${refid}
     Location Should Be    ${location}
 
 I check last campaign displayed values

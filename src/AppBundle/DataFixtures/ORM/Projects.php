@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Project;
+use AppBundle\Service\UtilService;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -46,6 +47,8 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
+        $utilService = new UtilService();
+
         $dataArray = array(
             array(
                 'name' => 'Project One',
@@ -70,6 +73,7 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
         foreach ($dataArray as $i => $data) {
             $objectList[$i] = new Project();
             $objectList[$i]->setName($data['name']);
+            $objectList[$i]->setRefId($utilService->toAscii($data['name']));
 
             $manager->persist($objectList[$i]);
             $ref = strtolower(str_replace(' ', '', $data['name'])).'-project';

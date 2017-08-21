@@ -70,6 +70,15 @@ class Project
     private $name;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="refid", type="string", length=50, unique=true)
+     *
+     * @Serializer\Expose
+     */
+    private $refId;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="warning_limit", type="smallint")
@@ -128,6 +137,30 @@ class Project
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Set refId.
+     *
+     * @param string $refId
+     *
+     * @return Project
+     */
+    public function setRefId(string $refId): Project
+    {
+        $this->refId = $refId;
+
+        return $this;
+    }
+
+    /**
+     * Get refId.
+     *
+     * @return string
+     */
+    public function getRefId(): string
+    {
+        return $this->refId;
     }
 
     /**
