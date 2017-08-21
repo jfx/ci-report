@@ -12,6 +12,7 @@
 
 {% block container %}
 <div class="row">
+    {% if lastCampaign is not null %}
     <div class="col-4">
         <div class="card card-outline-{{ statusColorClass(lastCampaign.status) }}">
             <div class="card-block">
@@ -41,9 +42,10 @@
                 <a id="a-details" href="{{ path('campaign-view', {'prefId': project.refId, 'refId': lastCampaign.refId}) }}" class="btn btn-outline-{{ statusColorClass(lastCampaign.status) }}">Details</a>
                 </div>
             </div>
-        </div>
+        </div>  
     </div>
     <div class="col-8">Graph</div>
+    {% endif %}
 </div>
 
 <div class="row div-margin-top">

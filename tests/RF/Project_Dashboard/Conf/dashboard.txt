@@ -3,3 +3,4 @@ ${location_dashboard}    /project
 ${DEFAULT_WARNING_LIMIT}    80
 ${DEFAULT_SUCCESS_LIMIT}    95
 &{P1}             refid=project-one    name=Project One    warning_limit=80    success_limit=95
+&{P6}             refid=project-six    name=Project Six    warning_limit=80    success_limit=95
