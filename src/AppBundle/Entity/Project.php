@@ -79,6 +79,13 @@ class Project
     private $refId;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="string", length=50)
+     */
+    private $token;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="warning_limit", type="smallint")
@@ -161,6 +168,30 @@ class Project
     public function getRefId(): string
     {
         return $this->refId;
+    }
+
+    /**
+     * Set token.
+     *
+     * @param string $token
+     *
+     * @return Project
+     */
+    public function setToken(string $token): Project
+    {
+        $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * Get token.
+     *
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
     }
 
     /**

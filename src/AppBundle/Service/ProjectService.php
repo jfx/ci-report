@@ -22,8 +22,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Project;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
 /**
- * Util service class.
+ * Project service class.
  *
  * @category  ci-report app
  *
@@ -33,42 +36,49 @@ namespace AppBundle\Service;
  *
  * @see      https://ci-report.io
  */
-class UtilService
+class ProjectService
 {
     /**
-     * Slugify a string.
-     * Code from : http://ourcodeworld.com/articles/read/253/creating-url-slugs-properly-in-php-including-transliteration-support-for-utf-8.
-     *
-     * @param string $string String to convert
-     *
-     * @return string
+     * @var ManagerRegistry
      */
-    public function toAscii(string $string): string
-    {
-        $clean1 = htmlentities($string, ENT_QUOTES, 'UTF-8');
-        $clean2 = preg_replace(
-            '~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i',
-            '$1',
-            $clean1
-        );
-        $clean3 = html_entity_decode($clean2, ENT_QUOTES, 'UTF-8');
-        $clean4 = preg_replace('~[^0-9a-z]+~i', '-', $clean3);
-        $clean5 = strtolower(trim($clean4, '-'));
+    private $doctrine;
 
-        return $clean5;
+    /**
+     * @var UtilService
+     */
+    private $utilService;
+
+    /**
+     * Constructor.
+     *
+     * @param ManagerRegistry $doctrine Doctrine registry manager
+     */
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+        $this->utilService = new UtilService();
     }
 
     /**
-     * Generate a token.
+     * Generate a unique slug and token for a project.
      *
-     * @return string
+     * @param Project $project Project
      */
-    public function generateToken(): string
+    public function setSlugAndToken(Project $project): void
     {
-        $part1 = bin2hex(random_bytes(6));
-        $part2 = bin2hex(random_bytes(6));
-        $part3 = bin2hex(random_bytes(6));
+        $repository = $this->doctrine->getRepository(Project::class);
+        $slug = $this->utilService->toAscii($project->getName());
 
-        return $part1.'-'.$part2.'-'.$part3;
+        $root = $slug;
+        $separator = '-';
+        $ext = 0;
+
+        while ($repository->refIdExists($slug)) {
+            ++$ext;
+            $slug = $root.$separator.$ext;
+        }
+        $project->setRefId($slug);
+
+        $project->setToken($this->utilService->generateToken());
     }
 }

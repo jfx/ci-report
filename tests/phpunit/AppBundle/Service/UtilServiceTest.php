@@ -36,4 +36,10 @@ class UtilServiceTest extends TestCase
         $result = $this->utilService->toAscii("ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝßàáâãäåæçèéêëìíîïðñòóôõöùúûüýÿ");
         $this->assertEquals('aaaaaaaeceeeeiiiienooooouuuuyszaaaaaaaeceeeeiiiienooooouuuuyy', $result);
     }
+    
+    public function testGenerateToken()
+    {
+        $result = $this->utilService->generateToken();
+        $this->assertEquals(38, strlen($result));
+    }
 }

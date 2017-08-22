@@ -13,7 +13,7 @@ Create project with limit values
     And Dictionary Should Contain Item    ${resp.json()}    ref_id    project-created
     And Dictionary Should Contain Item    ${resp.json()}    warning_limit    90
     And Dictionary Should Contain Item    ${resp.json()}    success_limit    100
-    Check If Exists In Database    select id from cir_project where name="Project Created" and warning_limit=90 and success_limit=100
+    Check If Exists In Database    select id from cir_project where name="Project Created" and CHAR_LENGTH(token) = 38 and warning_limit=90 and success_limit=100
     [Teardown]    Teardown
 
 Create project without limit values
@@ -27,7 +27,7 @@ Create project without limit values
     And Dictionary Should Contain Item    ${resp.json()}    ref_id    project-created
     And Dictionary Should Contain Item    ${resp.json()}    warning_limit    ${DEFAULT_WARNING_LIMIT}
     And Dictionary Should Contain Item    ${resp.json()}    success_limit    ${DEFAULT_SUCCESS_LIMIT}
-    Check If Exists In Database    select id from cir_project where name="Project Created" and warning_limit=${DEFAULT_WARNING_LIMIT} and success_limit=${DEFAULT_SUCCESS_LIMIT}
+    Check If Exists In Database    select id from cir_project where name="Project Created" and CHAR_LENGTH(token) = 38 and warning_limit=${DEFAULT_WARNING_LIMIT} and success_limit=${DEFAULT_SUCCESS_LIMIT}
     [Teardown]    Teardown
 
 Create project with duplicate refId increments it by one
@@ -71,6 +71,7 @@ Create project should not contain not expose fields
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     And Dictionary Should Not Contain Key    ${resp.json()}    id
+    And Dictionary Should Not Contain Key    ${resp.json()}    token
     [Teardown]    Teardown
 
 Projects list contains Project One
@@ -88,6 +89,7 @@ Projects list should not contain not expose fields
     ${resp} =    When Get Request    cir    /projects
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Item of list should not countains label    ${resp.content}    id
+    And Item of list should not countains label    ${resp.content}    token
     [Teardown]    Teardown
 
 Projects undefined route returns 404
