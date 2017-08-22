@@ -27,6 +27,7 @@ use AppBundle\Service\ProjectService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
+use Nelmio\ApiDocBundle\Annotation as Doc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -52,7 +53,16 @@ class ProjectApiController extends FOSRestController
      * @return array
      *
      * @Rest\Get("/projects")
-     * @Rest\View()
+     * @Rest\View(serializerGroups={"public"})
+     *
+     * @Doc\ApiDoc(
+     *     section="Projects",
+     *     description="Get the list of all projects.",
+     *     output= { "class"=Project::class, "collection"=true, "groups"={"public"} },
+     *     statusCodes={
+     *         200="Returned when successful"
+     *     }
+     * )
      */
     public function getProjectsAction(): array
     {
@@ -64,7 +74,7 @@ class ProjectApiController extends FOSRestController
     }
 
     /**
-     * Create a project.
+     * Create a project. Private data are sent by mail.
      *
      * @param Project                 $project    Project to create
      * @param ConstraintViolationList $violations List of violations
@@ -73,7 +83,18 @@ class ProjectApiController extends FOSRestController
      *
      * @Rest\Post("/projects")
      * @ParamConverter("project", converter="fos_rest.request_body")
-     * @Rest\View(statusCode=Response::HTTP_CREATED)
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"public"})
+     *
+     * @Doc\ApiDoc(
+     *     section="Projects",
+     *     description="Create a project. Private data are sent by mail.",
+     *     input= { "class"=Project::class, "groups"={"create"} },
+     *     output= { "class"=Project::class, "groups"={"public"} },
+     *     statusCodes={
+     *         201="Returned when created",
+     *         400="Returned when a violation is raised by validation"
+     *     }
+     * )
      */
     public function postProjectsAction(Project $project, ConstraintViolationList $violations)
     {

@@ -41,8 +41,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
  *
  * @UniqueEntity("name")
- *
- * @Serializer\ExclusionPolicy("ALL")
  */
 class Project
 {
@@ -55,26 +53,32 @@ class Project
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Exclude
      */
     private $id;
 
     /**
+     * Name of the project.
+     *
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50, unique=true)
      *
      * @Assert\NotBlank
      *
-     * @Serializer\Expose
+     * @Serializer\Groups({"create", "public"})
      */
     private $name;
 
     /**
+     * Unique short name of project defined on project creation.
+     *
      * @var string
      *
      * @ORM\Column(name="refid", type="string", length=50, unique=true)
      *
-     * @Serializer\Expose
+     * @Serializer\Groups({"public"})
      */
     private $refId;
 
@@ -82,24 +86,30 @@ class Project
      * @var string
      *
      * @ORM\Column(name="token", type="string", length=50)
+     *
+     * @Serializer\Exclude
      */
     private $token;
 
     /**
+     * Tests warning limit.
+     *
      * @var int
      *
      * @ORM\Column(name="warning_limit", type="smallint")
      *
-     * @Serializer\Expose
+     * @Serializer\Groups({"create", "public"})
      */
     private $warningLimit;
 
     /**
+     * Tests success limit.
+     *
      * @var int
      *
      * @ORM\Column(name="success_limit", type="smallint")
      *
-     * @Serializer\Expose
+     * @Serializer\Groups({"create", "public"})
      */
     private $successLimit;
 
