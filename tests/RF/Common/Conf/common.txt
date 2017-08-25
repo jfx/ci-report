@@ -14,3 +14,4 @@ ${DC_OS}          LINUX
 ${SHORT_SLEEP}    2s
 ${TIMEOUT}        20s
 ${BIN_DIR}        ${CURDIR}/../../../../bin
+${EMAIL_TEST}     ci-report.test@example.com

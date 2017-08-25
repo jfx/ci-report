@@ -24,6 +24,9 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Project;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Swift_Mailer;
+use Swift_Message;
+use Twig\Environment;
 
 /**
  * Project service class.
@@ -44,6 +47,16 @@ class ProjectService
     private $doctrine;
 
     /**
+     * @var Swift_Mailer
+     */
+    private $mailer;
+
+    /**
+     * @var Twig environment
+     */
+    private $twig;
+
+    /**
      * @var UtilService
      */
     private $utilService;
@@ -52,10 +65,14 @@ class ProjectService
      * Constructor.
      *
      * @param ManagerRegistry $doctrine Doctrine registry manager
+     * @param Swift_Mailer    $mailer   Mailer service
+     * @param Environment     $twig     Twig service
      */
-    public function __construct(ManagerRegistry $doctrine)
+    public function __construct(ManagerRegistry $doctrine, Swift_Mailer $mailer, Environment $twig)
     {
         $this->doctrine = $doctrine;
+        $this->mailer = $mailer;
+        $this->twig = $twig;
         $this->utilService = new UtilService();
     }
 
@@ -80,5 +97,29 @@ class ProjectService
         $project->setRefId($slug);
 
         $project->setToken($this->utilService->generateToken());
+    }
+
+    /**
+     * Send a registration email.
+     *
+     * @param Project $project Project
+     */
+    public function sendRegistrationEmail(Project $project): void
+    {
+        $title = 'ci-report: "'.$project->getName().'" registered';
+
+        $message = (new Swift_Message($title))
+            ->setFrom('noreply@ci-report.io')
+            ->setTo($project->getEmail())
+            ->setBody(
+                $this->twig->render(
+                    'Emails/registration.html.twig',
+                    array(
+                        'project' => $project,
+                    )
+                ),
+                'text/html'
+            );
+        $this->mailer->send($message);
     }
 }

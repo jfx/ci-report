@@ -2,10 +2,13 @@
 Library           OperatingSystem
 Library           Process
 Library           String
+Library           DateTime
 Library           Selenium2Library
 Library           DatabaseLibrary
 Library           RequestsLibrary
+Library           ImapLibrary
 Resource          ../Conf/common.txt
+Resource          ../Conf/mail.txt
 
 *** Keywords ***
 Set URL
@@ -47,10 +50,13 @@ Setup
     \    Run Keyword If    '${tag}' == 'GUI'    I open browser
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'API'    I create an API session named "cir"
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'MAIL'    Open Mailbox    host=${IMAP_SERVER}    user=${MAIL_USER}    password=${MAIL_PASSWORD}
 
 Teardown
     Log    -- Teardown --
-    Comment    Terminate All Processes
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'MAIL'    Close Mailbox
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'API'    Delete All Sessions
     : FOR    ${tag}    IN    @{TEST TAGS}
@@ -71,3 +77,14 @@ the breadcrumb should contain
 I click on breadcrumb level
     [Arguments]    ${level}
     Click Link    id=br_lvl${level}
+
+I get content of last email
+    ${latest}=    Wait for Mail    sender=${MAIL_USER}    recipient=${MAIL_USER}    status=UNSEEN    timeout=150
+    ${content}=    Get Email body    ${latest}
+    [Return]    ${content}
+
+I get href from html link id
+    [Arguments]    ${content}    ${id}
+    ${line}=    Get Lines Containing String    ${content}    ${id}
+    ${link} =    Get Regexp Matches    ${line}    href="(.*?)"    1
+    [Return]    ${link[0]}

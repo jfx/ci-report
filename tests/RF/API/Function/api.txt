@@ -4,6 +4,7 @@ Library           RequestsLibrary
 Resource          ../Conf/api.txt
 Resource          ../../Project_Dashboard/Conf/dashboard.txt
 Resource          ../../Common/Function/common.txt
+Resource          ../../Common/Function/check.txt
 
 *** Keywords ***
 Response content should have x items

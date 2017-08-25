@@ -10,6 +10,7 @@ parameters:
     locale: en
     app.version: '0.3.0'
     app.build: 'bbb'
+    app.host: '%web_host%'
 
 framework:
     #esi: ~
@@ -45,6 +46,7 @@ twig:
         version: '%app.version%'
         build: '%app.build%'
         cir_env: '%app.cir_env%'
+        web_host: '%app.host%'
 
 # Doctrine Configuration
 doctrine:

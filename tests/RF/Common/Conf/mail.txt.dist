@@ -1,0 +1,5 @@
+*** Variables ***
+${IMAP_SERVER}      ${EMPTY}
+${MAIL_USER}        ${EMPTY}
+${MAIL_PASSWORD}    ${EMPTY}
+

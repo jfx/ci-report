@@ -58,9 +58,13 @@ class ProjectApiController extends FOSRestController
      * @Doc\ApiDoc(
      *     section="Projects",
      *     description="Get the list of all projects.",
-     *     output= { "class"=Project::class, "collection"=true, "groups"={"public"} },
+     *     output= {
+     *         "class"=Project::class,
+     *         "groups"={"public"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
      *     statusCodes={
-     *         200="Returned when successful"
+     *         200="Returned when successful array of public data of projects"
      *     }
      * )
      */
@@ -74,7 +78,7 @@ class ProjectApiController extends FOSRestController
     }
 
     /**
-     * Create a project. Private data are sent by mail.
+     * Create a project. Private data are sent by email.
      *
      * @param Project                 $project    Project to create
      * @param ConstraintViolationList $violations List of violations
@@ -89,7 +93,11 @@ class ProjectApiController extends FOSRestController
      *     section="Projects",
      *     description="Create a project. Private data are sent by mail.",
      *     input= { "class"=Project::class, "groups"={"create"} },
-     *     output= { "class"=Project::class, "groups"={"public"} },
+     *     output= {
+     *         "class"=Project::class,
+     *         "groups"={"public"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
      *     statusCodes={
      *         201="Returned when created",
      *         400="Returned when a violation is raised by validation"
@@ -101,7 +109,8 @@ class ProjectApiController extends FOSRestController
         if (count($violations)) {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
         }
-        $this->get(ProjectService::class)->setSlugAndToken($project);
+        $projectService = $this->get(ProjectService::class);
+        $projectService->setSlugAndToken($project);
 
         if (null === $project->getWarningLimit()) {
             $project->setWarningLimit(Project::DEFAULT_WARNING_LIMIT);
@@ -112,6 +121,8 @@ class ProjectApiController extends FOSRestController
         $em = $this->getDoctrine()->getManager();
         $em->persist($project);
         $em->flush();
+
+        $projectService->sendRegistrationEmail($project);
 
         return $project;
     }

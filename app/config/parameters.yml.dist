@@ -17,3 +17,5 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret: 446cf775596cd793ce8a24adec
+    web_host: 'http://127.0.0.1:8000'
+    devtest_delivery_addresses: devtest@example.com

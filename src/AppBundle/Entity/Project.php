@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
+use Datetime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -39,6 +40,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="cir_project")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
+ * @ORM\HasLifecycleCallbacks()
  *
  * @UniqueEntity("name")
  */
@@ -114,12 +116,45 @@ class Project
     private $successLimit;
 
     /**
+     * Email.
+     *
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=50)
+     *
+     * @Assert\NotBlank
+     * @Assert\Email(strict=true)
+     *
+     * @Serializer\Groups({"create"})
+     */
+    private $email;
+
+    /**
+     * @var DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     *
+     * @Serializer\Exclude
+     */
+    private $created;
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
         $this->setWarningLimit(self::DEFAULT_WARNING_LIMIT);
         $this->setSuccessLimit(self::DEFAULT_SUCCESS_LIMIT);
+    }
+
+    /**
+     * Triggered on insert.
+     *
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created = new DateTime();
     }
 
     /**
@@ -250,5 +285,29 @@ class Project
     public function getSuccessLimit(): ?int
     {
         return $this->successLimit;
+    }
+
+    /**
+     * Set email.
+     *
+     * @param string $email
+     *
+     * @return Project
+     */
+    public function setEmail(string $email): Project
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email.
+     *
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
     }
 }

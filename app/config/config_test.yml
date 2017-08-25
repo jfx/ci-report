@@ -13,7 +13,8 @@ web_profiler:
     intercept_redirects: false
 
 swiftmailer:
-    disable_delivery: true
+    disable_delivery: false
+    delivery_addresses: ['%devtest_delivery_addresses%']
 
 parameters:
     app.cir_env: 'TEST'

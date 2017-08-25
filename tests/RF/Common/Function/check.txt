@@ -31,3 +31,10 @@ I check table cell value
     ${row} =    Evaluate    ${row_table} + 1
     ${check} =    Get Table Cell    ${table}    ${row}    ${column}
     Should Be Equal    ${check}    ${expected}
+
+Time should be between 1 minute before and now
+    [Arguments]    ${time}
+    ${now} =    Get Current Date
+    ${limit} =    Subtract Time From Date    ${now}    1m
+    Should Be True    '${limit}' < '${time}'
+    Should Be True    '${time}' < '${now}'

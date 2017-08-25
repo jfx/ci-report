@@ -53,26 +53,32 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
             array(
                 'name' => 'Project One',
                 'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f001',
+                'email' => 'email1@example.com',
             ),
             array(
                 'name' => 'Project Two',
                 'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f002',
+                'email' => 'email2@example.com',
             ),
             array(
                 'name' => 'Project Three',
                 'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f003',
+                'email' => 'email3@example.com',
             ),
             array(
                 'name' => 'Project Four',
                 'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f004',
+                'email' => 'email4@example.com',
             ),
             array(
                 'name' => 'Project Five',
                 'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f005',
+                'email' => 'email5@example.com',
             ),
             array(
                 'name' => 'Project Six',
                 'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f006',
+                'email' => 'email6@example.com',
             ),
         );
         $objectList = array();
@@ -81,6 +87,7 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
             $objectList[$i]->setName($data['name']);
             $objectList[$i]->setRefId($utilService->toAscii($data['name']));
             $objectList[$i]->setToken($data['token']);
+            $objectList[$i]->setEmail($data['email']);
 
             $manager->persist($objectList[$i]);
             $ref = strtolower(str_replace(' ', '', $data['name'])).'-project';
