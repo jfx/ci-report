@@ -58,7 +58,7 @@ class ProjectApiController extends FOSRestController
      * @Doc\ApiDoc(
      *     section="Projects",
      *     description="Get the list of all projects.",
-     *     output= {
+     *     output={
      *         "class"=Project::class,
      *         "groups"={"public"},
      *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
@@ -78,6 +78,45 @@ class ProjectApiController extends FOSRestController
     }
 
     /**
+     * Get public project data.
+     *
+     * @param Project $project Project to create
+     *
+     * @return Project
+     *
+     * @Rest\Get("/projects/{ref_id}")
+     * @Rest\View(serializerGroups={"public"})
+     *
+     * @ParamConverter("project", options={"mapping": {"ref_id": "refId"}})
+     *
+     * @Doc\ApiDoc(
+     *     section="Projects",
+     *     description="Get public project data.",
+     *     requirements={
+     *         {
+     *             "name"="ref_id",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         }
+     *     },
+     *     output= {
+     *         "class"=Project::class,
+     *         "groups"={"public"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when project not found"
+     *     }
+     * )
+     */
+    public function getProjectAction(Project $project): Project
+    {
+        return $project;
+    }
+
+    /**
      * Create a project. Private data are sent by email.
      *
      * @param Project                 $project    Project to create
@@ -86,8 +125,9 @@ class ProjectApiController extends FOSRestController
      * @return Project|View
      *
      * @Rest\Post("/projects")
-     * @ParamConverter("project", converter="fos_rest.request_body")
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"public"})
+     *
+     * @ParamConverter("project", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
      *     section="Projects",

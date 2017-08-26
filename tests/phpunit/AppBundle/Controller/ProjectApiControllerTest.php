@@ -14,6 +14,15 @@ class ProjectApiControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+
+    public function testGetProject()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/api/projects/project-one');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
     
     public function testGetProjectsNotFound()
     {
@@ -34,7 +43,7 @@ class ProjectApiControllerTest extends WebTestCase
             array(),
             array(),
             array('CONTENT_TYPE' => 'application/json'),
-            '{"name":"Project Added"}'
+            '{"name":"Project Added","email":"ci-report.test@example.com"}'
         );
 
         $this->assertEquals(201, $client->getResponse()->getStatusCode());

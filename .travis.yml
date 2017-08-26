@@ -1,0 +1,34 @@
+language: php
+sudo: false
+
+services:
+  - mysql
+
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+matrix:
+  include:
+    - php: 7.1
+  allow_failures:
+    - php: 7.2
+
+env:
+  - SYMFONY_VERSION="3.3.*" DB=mysql
+
+before-install:
+  - composer self-update
+
+install:
+  - composer install
+  - cp app/config/parameters.yml.dist app/config/parameters.yml
+  - php bin/console doctrine:database:create --no-interaction --env=test
+  - php bin/console doctrine:schema:create --no-interaction --env=test
+  - php bin/console doctrine:fixtures:load --no-interaction --env=test
+
+script:
+  - phpunit
+
+after_failure: 
+  - cat var/logs/test.log
