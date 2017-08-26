@@ -1,34 +1,29 @@
 language: php
 sudo: false
-
 services:
-  - mysql
-
+- mysql
 cache:
   directories:
-    - $HOME/.composer/cache/files
-
+  - "$HOME/.composer/cache/files"
 matrix:
   include:
-    - php: 7.1
+  - php: 7.1
   allow_failures:
-    - php: 7.2
-
+  - php: 7.2
 env:
-  - SYMFONY_VERSION="3.3.*" DB=mysql
-
+- SYMFONY_VERSION="3.3.*" DB=mysql
 before-install:
-  - composer self-update
-
+- composer self-update
 install:
-  - composer install
-  - cp app/config/parameters.yml.dist app/config/parameters.yml
-  - php bin/console doctrine:database:create --no-interaction --env=test
-  - php bin/console doctrine:schema:create --no-interaction --env=test
-  - php bin/console doctrine:fixtures:load --no-interaction --env=test
-
+- composer install
+- cp app/config/parameters.yml.dist app/config/parameters.yml
+- php bin/console doctrine:database:create --no-interaction --env=test
+- php bin/console doctrine:schema:create --no-interaction --env=test
+- php bin/console doctrine:fixtures:load --no-interaction --env=test
 script:
-  - phpunit
-
-after_failure: 
-  - cat var/logs/test.log
+- phpunit
+after_failure:
+- cat var/logs/test.log
+notifications:
+  slack:
+    secure: VoxTm0ES0rknLxynTfwWrnv4o9WBKD3aNKVCXYeXmsvhgsuWj9XVoKXGQc9xFrvYFmH/Ymd3sVhyVYOYDGc6FprY6UEpkwhpAWKj8AM+vUIC71doAhprMwns1jLCWFT/AYeqsRjKX42bg3Y7ml9ChdiPU4FDPRpnvVAYz4MR1XTHuWPz6g7TWahyU4WAIxuo+Is6iKLJwuISNysf2+zv2PjUCpGyJYByEBbgcqIn9ZoWIYgcT2eDxd4zULipt5hiY3LRrkDuw0rhVkD0QjN3dhFejDJ3xrjckjDuKOJ/q5HiZwMZ8F2dlRB4rFKXAWqUvUzYXyltIugnHuMg8EJb7CebLEPfCW1HYxDUTM4ZligeHndT9zTl7xZGz7+BTX/vaaefYZTzTdNMIpqU4f5kAxJS0fxev/nWmreBQ6o67cI9UYZHrM7/9kOD8uQG7eXAbJY/1RGrSkMdTc3lLIiYfQosZhJVdp60G9UjPqI8kRWoFENm3/5zypLpVrBrJobcr+z+hcD99ZOsXSAwpPgSVyMmEq3ijKJOP9+KnkJi5/BEAvhnxS6CelCFyqb+zKPgox+jOdIbxBbRwlxTV0InObdedGGL5/wfo/+WEKVd9lcTz+kJFV2EEoCRmQjPb3aC7I1G4J1mjigkL2WDI7J7oNHtFxjWJ5mXNmuWEovTkyg=
