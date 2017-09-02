@@ -29,6 +29,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationList;
 
@@ -117,7 +118,7 @@ class ProjectApiController extends FOSRestController
     }
 
     /**
-     * Create a project. Private data are sent by email.
+     * Create a project. Private token is sent by email.
      *
      * @param Project                 $project    Project to create
      * @param ConstraintViolationList $violations List of violations
@@ -125,17 +126,17 @@ class ProjectApiController extends FOSRestController
      * @return Project|View
      *
      * @Rest\Post("/projects")
-     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"public"})
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"private"})
      *
-     * @ParamConverter("project", converter="fos_rest.request_body")
+     * @ParamConverter("project", converter="fos_rest.request_body", options={ "validator"={"groups"={"input", "unique"}} } )
      *
      * @Doc\ApiDoc(
      *     section="Projects",
      *     description="Create a project. Private data are sent by mail.",
-     *     input= { "class"=Project::class, "groups"={"create"} },
+     *     input= { "class"=Project::class, "groups"={"input"} },
      *     output= {
      *         "class"=Project::class,
-     *         "groups"={"public"},
+     *         "groups"={"private"},
      *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
      *     },
      *     statusCodes={
@@ -146,18 +147,12 @@ class ProjectApiController extends FOSRestController
      */
     public function postProjectsAction(Project $project, ConstraintViolationList $violations)
     {
-        if (count($violations)) {
+        if (count($violations) > 0) {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
         }
         $projectService = $this->get(ProjectService::class);
         $projectService->setSlugAndToken($project);
 
-        if (null === $project->getWarningLimit()) {
-            $project->setWarningLimit(Project::DEFAULT_WARNING_LIMIT);
-        }
-        if (null === $project->getSuccessLimit()) {
-            $project->setSuccessLimit(Project::DEFAULT_SUCCESS_LIMIT);
-        }
         $em = $this->getDoctrine()->getManager();
         $em->persist($project);
         $em->flush();
@@ -165,5 +160,88 @@ class ProjectApiController extends FOSRestController
         $projectService->sendRegistrationEmail($project);
 
         return $project;
+    }
+
+    /**
+     * Update a project.
+     *
+     * @param Project $projectDB Project to update
+     * @param Project $projectIn Project containing values to update
+     * @param Request $request   The request
+     *
+     * @return Project|View
+     *
+     * @Rest\Put("/projects/{ref_id}")
+     * @Rest\View(serializerGroups={"private"})
+     *
+     * @ParamConverter("projectDB", options={"mapping": {"ref_id": "refId"}})
+     * @ParamConverter("projectIn", converter="fos_rest.request_body")
+     *
+     * @Doc\ApiDoc(
+     *     section="Projects",
+     *     description="Update a project.",
+     *     headers={
+     *         {
+     *             "name"="X-CIR-TKN",
+     *             "required"=true,
+     *             "description"="Private token"
+     *         }
+     *     },
+     *     requirements={
+     *         {
+     *             "name"="ref_id",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         }
+     *     },
+     *     input= { "class"=Project::class, "groups"={"input"} },
+     *     output= {
+     *         "class"=Project::class,
+     *         "groups"={"private"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when a violation is raised by validation",
+     *         401="Returned when X-CIR-TKN private token value is invalid"
+     *     },
+     *     tags={
+     *         "token" = "#87ceeb"
+     *     }
+     * )
+     */
+    public function putProjectsAction(Project $projectDB, Project $projectIn, Request $request)
+    {
+        $token = $request->headers->get('X-CIR-TKN');
+
+        if ((null === $token) || ($projectDB->getToken() !== $token)) {
+            return $this->view(
+                array(
+                    'code' => Response::HTTP_UNAUTHORIZED,
+                    'message' => 'Invalid token',
+                ),
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
+        $validator = $this->get('validator');
+        $violationsUpdate = $validator->validate($projectIn, null, array('input'));
+
+        if (count($violationsUpdate) > 0) {
+            return $this->view($violationsUpdate, Response::HTTP_BAD_REQUEST);
+        }
+        $projectDB->setName($projectIn->getName())
+            ->setEmail($projectIn->getEmail())
+            ->setWarningLimit($projectIn->getWarningLimit())
+            ->setSuccessLimit($projectIn->getSuccessLimit());
+
+        // Check for unique name.
+        $errors = $validator->validate($projectDB, null, array('input', 'unique'));
+        if (count($errors) > 0) {
+            return $this->view($errors, Response::HTTP_BAD_REQUEST);
+        }
+        $this->getDoctrine()->getManager()->flush();
+
+        return $projectDB;
     }
 }

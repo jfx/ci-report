@@ -56,8 +56,8 @@ class ProjectController extends Controller
     public function indexAction(Project $project): Response
     {
         $campaignsList = $this->getDoctrine()
-                ->getRepository(Campaign::class)
-                ->findCampaignsByProject($project);
+            ->getRepository(Campaign::class)
+            ->findCampaignsByProject($project);
 
         if (count($campaignsList) > 0) {
             $lastCampaign = $campaignsList[0];

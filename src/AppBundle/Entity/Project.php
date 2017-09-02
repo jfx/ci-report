@@ -42,7 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProjectRepository")
  * @ORM\HasLifecycleCallbacks()
  *
- * @UniqueEntity("name")
+ * @UniqueEntity("name", groups={"input"})
  */
 class Project
 {
@@ -67,9 +67,9 @@ class Project
      *
      * @ORM\Column(name="name", type="string", length=50, unique=true)
      *
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"input"})
      *
-     * @Serializer\Groups({"create", "public"})
+     * @Serializer\Groups({"public", "private"})
      */
     private $name;
 
@@ -80,7 +80,7 @@ class Project
      *
      * @ORM\Column(name="refid", type="string", length=50, unique=true)
      *
-     * @Serializer\Groups({"public"})
+     * @Serializer\Groups({"public", "private"})
      */
     private $refId;
 
@@ -100,7 +100,9 @@ class Project
      *
      * @ORM\Column(name="warning_limit", type="smallint")
      *
-     * @Serializer\Groups({"create", "public"})
+     * @Assert\NotBlank(message="warning_limit value should not be blank.", groups={"input"})
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $warningLimit;
 
@@ -111,7 +113,9 @@ class Project
      *
      * @ORM\Column(name="success_limit", type="smallint")
      *
-     * @Serializer\Groups({"create", "public"})
+     * @Assert\NotBlank(message="success_limit value should not be blank.", groups={"input"})
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $successLimit;
 
@@ -122,10 +126,10 @@ class Project
      *
      * @ORM\Column(name="email", type="string", length=50)
      *
-     * @Assert\NotBlank
-     * @Assert\Email(strict=true)
+     * @Assert\NotBlank(groups={"input"})
+     * @Assert\Email(strict=true, groups={"input"})
      *
-     * @Serializer\Groups({"create"})
+     * @Serializer\Groups({"private"})
      */
     private $email;
 
@@ -309,5 +313,15 @@ class Project
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    /**
+     * Get created date.
+     *
+     * @return Datetime
+     */
+    public function getCreated(): ?Datetime
+    {
+        return $this->created;
     }
 }
