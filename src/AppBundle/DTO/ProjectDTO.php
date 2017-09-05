@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace AppBundle\DTO;
 
+use AppBundle\Entity\Project;
 use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
