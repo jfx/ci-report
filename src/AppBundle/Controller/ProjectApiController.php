@@ -82,7 +82,7 @@ class ProjectApiController extends FOSRestController
     /**
      * Get public project data.
      *
-     * @param Project $project Project to create
+     * @param Project $project Project
      *
      * @return Project
      *
@@ -115,6 +115,68 @@ class ProjectApiController extends FOSRestController
      */
     public function getProjectAction(Project $project): Project
     {
+        return $project;
+    }
+
+    /**
+     * Get private project data.
+     *
+     * @param Project $project Project
+     * @param Request $request    The request
+     *
+     * @return Project|View
+     *
+     * @Rest\Get("/projects/{refid}/private")
+     * @Rest\View(serializerGroups={"private"})
+     *
+     * @ParamConverter("project", options={"mapping": {"refid": "refid"}})
+     *
+     * @Doc\ApiDoc(
+     *     section="Projects",
+     *     description="Get private project data.",
+     *     headers={
+     *         {
+     *             "name"="X-CIR-TKN",
+     *             "required"=true,
+     *             "description"="Private token"
+     *         }
+     *     },
+     *     requirements={
+     *         {
+     *             "name"="refid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         }
+     *     },
+     *     output= {
+     *         "class"=Project::class,
+     *         "groups"={"private"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         401="Returned when X-CIR-TKN private token value is invalid",
+     *         404="Returned when project not found"
+     *     },
+     *     tags={
+     *         "token" = "#87ceeb"
+     *     }
+     * )
+     */
+    public function getProjectPrivateAction(Project $project, Request $request)
+    {
+        $token = $request->headers->get('X-CIR-TKN');
+
+        if ((null === $token) || ($project->getToken() !== $token)) {
+            return $this->view(
+                array(
+                    'code' => Response::HTTP_UNAUTHORIZED,
+                    'message' => 'Invalid token',
+                ),
+                Response::HTTP_UNAUTHORIZED
+            );
+        }
         return $project;
     }
 
@@ -205,7 +267,8 @@ class ProjectApiController extends FOSRestController
      *     statusCodes={
      *         200="Returned when successful",
      *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid"
+     *         401="Returned when X-CIR-TKN private token value is invalid",
+     *         404="Returned when project not found"
      *     },
      *     tags={
      *         "token" = "#87ceeb"

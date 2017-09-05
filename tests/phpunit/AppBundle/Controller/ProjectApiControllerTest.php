@@ -23,6 +23,21 @@ class ProjectApiControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+
+    public function testGetProjectPrivate()
+    {
+        $client = static::createClient();
+
+        $client->request(
+            'GET',
+            '/api/projects/project-one/private',
+            array(),
+            array(),
+            array('HTTP_X-CIR-TKN' => '1f4ffb19e4b9-02278af07b7d-4e370a76f001')
+        );
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
     
     public function testGetProjectsNotFound()
     {

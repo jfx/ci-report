@@ -40,8 +40,44 @@ Resource          Function/api.txt
     And Dictionary Should Not Contain Key    ${resp.json()}    token
     And Dictionary Should Not Contain Key    ${resp.json()}    email
 
-"GET Project" request with unknown project returns HTTP "404" error
+"GET Project" request with unknown refid returns HTTP "404" error
     ${resp} =    When Get Request    cir    /projects/X
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"GET project private" request returns private project data
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    And Get Request    cir    /projects/${P1.refid}/private    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P1.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1.success}
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P1.email}
+
+"GET project private" request should not contain not expose fields
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Get Request    cir    /projects/${P1.refid}/private    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Not Contain Key    ${resp.json()}    id
+    And Dictionary Should Not Contain Key    ${resp.json()}    token
+
+"GET project private" request with wrong token returns HTTP "401" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=XXX
+    ${resp} =    And Get Request    cir    /projects/${P1.refid}/private    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    401
+    And Dictionary Should Contain Item    ${resp.json()}    code    401
+    And Dictionary Should Contain Item    ${resp.json()}    message    Invalid token
+
+"GET project private" request without token returns HTTP "401" error
+    ${resp} =    When Get Request    cir    /projects/${P1.refid}/private
+    Then Should Be Equal As Strings    ${resp.status_code}    401
+    And Dictionary Should Contain Item    ${resp.json()}    code    401
+    And Dictionary Should Contain Item    ${resp.json()}    message    Invalid token
+
+"GET Project private" request with unknown refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Get Request    cir    /projects/X/private    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
@@ -399,3 +435,9 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    name
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value is already used.
+
+"PUT projects" request with unknown refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
+    ${resp} =    And Put Request    cir    /projects/X    data=${data}    headers=${headers}
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
