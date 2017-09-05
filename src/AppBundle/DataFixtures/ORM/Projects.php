@@ -85,7 +85,7 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
         foreach ($dataArray as $i => $data) {
             $objectList[$i] = new Project();
             $objectList[$i]->setName($data['name']);
-            $objectList[$i]->setRefId($utilService->toAscii($data['name']));
+            $objectList[$i]->setRefid($utilService->toAscii($data['name']));
             $objectList[$i]->setToken($data['token']);
             $objectList[$i]->setEmail($data['email']);
 

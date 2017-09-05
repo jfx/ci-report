@@ -50,9 +50,9 @@ class CampaignController extends Controller
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{prefId}/campaign/{refId}", name="campaign-view")
+     * @Route("/project/{prefid}/campaign/{refId}", name="campaign-view")
      *
-     * @ParamConverter("project", options={"mapping": {"prefId": "refId"}})
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      */
     public function indexAction(Project $project, int $refId): Response
     {
@@ -62,8 +62,8 @@ class CampaignController extends Controller
         if (!$campaign) {
             throw $this->createNotFoundException(
                 sprintf(
-                    'No campaign found for project refId %s and campaign #%d',
-                    $project->getRefId(),
+                    'No campaign found for project refid %s and campaign #%d',
+                    $project->getRefid(),
                     $refId
                 )
             );

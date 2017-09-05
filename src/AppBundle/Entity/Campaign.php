@@ -140,8 +140,8 @@ class Campaign
      */
     public function __construct(Project $project)
     {
-        $this->setWarningLimit($project->getWarningLimit());
-        $this->setSuccessLimit($project->getSuccessLimit());
+        $this->setWarningLimit($project->getWarning());
+        $this->setSuccessLimit($project->getSuccess());
         $this->setProject($project);
     }
 

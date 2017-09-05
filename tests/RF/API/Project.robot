@@ -10,8 +10,8 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Response content should have x Items    ${resp.content}    6
     And Label item of list should be equal    ${resp.content}    "name"    ${P1.name}
-    And Label item of list should be equal    ${resp.content}    "warning_limit"    ${P1.warning_limit}
-    And Label item of list should be equal    ${resp.content}    "success_limit"    ${P1.success_limit}
+    And Label item of list should be equal    ${resp.content}    "warning"    ${P1.warning}
+    And Label item of list should be equal    ${resp.content}    "success"    ${P1.success}
 
 "GET Projects" request should not contain not expose fields
     ${resp} =    When Get Request    cir    /projects
@@ -29,9 +29,9 @@ Resource          Function/api.txt
     ${resp} =    When Get Request    cir    /projects/${P1.refid}
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Dictionary Should Contain Item    ${resp.json()}    name    ${P1.name}
-    And Dictionary Should Contain Item    ${resp.json()}    ref_id    ${P1.refid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning_limit    ${P1.warning_limit}
-    And Dictionary Should Contain Item    ${resp.json()}    success_limit    ${P1.success_limit}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1.success}
 
 "GET project" request should not contain not expose fields
     ${resp} =    When Get Request    cir    /projects/${P1.refid}
@@ -45,44 +45,44 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"POST projects" request with limit values returns private data
+"POST projects" request returns HTTP "201" with private data
     [Tags]    EDIT    DB
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     And Dictionary Should Contain Item    ${resp.json()}    name    ${P0.name}
-    And Dictionary Should Contain Item    ${resp.json()}    ref_id    ${P0.refid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning_limit    ${P0.warning_limit}
-    And Dictionary Should Contain Item    ${resp.json()}    success_limit    ${P0.success_limit}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P0.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P0.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P0.success}
     And Dictionary Should Contain Item    ${resp.json()}    email    ${P0.email}
-    Check If Exists In Database    select id from cir_project where name="${P0.name}" and CHAR_LENGTH(token) = 38 and email="${P0.email}" and warning_limit=${P0.warning_limit} and success_limit=${P0.success_limit}
+    Check If Exists In Database    select id from cir_project where name="${P0.name}" and CHAR_LENGTH(token) = 38 and email="${P0.email}" and warning=${P0.warning} and success=${P0.success}
 
 "POST projects" request with duplicate refId increments it by one
     [Tags]    EDIT
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=Project-One    email=${P0.email}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=Project-One    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     And Dictionary Should Contain Item    ${resp.json()}    name    Project-One
-    And Dictionary Should Contain Item    ${resp.json()}    ref_id    project-one-1
-    And Dictionary Should Contain Item    ${resp.json()}    warning_limit    ${P0.warning_limit}
-    And Dictionary Should Contain Item    ${resp.json()}    success_limit    ${P0.success_limit}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    project-one-1
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P0.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P0.success}
     And Dictionary Should Contain Item    ${resp.json()}    email    ${P0.email}
 
 "POST projects" request save date of creation
     [Tags]    EDIT    DB
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
-    @{queryResults} =    Query    select created from cir_project where name="${P0.name}" and email="${P0.email}" and warning_limit=${P0.warning_limit} and success_limit=${P0.success_limit}
+    @{queryResults} =    Query    select created from cir_project where name="${P0.name}" and email="${P0.email}" and warning=${P0.warning} and success=${P0.success}
     And Time should be between 1 minute before and now    ${queryResults[0][0]}
 
 "POST projects" request send an email with greetings and link to documentation
     [Tags]    EDIT    MAIL    GUI
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     ${content}=    When I get content of last email
@@ -94,7 +94,7 @@ Resource          Function/api.txt
 "POST projects" request send an email with link to project dashboard and API token
     [Tags]    EDIT    DB    MAIL    GUI
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     ${content}=    When I get content of last email
@@ -103,13 +103,13 @@ Resource          Function/api.txt
     Then Page Should Contain    Project Created
     ${line}=    When Get Lines Containing String    ${content}    token
     ${token} =    And Get Regexp Matches    ${line}    ">(.*?)</div>    1
-    @{queryResults} =    And Query    select token from cir_project where name="${P0.name}" and email="${P0.email}" and warning_limit=${P0.warning_limit} and success_limit=${P0.success_limit}
+    @{queryResults} =    And Query    select token from cir_project where name="${P0.name}" and email="${P0.email}" and warning=${P0.warning} and success=${P0.success}
     Then Should Be Equal    ${queryResults[0][0]}    ${token[0]}
 
 "POST projects" request should not contain not expose fields
     [Tags]    EDIT
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     And Dictionary Should Not Contain Key    ${resp.json()}    id
@@ -117,7 +117,7 @@ Resource          Function/api.txt
 
 "POST projects" request without name returns HTTP "400" error
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    email=${P0.email}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    name
@@ -125,39 +125,107 @@ Resource          Function/api.txt
 
 "POST projects" request without email returns HTTP "400" error
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=${P0.name}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    email
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
 
-"POST projects" request without warning limit returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    success_limit=${P0.success_limit}
-    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warningLimit
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    warning_limit value should not be blank.
-
-"POST projects" request without success limit returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning_limit=${P0.warning_limit}
-    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    successLimit
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    success_limit value should not be blank.
-
 "POST projects" request with invalid email adress returns HTTP "400" error
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P0.name}    email=.@example.com    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=${P0.name}    email=.@example.com    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    email
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value is not a valid email address.
 
+"POST projects" request without warning limit returns HTTP "400" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    success=${P0.success}
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
+
+"POST projects" request with invalid type warning limit sets it to 0
+    [Tags]    DB    EDIT
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=XXX    success=${P0.success}
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P0.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P0.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    0
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P0.success}
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P0.email}
+    Check If Exists In Database    select id from cir_project where name="${P0.name}" and CHAR_LENGTH(token) = 38 and email="${P0.email}" and warning=0 and success=${P0.success}
+
+"POST projects" request with float type warning limit round it
+    [Tags]    DB    EDIT
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=80.7    success=${P0.success}
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P0.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P0.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    80
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P0.success}
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P0.email}
+    Check If Exists In Database    select id from cir_project where name="${P0.name}" and CHAR_LENGTH(token) = 38 and email="${P0.email}" and warning=80 and success=${P0.success}
+
+"POST projects" request with warning limit out of range returns HTTP "400" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=120    success=${P0.success}
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
+
+"POST projects" request without success limit returns HTTP "400" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
+
+"POST projects" request with invalid type success limit sets it to 0
+    [Tags]    DB    EDIT
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=XXX
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P0.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P0.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P0.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    0
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P0.email}
+    Check If Exists In Database    select id from cir_project where name="${P0.name}" and CHAR_LENGTH(token) = 38 and email="${P0.email}" and warning=${P0.warning} and success=0
+
+"POST projects" request with float type success limit round it
+    [Tags]    DB    EDIT
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=90.7
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P0.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P0.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P0.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    90
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P0.email}
+    Check If Exists In Database    select id from cir_project where name="${P0.name}" and CHAR_LENGTH(token) = 38 and email="${P0.email}" and warning=${P0.warning} and success=90
+
+"POST projects" request with success limit out of range returns HTTP "400" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json
+    &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=120
+    ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
+
 "POST projects" request with an existing name returns HTTP "400" error
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=Project One    email=${P0.email}    warning_limit=${P0.warning_limit}    success_limit=${P0.success_limit}
+    &{data} =    And Create Dictionary    name=Project One    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    name
@@ -166,34 +234,34 @@ Resource          Function/api.txt
 "PUT projects" request updates Project One
     [Tags]    EDIT    DB
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning_limit=${P1M.warning_limit}    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Dictionary Should Contain Item    ${resp.json()}    name    ${P1M.name}
-    And Dictionary Should Contain Item    ${resp.json()}    ref_id    ${P1.refid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning_limit    ${P1M.warning_limit}
-    And Dictionary Should Contain Item    ${resp.json()}    success_limit    ${P1M.success_limit}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1M.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1M.success}
     And Dictionary Should Contain Item    ${resp.json()}    email    ${P1M.email}
-    Check If Exists In Database    select id from cir_project where refid="${P1.refid}" and name="${P1M.name}" and token="${P1.token}" and email="${P1M.email}" and warning_limit=${P1M.warning_limit} and success_limit=${P1M.success_limit}
+    Check If Exists In Database    select id from cir_project where refid="${P1.refid}" and name="${P1M.name}" and token="${P1.token}" and email="${P1M.email}" and warning=${P1M.warning} and success=${P1M.success}
 
 "PUT projects" request should not change token and refid values
     [Tags]    EDIT    DB
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    ref_id=project    token=XXXX    name=${P1M.name}    email=${P1M.email}    warning_limit=${P1M.warning_limit}
-    ...    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    refid=project    token=XXXX    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}
+    ...    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Dictionary Should Contain Item    ${resp.json()}    name    ${P1M.name}
-    And Dictionary Should Contain Item    ${resp.json()}    ref_id    ${P1.refid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning_limit    ${P1M.warning_limit}
-    And Dictionary Should Contain Item    ${resp.json()}    success_limit    ${P1M.success_limit}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1M.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1M.success}
     And Dictionary Should Contain Item    ${resp.json()}    email    ${P1M.email}
-    Check If Exists In Database    select id from cir_project where refid="${P1.refid}" and name="${P1M.name}" and token="${P1.token}" and email="${P1M.email}" and warning_limit=${P1M.warning_limit} and success_limit=${P1M.success_limit}
+    Check If Exists In Database    select id from cir_project where refid="${P1.refid}" and name="${P1M.name}" and token="${P1.token}" and email="${P1M.email}" and warning=${P1M.warning} and success=${P1M.success}
 
 "PUT projects" request should not contain not expose fields
     [Tags]    EDIT
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning_limit=${P1M.warning_limit}    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Dictionary Should Not Contain Key    ${resp.json()}    id
@@ -201,7 +269,7 @@ Resource          Function/api.txt
 
 "PUT projects" request with wrong token returns HTTP "401" error
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=XXX
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning_limit=${P1M.warning_limit}    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    401
     And Dictionary Should Contain Item    ${resp.json()}    code    401
@@ -209,7 +277,7 @@ Resource          Function/api.txt
 
 "PUT projects" request without token returns HTTP "401" error
     &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning_limit=${P1M.warning_limit}    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    401
     And Dictionary Should Contain Item    ${resp.json()}    code    401
@@ -217,7 +285,7 @@ Resource          Function/api.txt
 
 "PUT projects" request without name returns HTTP "400" error
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    email=${P1M.email}    warning_limit=${P1M.warning_limit}    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    name
@@ -225,40 +293,108 @@ Resource          Function/api.txt
 
 "PUT projects" request without email returns HTTP "400" error
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    name=${P1M.name}    warning_limit=${P1M.warning_limit}    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    name=${P1M.name}    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    email
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
 
-"PUT projects" request without warning limit returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    success_limit=${P1M.success_limit}
-    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warningLimit
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    warning_limit value should not be blank.
-
-"PUT projects" request without success limit returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning_limit=${P1M.warning_limit}
-    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    successLimit
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    success_limit value should not be blank.
-
 "PUT projects" request with invalid email adress returns HTTP "400" error
     [Tags]    EDIT
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=.@example.com    warning_limit=${P1M.warning_limit}    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=.@example.com    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    email
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value is not a valid email address.
 
+"PUT projects" request without warning limit returns HTTP "400" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    success=${P1M.success}
+    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
+
+"PUT projects" request with invalid type warning limit sets it to 0
+    [Tags]    DB    EDIT
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=XXX    success=${P1M.success}
+    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P1M.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    0
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1M.success}
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P1M.email}
+    Check If Exists In Database    select id from cir_project where refid="${P1.refid}" and name="${P1M.name}" and token="${P1.token}" and email="${P1M.email}" and warning=0 and success=${P1M.success}
+
+"PUT projects" request with float type warning limit round it
+    [Tags]    DB    EDIT
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=90.7    success=${P1M.success}
+    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P1M.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    90
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1M.success}
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P1M.email}
+    Check If Exists In Database    select id from cir_project where refid="${P1.refid}" and name="${P1M.name}" and token="${P1.token}" and email="${P1M.email}" and warning=90 and success=${P1M.success}
+
+"PUT projects" request with warning limit out of range returns HTTP "400" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=120    success=${P1M.success}
+    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
+
+"PUT projects" request without success limit returns HTTP "400" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}
+    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
+
+"PUT projects" request with invalid type success limit sets it to 0
+    [Tags]    DB    EDIT
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=XXX
+    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P1M.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1M.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    0
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P1M.email}
+    Check If Exists In Database    select id from cir_project where refid="${P1.refid}" and name="${P1M.name}" and token="${P1.token}" and email="${P1M.email}" and warning=${P1M.warning} and success=0
+
+"PUT projects" request with float type success limit round it
+    [Tags]    DB    EDIT
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=90.7
+    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P1M.name}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1.refid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1M.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    90
+    And Dictionary Should Contain Item    ${resp.json()}    email    ${P1M.email}
+    Check If Exists In Database    select id from cir_project where refid="${P1.refid}" and name="${P1M.name}" and token="${P1.token}" and email="${P1M.email}" and warning=${P1M.warning} and success=90
+
+"PUT projects" request with success limit out of range returns HTTP "400" error
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=120
+    ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
+
 "PUT projects" request with an existing name returns HTTP "400" error
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    name=Project Six    email=${P1M.email}    warning_limit=${P1M.warning_limit}    success_limit=${P1M.success_limit}
+    &{data} =    And Create Dictionary    name=Project Six    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/${P1.refid}    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    name

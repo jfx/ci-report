@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
+use AppBundle\DTO\ProjectDTO;
 use AppBundle\Entity\Project;
 use AppBundle\Service\ProjectService;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -85,17 +86,17 @@ class ProjectApiController extends FOSRestController
      *
      * @return Project
      *
-     * @Rest\Get("/projects/{ref_id}")
+     * @Rest\Get("/projects/{refid}")
      * @Rest\View(serializerGroups={"public"})
      *
-     * @ParamConverter("project", options={"mapping": {"ref_id": "refId"}})
+     * @ParamConverter("project", options={"mapping": {"refid": "refid"}})
      *
      * @Doc\ApiDoc(
      *     section="Projects",
      *     description="Get public project data.",
      *     requirements={
      *         {
-     *             "name"="ref_id",
+     *             "name"="refid",
      *             "dataType"="string",
      *             "requirement"="string",
      *             "description"="Unique short name of project defined on project creation."
@@ -133,7 +134,7 @@ class ProjectApiController extends FOSRestController
      * @Doc\ApiDoc(
      *     section="Projects",
      *     description="Create a project. Private data are sent by mail.",
-     *     input= { "class"=Project::class, "groups"={"input"} },
+     *     input= { "class"=ProjectDTO::class },
      *     output= {
      *         "class"=Project::class,
      *         "groups"={"private"},
@@ -165,17 +166,17 @@ class ProjectApiController extends FOSRestController
     /**
      * Update a project.
      *
-     * @param Project $projectDB Project to update
-     * @param Project $projectIn Project containing values to update
-     * @param Request $request   The request
+     * @param Project $projectDTO Project containing values to update
+     * @param Project $projectDB  Project to update
+     * @param Request $request    The request
      *
      * @return Project|View
      *
-     * @Rest\Put("/projects/{ref_id}")
+     * @Rest\Put("/projects/{refid}")
      * @Rest\View(serializerGroups={"private"})
      *
-     * @ParamConverter("projectDB", options={"mapping": {"ref_id": "refId"}})
-     * @ParamConverter("projectIn", converter="fos_rest.request_body")
+     * @ParamConverter("projectDB", options={"mapping": {"refid": "refid"}})
+     * @ParamConverter("projectDTO", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
      *     section="Projects",
@@ -195,7 +196,7 @@ class ProjectApiController extends FOSRestController
      *             "description"="Unique short name of project defined on project creation."
      *         }
      *     },
-     *     input= { "class"=Project::class, "groups"={"input"} },
+     *     input= { "class"=ProjectDTO::class },
      *     output= {
      *         "class"=Project::class,
      *         "groups"={"private"},
@@ -211,7 +212,7 @@ class ProjectApiController extends FOSRestController
      *     }
      * )
      */
-    public function putProjectsAction(Project $projectDB, Project $projectIn, Request $request)
+    public function putProjectsAction(ProjectDTO $projectDTO, Project $projectDB, Request $request)
     {
         $token = $request->headers->get('X-CIR-TKN');
 
@@ -225,20 +226,17 @@ class ProjectApiController extends FOSRestController
             );
         }
         $validator = $this->get('validator');
-        $violationsUpdate = $validator->validate($projectIn, null, array('input'));
+        $violationsDTO = $validator->validate($projectDTO);
 
-        if (count($violationsUpdate) > 0) {
-            return $this->view($violationsUpdate, Response::HTTP_BAD_REQUEST);
+        if (count($violationsDTO) > 0) {
+            return $this->view($violationsDTO, Response::HTTP_BAD_REQUEST);
         }
-        $projectDB->setName($projectIn->getName())
-            ->setEmail($projectIn->getEmail())
-            ->setWarningLimit($projectIn->getWarningLimit())
-            ->setSuccessLimit($projectIn->getSuccessLimit());
+        $projectDB->setFromDTO($projectDTO);
 
         // Check for unique name.
-        $errors = $validator->validate($projectDB, null, array('input', 'unique'));
-        if (count($errors) > 0) {
-            return $this->view($errors, Response::HTTP_BAD_REQUEST);
+        $violationsDB = $validator->validate($projectDB, null, array('input', 'unique'));
+        if (count($violationsDB) > 0) {
+            return $this->view($violationsDB, Response::HTTP_BAD_REQUEST);
         }
         $this->getDoctrine()->getManager()->flush();
 

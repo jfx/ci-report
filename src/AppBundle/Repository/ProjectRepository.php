@@ -37,18 +37,18 @@ use Doctrine\ORM\EntityRepository;
 class ProjectRepository extends EntityRepository
 {
     /**
-     * Check if refId already exists.
+     * Check if refid already exists.
      *
-     * @param string $refId RefId to test
+     * @param string $refid RefId to test
      *
      * @return bool
      */
-    public function refIdExists(string $refId): bool
+    public function refidExists(string $refid): bool
     {
         $qb = $this->createQueryBuilder('p')
             ->select('count(p.id)')
-            ->where('p.refId = :refId')
-            ->setParameter('refId', $refId);
+            ->where('p.refid = :refid')
+            ->setParameter('refid', $refid);
 
         $result = $qb->getQuery()->getSingleScalarResult();
 

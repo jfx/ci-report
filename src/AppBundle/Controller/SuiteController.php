@@ -52,9 +52,9 @@ class SuiteController extends Controller
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{prefId}/campaign/{crefId}/suite/{srefId}", name="suite-view")
+     * @Route("/project/{prefid}/campaign/{crefId}/suite/{srefId}", name="suite-view")
      *
-     * @ParamConverter("project", options={"mapping": {"prefId": "refId"}})
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      */
     public function indexAction(Project $project, int $crefId, int $srefId): Response
     {
@@ -64,8 +64,8 @@ class SuiteController extends Controller
         if (!$campaign) {
             throw $this->createNotFoundException(
                 sprintf(
-                    'No campaign found for project refId %s and campaign #%d',
-                    $project->getRefId(),
+                    'No campaign found for project refid %s and campaign #%d',
+                    $project->getRefid(),
                     $crefId
                 )
             );

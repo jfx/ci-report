@@ -52,7 +52,7 @@ class ProjectService
     private $mailer;
 
     /**
-     * @var Twig environment
+     * @var Environment
      */
     private $twig;
 
@@ -90,11 +90,11 @@ class ProjectService
         $separator = '-';
         $ext = 0;
 
-        while ($repository->refIdExists($slug)) {
+        while ($repository->refidExists($slug)) {
             ++$ext;
             $slug = $root.$separator.$ext;
         }
-        $project->setRefId($slug);
+        $project->setRefid($slug);
 
         $project->setToken($this->utilService->generateToken());
     }

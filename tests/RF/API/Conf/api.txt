@@ -1,4 +1,4 @@
 *** Variables ***
 ${api_prefix}     /api
-&{P0}             refid=project-created    name=Project Created    warning_limit=45    success_limit=55    email=${EMAIL_TEST}
-&{P1M}            refid=${P1.refid}    name=${P1.name}-mod    warning_limit=45    success_limit=55    email=${EMAIL_TEST}
+&{P0}             refid=project-created    name=Project Created    warning=45    success=55    email=${EMAIL_TEST}
+&{P1M}            refid=${P1.refid}    name=${P1.name}-mod    warning=45    success=55    email=${EMAIL_TEST}

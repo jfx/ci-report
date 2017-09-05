@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
+use AppBundle\DTO\ProjectDTO;
 use Datetime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
@@ -82,7 +83,7 @@ class Project
      *
      * @Serializer\Groups({"public", "private"})
      */
-    private $refId;
+    private $refid;
 
     /**
      * @var string
@@ -98,26 +99,28 @@ class Project
      *
      * @var int
      *
-     * @ORM\Column(name="warning_limit", type="smallint")
+     * @ORM\Column(name="warning", type="smallint")
      *
-     * @Assert\NotBlank(message="warning_limit value should not be blank.", groups={"input"})
+     * @Assert\NotBlank(groups={"input"})
+     * @Assert\Range(min=0, max=100, groups={"input"})
      *
      * @Serializer\Groups({"public", "private"})
      */
-    private $warningLimit;
+    private $warning;
 
     /**
      * Tests success limit.
      *
      * @var int
      *
-     * @ORM\Column(name="success_limit", type="smallint")
+     * @ORM\Column(name="success", type="smallint")
      *
-     * @Assert\NotBlank(message="success_limit value should not be blank.", groups={"input"})
+     * @Assert\NotBlank(groups={"input"})
+     * @Assert\Range(min=0, max=100, groups={"input"})
      *
      * @Serializer\Groups({"public", "private"})
      */
-    private $successLimit;
+    private $success;
 
     /**
      * Email.
@@ -147,8 +150,8 @@ class Project
      */
     public function __construct()
     {
-        $this->setWarningLimit(self::DEFAULT_WARNING_LIMIT);
-        $this->setSuccessLimit(self::DEFAULT_SUCCESS_LIMIT);
+        $this->setWarning(self::DEFAULT_WARNING_LIMIT);
+        $this->setSuccess(self::DEFAULT_SUCCESS_LIMIT);
     }
 
     /**
@@ -196,27 +199,27 @@ class Project
     }
 
     /**
-     * Set refId.
+     * Set refid.
      *
-     * @param string $refId
+     * @param string $refid
      *
      * @return Project
      */
-    public function setRefId(string $refId): Project
+    public function setRefid(string $refid): Project
     {
-        $this->refId = $refId;
+        $this->refid = $refid;
 
         return $this;
     }
 
     /**
-     * Get refId.
+     * Get refid.
      *
      * @return string
      */
-    public function getRefId(): string
+    public function getRefid(): string
     {
-        return $this->refId;
+        return $this->refid;
     }
 
     /**
@@ -246,13 +249,13 @@ class Project
     /**
      * Set warning limit.
      *
-     * @param int $warningLimit
+     * @param int $warning
      *
      * @return Project
      */
-    public function setWarningLimit(int $warningLimit): Project
+    public function setWarning(int $warning): Project
     {
-        $this->warningLimit = $warningLimit;
+        $this->warning = $warning;
 
         return $this;
     }
@@ -262,21 +265,21 @@ class Project
      *
      * @return int
      */
-    public function getWarningLimit(): ?int
+    public function getWarning(): int
     {
-        return $this->warningLimit;
+        return $this->warning;
     }
 
     /**
      * Set success limit.
      *
-     * @param int $successLimit
+     * @param int $success
      *
      * @return Project
      */
-    public function setSuccessLimit(int $successLimit): Project
+    public function setSuccess(int $success): Project
     {
-        $this->successLimit = $successLimit;
+        $this->success = $success;
 
         return $this;
     }
@@ -286,9 +289,9 @@ class Project
      *
      * @return int
      */
-    public function getSuccessLimit(): ?int
+    public function getSuccess(): int
     {
-        return $this->successLimit;
+        return $this->success;
     }
 
     /**
@@ -323,5 +326,22 @@ class Project
     public function getCreated(): ?Datetime
     {
         return $this->created;
+    }
+
+    /**
+     * Set from DTO object.
+     *
+     * @param ProjectDTO $dto DTO object
+     *
+     * @return Project
+     */
+    public function setFromDTO(ProjectDTO $dto): Project
+    {
+        $this->setName($dto->getName())
+            ->setEmail($dto->getEmail())
+            ->setWarning($dto->getWarning())
+            ->setSuccess($dto->getSuccess());
+
+        return $this;
     }
 }
