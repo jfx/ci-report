@@ -26,7 +26,6 @@ use AppBundle\DTO\ProjectDTO;
 use AppBundle\Entity\Project;
 use AppBundle\Service\ProjectService;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -47,7 +46,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
  *
  * @Rest\Route("/api")
  */
-class ProjectApiController extends FOSRestController
+class ProjectApiController extends AbstractApiController
 {
     /**
      * Get list of projects.
@@ -122,7 +121,7 @@ class ProjectApiController extends FOSRestController
      * Get private project data.
      *
      * @param Project $project Project
-     * @param Request $request    The request
+     * @param Request $request The request
      *
      * @return Project|View
      *
@@ -166,17 +165,10 @@ class ProjectApiController extends FOSRestController
      */
     public function getProjectPrivateAction(Project $project, Request $request)
     {
-        $token = $request->headers->get('X-CIR-TKN');
-
-        if ((null === $token) || ($project->getToken() !== $token)) {
-            return $this->view(
-                array(
-                    'code' => Response::HTTP_UNAUTHORIZED,
-                    'message' => 'Invalid token',
-                ),
-                Response::HTTP_UNAUTHORIZED
-            );
+        if ($this->isInValidToken($request, $project->getToken())) {
+            return $this->getInvalidTokenView();
         }
+
         return $project;
     }
 
@@ -277,17 +269,10 @@ class ProjectApiController extends FOSRestController
      */
     public function putProjectsAction(ProjectDTO $projectDTO, Project $projectDB, Request $request)
     {
-        $token = $request->headers->get('X-CIR-TKN');
-
-        if ((null === $token) || ($projectDB->getToken() !== $token)) {
-            return $this->view(
-                array(
-                    'code' => Response::HTTP_UNAUTHORIZED,
-                    'message' => 'Invalid token',
-                ),
-                Response::HTTP_UNAUTHORIZED
-            );
+        if ($this->isInValidToken($request, $projectDB->getToken())) {
+            return $this->getInvalidTokenView();
         }
+
         $validator = $this->get('validator');
         $violationsDTO = $validator->validate($projectDTO);
 
