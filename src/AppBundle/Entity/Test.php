@@ -133,7 +133,7 @@ class Test
      *
      * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Suite")
-     * @ORM\JoinColumn(name="suite_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="suite_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $suite;
 

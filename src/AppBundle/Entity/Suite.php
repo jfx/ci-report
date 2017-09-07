@@ -117,7 +117,7 @@ class Suite
      *
      * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Campaign")
-     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $campaign;
 

@@ -49,7 +49,9 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class ProjectApiController extends AbstractApiController
 {
     /**
-     * Get list of projects.
+     * Get list of projects. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects -X GET
+     * </code></pre>.
      *
      * @return array
      *
@@ -79,7 +81,9 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Get public project data.
+     * Get public project data. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -X GET
+     * </code></pre>.
      *
      * @param Project $project Project
      *
@@ -118,7 +122,9 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Get private project data.
+     * Get private project data. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/private -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X GET
+     * </code></pre>.
      *
      * @param Project $project Project
      * @param Request $request The request
@@ -165,7 +171,7 @@ class ProjectApiController extends AbstractApiController
      */
     public function getProjectPrivateAction(Project $project, Request $request)
     {
-        if ($this->isInValidToken($request, $project->getToken())) {
+        if ($this->isInvalidToken($request, $project->getToken())) {
             return $this->getInvalidTokenView();
         }
 
@@ -173,7 +179,9 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Create a project. Private token is sent by email.
+     * Create a project. Private token is sent by email. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects -H "Content-Type: application/json" -X POST --data '{"name":"Project To Add", "warning":80, "success":95, "email":"test@example.com"}'
+     * </code></pre>.
      *
      * @param Project                 $project    Project to create
      * @param ConstraintViolationList $violations List of violations
@@ -188,6 +196,13 @@ class ProjectApiController extends AbstractApiController
      * @Doc\ApiDoc(
      *     section="Projects",
      *     description="Create a project. Private data are sent by mail.",
+     *     headers={
+     *         {
+     *             "name"="Content-Type",
+     *             "required"=true,
+     *             "description"="Type of content: application/json"
+     *         }
+     *     },
      *     input= { "class"=ProjectDTO::class },
      *     output= {
      *         "class"=Project::class,
@@ -200,7 +215,7 @@ class ProjectApiController extends AbstractApiController
      *     }
      * )
      */
-    public function postProjectsAction(Project $project, ConstraintViolationList $violations)
+    public function postProjectAction(Project $project, ConstraintViolationList $violations)
     {
         if (count($violations) > 0) {
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
@@ -218,7 +233,9 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Update a project.
+     * Update a project. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"name":"Project To Update", "warning":85, "success":90, "email":"test-changed@example.com"}'
+     * </code></pre>.
      *
      * @param Project $projectDTO Project containing values to update
      * @param Project $projectDB  Project to update
@@ -237,6 +254,11 @@ class ProjectApiController extends AbstractApiController
      *     description="Update a project.",
      *     headers={
      *         {
+     *             "name"="Content-Type",
+     *             "required"=true,
+     *             "description"="Type of content: application/json"
+     *         },
+     *         {
      *             "name"="X-CIR-TKN",
      *             "required"=true,
      *             "description"="Private token"
@@ -244,7 +266,7 @@ class ProjectApiController extends AbstractApiController
      *     },
      *     requirements={
      *         {
-     *             "name"="ref_id",
+     *             "name"="refid",
      *             "dataType"="string",
      *             "requirement"="string",
      *             "description"="Unique short name of project defined on project creation."
@@ -267,9 +289,9 @@ class ProjectApiController extends AbstractApiController
      *     }
      * )
      */
-    public function putProjectsAction(ProjectDTO $projectDTO, Project $projectDB, Request $request)
+    public function putProjectAction(ProjectDTO $projectDTO, Project $projectDB, Request $request)
     {
-        if ($this->isInValidToken($request, $projectDB->getToken())) {
+        if ($this->isInvalidToken($request, $projectDB->getToken())) {
             return $this->getInvalidTokenView();
         }
 
@@ -289,5 +311,58 @@ class ProjectApiController extends AbstractApiController
         $this->getDoctrine()->getManager()->flush();
 
         return $projectDB;
+    }
+
+    /**
+     * Delete a project. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
+     * </code></pre>.
+     *
+     * @param Project $project Project
+     * @param Request $request The request
+     *
+     * @return void|View
+     *
+     * @Rest\Delete("/projects/{refid}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     *
+     * @ParamConverter("project", options={"mapping": {"refid": "refid"}})
+     *
+     * @Doc\ApiDoc(
+     *     section="Projects",
+     *     description="Delete a project.",
+     *     headers={
+     *         {
+     *             "name"="X-CIR-TKN",
+     *             "required"=true,
+     *             "description"="Private token"
+     *         }
+     *     },
+     *     requirements={
+     *         {
+     *             "name"="refid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         }
+     *     },
+     *     statusCodes={
+     *         204="Returned when successful",
+     *         401="Returned when X-CIR-TKN private token value is invalid",
+     *         404="Returned when project not found"
+     *     },
+     *     tags={
+     *         "token" = "#87ceeb"
+     *     }
+     * )
+     */
+    public function deleteProjectAction(Project $project, Request $request)
+    {
+        if ($this->isInvalidToken($request, $project->getToken())) {
+            return $this->getInvalidTokenView();
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($project);
+        $em->flush();
     }
 }

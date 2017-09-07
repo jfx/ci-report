@@ -129,7 +129,7 @@ class Campaign
      * @Gedmo\SortableGroup
      *
      * @ORM\ManyToOne(targetEntity="Project")
-     * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false)
+     * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false, onDelete="cascade")
      */
     private $project;
 

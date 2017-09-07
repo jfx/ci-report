@@ -2,5 +2,5 @@
 ${location_dashboard}    /project
 ${DEFAULT_WARNING_LIMIT}    80
 ${DEFAULT_SUCCESS_LIMIT}    95
-&{P1}             refid=project-one    name=Project One    warning=80    success=95    email=email1@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f001
+&{P1}             id=1    refid=project-one    name=Project One    warning=80    success=95    email=email1@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f001
 &{P6}             refid=project-six    name=Project Six    warning=80    success=95    email=email6@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f006

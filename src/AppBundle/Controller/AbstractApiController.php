@@ -48,7 +48,7 @@ abstract class AbstractApiController extends FOSRestController
      *
      * @return bool
      */
-    public function isInValidToken(Request $request, string $tokenDB): bool
+    protected function isInvalidToken(Request $request, string $tokenDB): bool
     {
         $tokenRequest = $request->headers->get('X-CIR-TKN');
 
@@ -60,7 +60,7 @@ abstract class AbstractApiController extends FOSRestController
      *
      * @return View
      */
-    public function getInvalidTokenView(): View
+    protected function getInvalidTokenView(): View
     {
         return $this->view(
             array(

@@ -440,4 +440,36 @@ Resource          Function/api.txt
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
     ${resp} =    And Put Request    cir    /projects/X    data=${data}    headers=${headers}
-    And Dictionary Should Contain Item    ${resp.json()}    code    404
+    Then Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE projects" request removes Project One
+    [Tags]    EDIT    DB
+    Given Check If Exists In Database    select id from cir_project where id="${P1.id}"
+    Check If Exists In Database    select id from cir_campaign where project_id ="${P1.id}"
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.id = campaign_id
+    Check If Exists In Database    select cir_test.id from cir_test, cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.id = campaign_id and cir_suite.id = suite_id
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1.refid}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    204
+    Check If Not Exists In Database    select id from cir_project where id="${P1.id}"
+    Check If Not Exists In Database    select id from cir_campaign where project_id ="${P1.id}"
+    Check If Not Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.id = campaign_id
+    Check If Not Exists In Database    select cir_test.id from cir_test, cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.id = campaign_id and cir_suite.id = suite_id
+
+"DELETE projects" request with wrong token returns HTTP "401" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=XXX
+    ${resp} =    When Delete Request    cir    /projects/${P1.refid}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    401
+    And Dictionary Should Contain Item    ${resp.json()}    code    401
+    And Dictionary Should Contain Item    ${resp.json()}    message    Invalid token
+
+"DELETE projects" request without token returns HTTP "401" error
+    ${resp} =    When Delete Request    cir    /projects/${P1.refid}
+    Then Should Be Equal As Strings    ${resp.status_code}    401
+    And Dictionary Should Contain Item    ${resp.json()}    code    401
+    And Dictionary Should Contain Item    ${resp.json()}    message    Invalid token
+
+"DELETE projects" request with unknown refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/X    headers=${headers}
+    Then Dictionary Should Contain Item    ${resp.json()}    code    404
