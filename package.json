@@ -1,10 +1,10 @@
 {
   "name": "ci-report",
-  "version": "0.0.1",
-  "description": "A web application to display tests reports for CI tools like Travis or Gitlab-ci",
+  "version": "0.4.0",
+  "description": "A web application to display tests reports from CI tools like Travis or Gitlab-ci",
   "devDependencies": {
     "@symfony/webpack-encore": "^0.9.1",
-    "bootstrap": "4.0.0-alpha.6",
+    "bootstrap": "4.0.0-beta",
     "font-awesome": "^4.7.0",
     "imports-loader": "^0.7.1",
     "lato-font": "^3.0.0",

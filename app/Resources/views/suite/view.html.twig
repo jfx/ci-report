@@ -11,14 +11,14 @@
     &nbsp;
     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="Previous Next">
         {% if prevSuite %}
-        <a id="a-top-prev" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': prevSuite.refId}) }}" class="btn btn-secondary">Prev</a>
+        <a id="a-top-prev" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': prevSuite.refId}) }}" class="btn btn-outline-dark">Prev</a>
         {% else %}
-        <button id="b-top-prev" type="button" class="btn btn-secondary" disabled>Prev</button>
+        <button id="b-top-prev" type="button" class="btn btn-outline-dark" disabled>Prev</button>
         {% endif %}
         {% if nextSuite %}
-        <a id="a-top-next" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': nextSuite.refId}) }}" class="btn btn-secondary">Next</a>
+        <a id="a-top-next" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': nextSuite.refId}) }}" class="btn btn-outline-dark">Next</a>
         {% else %}
-        <button id="b-top-next" type="button" class="btn btn-secondary" disabled>Next</button>
+        <button id="b-top-next" type="button" class="btn btn-outline-dark" disabled>Next</button>
         {% endif %}
     </div>
 </ol>
@@ -27,8 +27,8 @@
 {% block container %}
 <div class="row">
     <div class="col-4">
-        <div class="card card-outline-{{ statusColorClass(suite.status) }}">
-            <div class="card-block">
+        <div class="card border-{{ statusColorClass(suite.status) }}">
+            <div class="card-body">
                 <h4 class="card-title text-{{ statusColorClass(suite.status) }}">
                     <button id="button_status" type="button" class="btn btn-{{ statusColorClass(suite.status) }} btn-sm">
                         <i class="fa {{ statusIconClass(suite.status) }} fa-3x"></i>
@@ -90,18 +90,18 @@
             </tbody>
         </table>
 
-        <a id="a-campaign" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': campaign.refId}) }}" class="btn btn-secondary">Back to campaign</a>
+        <a id="a-campaign" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': campaign.refId}) }}" class="btn btn-outline-dark">Back to campaign</a>
 
         <div class="btn-group" role="group" aria-label="Previous Next">
             {% if prevSuite %}
-            <a id="a-bottom-prev" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': prevSuite.refId}) }}" class="btn btn-secondary">Prev</a>
+            <a id="a-bottom-prev" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': prevSuite.refId}) }}" class="btn btn-outline-dark">Prev</a>
             {% else %}
-            <button id="b-bottom-prev" type="button" class="btn btn-secondary" disabled>Prev</button>
+            <button id="b-bottom-prev" type="button" class="btn btn-outline-dark" disabled>Prev</button>
             {% endif %}
             {% if nextSuite %}
-            <a id="a-bottom-next" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': nextSuite.refId}) }}" class="btn btn-secondary">Next</a>
+            <a id="a-bottom-next" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': nextSuite.refId}) }}" class="btn btn-outline-dark">Next</a>
             {% else %}
-            <button id="b-bottom-next" type="button" class="btn btn-secondary" disabled>Next</button>
+            <button id="b-bottom-next" type="button" class="btn btn-outline-dark" disabled>Next</button>
             {% endif %}
         </div>
     </div>

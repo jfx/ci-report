@@ -14,8 +14,8 @@
 <div class="row">
     {% if lastCampaign is not null %}
     <div class="col-4">
-        <div class="card card-outline-{{ statusColorClass(lastCampaign.status) }}">
-            <div class="card-block">
+        <div class="card border-{{ statusColorClass(lastCampaign.status) }}">
+            <div class="card-body">
                 <h4 class="card-title text-{{ statusColorClass(lastCampaign.status) }}">
                     <button id="button_status" type="button" class="btn btn-{{ statusColorClass(lastCampaign.status) }} btn-sm">
                         <i class="fa {{ statusIconClass(lastCampaign.status) }} fa-3x"></i>
