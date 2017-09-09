@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @copyright 2017 Francois-Xavier Soubirou
  * @license   http://www.gnu.org/licenses/   GPLv3
  *
- * @see      https://ci-report.io
+ * @see      https://www.ci-report.io
  */
 class DefaultController extends Controller
 {

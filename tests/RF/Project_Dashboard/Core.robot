@@ -12,5 +12,5 @@ Header should be visible
 Footer should be visible
     [Setup]    Setup
     When I go to project dahsboard    ${P1.refid}
-    Then Page Should Contain    ci-report.io v
+    Then Page Should Contain    ci-report v
     [Teardown]    Teardown

@@ -12,5 +12,5 @@ Header should be visible
 Footer should be visible
     [Setup]    Setup
     When I go to campaign page    &{P1C4}
-    Then Page Should Contain    ci-report.io v
+    Then Page Should Contain    ci-report v
     [Teardown]    Teardown

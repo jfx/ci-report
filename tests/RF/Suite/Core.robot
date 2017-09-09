@@ -12,5 +12,5 @@ Header should be visible
 Footer should be visible
     [Setup]    Setup
     When I go to suite page    &{P1C4S1}
-    Then Page Should Contain    ci-report.io v
+    Then Page Should Contain    ci-report v
     [Teardown]    Teardown
