@@ -2,7 +2,7 @@
 Library           Selenium2Library
 Resource          ../Conf/campaign.txt
 Resource          ../../Project_Dashboard/Conf/dashboard.txt
-Resource          ../../Suite/Conf/suite.txt
+Resource          ../../Common/Conf/data.txt
 
 *** Keywords ***
 Get campaign page location

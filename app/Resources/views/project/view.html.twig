@@ -37,7 +37,7 @@
                     <p id="p-disabled" class="card-text text-muted">Disabled tests: {{ lastCampaign.disabled }}</p>
                 {% endif %}
                 <p id="p-duration" class="card-text">Duration: {{ lastCampaign.duration }}s</p>
-                <p id="p-time" class="card-text text-muted">Time: {{ lastCampaign.datetimeCampaign|date('d/m/Y H:i:s') }}</p>
+                <p id="p-time" class="card-text text-muted">Time: {{ lastCampaign.start|date('d/m/Y H:i:s') }}</p>
                 <div class="text-center">
                 <a id="a-details" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': lastCampaign.refId}) }}" class="btn btn-outline-{{ statusColorClass(lastCampaign.status) }}">Details</a>
                 </div>
@@ -83,7 +83,7 @@
             <td>{{ campaign.skipped }}</td>
             <td>{{ campaign.disabled }}</td>
             <td>{{ campaign.duration }}s</td>
-            <td>{{ campaign.datetimeCampaign|date('d/m/Y H:i:s') }}</td>
+            <td>{{ campaign.start|date('d/m/Y H:i:s') }}</td>
             <td></td>
         </tr>
         {% else %}

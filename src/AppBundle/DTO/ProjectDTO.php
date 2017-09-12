@@ -90,7 +90,7 @@ class ProjectDTO
      *
      * @param string $name
      *
-     * @return Project
+     * @return ProjectDTO
      */
     public function setName(string $name): Project
     {
@@ -114,7 +114,7 @@ class ProjectDTO
      *
      * @param int $warning
      *
-     * @return Project
+     * @return ProjectDTO
      */
     public function setWarning(int $warning): Project
     {
@@ -138,7 +138,7 @@ class ProjectDTO
      *
      * @param int $success
      *
-     * @return Project
+     * @return ProjectDTO
      */
     public function setSuccess(int $success): Project
     {
@@ -162,7 +162,7 @@ class ProjectDTO
      *
      * @param string $email
      *
-     * @return Project
+     * @return ProjectDTO
      */
     public function setEmail(string $email): Project
     {

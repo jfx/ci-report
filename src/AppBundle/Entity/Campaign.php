@@ -24,6 +24,7 @@ namespace AppBundle\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Campaign entity class.
@@ -41,85 +42,121 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Campaign
 {
-    const DEFAULT_WARNING_LIMIT = 80;
-    const DEFAULT_SUCCESS_LIMIT = 95;
-
     /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Exclude
      */
     private $id;
 
     /**
+     * Tests warning limit.
+     *
      * @var int
      *
-     * @ORM\Column(name="warning_limit", type="smallint")
+     * @ORM\Column(name="warning", type="smallint")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    private $warningLimit;
+    private $warning;
 
     /**
+     * Tests success limit.
+     *
      * @var int
      *
-     * @ORM\Column(name="success_limit", type="smallint")
+     * @ORM\Column(name="success", type="smallint")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    private $successLimit;
+    private $success;
 
     /**
+     * Total number of passed tests from all testsuites.
+     *
      * @var int
      *
      * @ORM\Column(name="passed", type="integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $passed;
 
     /**
+     * Total number of failed tests from all testsuites.
+     *
      * @var int
      *
      * @ORM\Column(name="failed", type="integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $failed;
 
     /**
+     * Total number of errored tests from all testsuites.
+     *
      * @var int
      *
      * @ORM\Column(name="errored", type="integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $errored;
 
     /**
+     * Total number of skipped tests from all testsuites.
+     *
      * @var int
      *
      * @ORM\Column(name="skipped", type="integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $skipped;
 
     /**
+     * Total number of disabled tests from all testsuites.
+     *
      * @var int
      *
      * @ORM\Column(name="disabled", type="integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $disabled;
 
     /**
+     * Duration in second.
+     *
      * @var float
      *
      * @ORM\Column(name="duration", type="float")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $duration;
 
     /**
+     * Start Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01).
+     *
      * @var DateTime
      *
-     * @ORM\Column(name="datetime_campaign", type="datetime")
+     * @ORM\Column(name="start", type="datetime")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    protected $datetimeCampaign;
+    protected $start;
 
     /**
      * @Gedmo\SortablePosition
      *
      * @ORM\Column(name="position", type="integer")
+     * @Serializer\Exclude
      */
     private $position;
 
@@ -130,6 +167,8 @@ class Campaign
      *
      * @ORM\ManyToOne(targetEntity="Project")
      * @ORM\JoinColumn(name="project_id", referencedColumnName="id", nullable=false, onDelete="cascade")
+     *
+     * @Serializer\Exclude
      */
     private $project;
 
@@ -140,8 +179,8 @@ class Campaign
      */
     public function __construct(Project $project)
     {
-        $this->setWarningLimit($project->getWarning());
-        $this->setSuccessLimit($project->getSuccess());
+        $this->setWarning($project->getWarning());
+        $this->setSuccess($project->getSuccess());
         $this->setProject($project);
     }
 
@@ -158,13 +197,13 @@ class Campaign
     /**
      * Set warning limit.
      *
-     * @param int $warningLimit Warning limit
+     * @param int $warning Warning limit
      *
      * @return Campaign
      */
-    public function setWarningLimit(int $warningLimit): Campaign
+    public function setWarning(int $warning): Campaign
     {
-        $this->warningLimit = $warningLimit;
+        $this->warning = $warning;
 
         return $this;
     }
@@ -174,21 +213,21 @@ class Campaign
      *
      * @return int
      */
-    public function getWarningLimit(): int
+    public function getWarning(): int
     {
-        return $this->warningLimit;
+        return $this->warning;
     }
 
     /**
      * Set success limit.
      *
-     * @param int $successLimit Success limit
+     * @param int $success Success limit
      *
      * @return Campaign
      */
-    public function setSuccessLimit(int $successLimit): Campaign
+    public function setSuccess(int $success): Campaign
     {
-        $this->successLimit = $successLimit;
+        $this->success = $success;
 
         return $this;
     }
@@ -198,9 +237,9 @@ class Campaign
      *
      * @return int
      */
-    public function getSuccessLimit(): int
+    public function getSuccess(): int
     {
-        return $this->successLimit;
+        return $this->success;
     }
 
     /**
@@ -348,27 +387,27 @@ class Campaign
     }
 
     /**
-     * Set datetime of campaign.
+     * Set start datetime of campaign.
      *
-     * @param DateTime $datetime datetime of campaign.
+     * @param DateTime $datetime start datetime of campaign.
      *
      * @return Campaign
      */
-    public function setDatetimeCampaign(DateTime $datetime): Campaign
+    public function setStart(DateTime $datetime): Campaign
     {
-        $this->datetimeCampaign = $datetime;
+        $this->start = $datetime;
 
         return $this;
     }
 
     /**
-     * Get datetime of campaign.
+     * Get start datetime of campaign.
      *
      * @return DateTime
      */
-    public function getDatetimeCampaign(): Datetime
+    public function getStart(): Datetime
     {
-        return $this->datetimeCampaign;
+        return $this->start;
     }
 
     /**
@@ -396,11 +435,16 @@ class Campaign
     }
 
     /**
-     * Get reference id.
+     * Get reference id (Incremental integer).
      *
      * @return int
+     *
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("refid")
+     * @Serializer\Type("int")
+     * @Serializer\Groups({"public", "private"})
      */
-    public function getRefId(): int
+    public function getRefid(): int
     {
         return $this->position + 1;
     }
@@ -463,10 +507,10 @@ class Campaign
      */
     public function getStatus(): int
     {
-        if ($this->getPercentage() < $this->getWarningLimit()) {
+        if ($this->getPercentage() < $this->getWarning()) {
             return Status::FAILED;
         }
-        if ($this->getPercentage() < $this->getSuccessLimit()) {
+        if ($this->getPercentage() < $this->getSuccess()) {
             return Status::WARNING;
         }
 

@@ -1,7 +1,7 @@
 *** Settings ***
 Library           Selenium2Library
 Resource          ../Conf/dashboard.txt
-Resource          ../../Campaign/Conf/campaign.txt
+Resource          ../../Common/Conf/data.txt
 
 *** Keywords ***
 Get project dashboard location

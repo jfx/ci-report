@@ -425,10 +425,10 @@ class Suite
      */
     public function getStatus(): int
     {
-        if ($this->getPercentage() < $this->campaign->getWarningLimit()) {
+        if ($this->getPercentage() < $this->campaign->getWarning()) {
             return Status::FAILED;
         }
-        if ($this->getPercentage() < $this->campaign->getSuccessLimit()) {
+        if ($this->getPercentage() < $this->campaign->getSuccess()) {
             return Status::WARNING;
         }
 

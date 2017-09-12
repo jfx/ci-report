@@ -34,7 +34,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 /**
- * Project controller class.
+ * Project API controller class.
  *
  * @category  ci-report app
  *
