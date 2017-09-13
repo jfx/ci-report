@@ -131,18 +131,7 @@ class Campaign
     private $disabled;
 
     /**
-     * Duration in second.
-     *
-     * @var float
-     *
-     * @ORM\Column(name="duration", type="float")
-     *
-     * @Serializer\Groups({"public", "private"})
-     */
-    private $duration;
-
-    /**
-     * Start Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01).
+     * Start Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01+02:00).
      *
      * @var DateTime
      *
@@ -151,6 +140,17 @@ class Campaign
      * @Serializer\Groups({"public", "private"})
      */
     protected $start;
+
+    /**
+     * End Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01+02:00).
+     *
+     * @var DateTime
+     *
+     * @ORM\Column(name="end", type="datetime", nullable=true)
+     *
+     * @Serializer\Groups({"public", "private"})
+     */
+    protected $end;
 
     /**
      * @Gedmo\SortablePosition
@@ -363,30 +363,6 @@ class Campaign
     }
 
     /**
-     * Set duration of campaign in seconds.
-     *
-     * @param float $duration Duration
-     *
-     * @return Campaign
-     */
-    public function setDuration(float $duration): Campaign
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    /**
-     * Get duration in seconds.
-     *
-     * @return float
-     */
-    public function getDuration(): float
-    {
-        return $this->duration;
-    }
-
-    /**
      * Set start datetime of campaign.
      *
      * @param DateTime $datetime start datetime of campaign.
@@ -408,6 +384,30 @@ class Campaign
     public function getStart(): Datetime
     {
         return $this->start;
+    }
+
+    /**
+     * Set end datetime of campaign.
+     *
+     * @param DateTime $datetime end datetime of campaign.
+     *
+     * @return Campaign
+     */
+    public function setEnd(DateTime $datetime): Campaign
+    {
+        $this->end = $datetime;
+
+        return $this;
+    }
+
+    /**
+     * Get end datetime of campaign.
+     *
+     * @return DateTime
+     */
+    public function getEnd(): ?Datetime
+    {
+        return $this->end;
     }
 
     /**

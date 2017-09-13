@@ -1,5 +1,7 @@
+*** Settings ***
+Resource          ../../Common/Conf/data.txt
+
 *** Variables ***
 ${location_dashboard}    /project
 ${DEFAULT_WARNING_LIMIT}    80
 ${DEFAULT_SUCCESS_LIMIT}    95
-

@@ -2,21 +2,21 @@
 &{P1}             id=1    refid=project-one    name=Project One    warning=80    success=95    email=email1@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f001
 &{P6}             refid=project-six    name=Project Six    warning=80    success=95    email=email6@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f006
 &{P1C1}           pid=project-one    id=1    warning=80    success=95    passed=25    failed=0    errored=0    skipped=0    disabled=0
-...               duration=1.1s    time=01/07/2017 12:30:01
+...               start=01/07/2017 12:30:01    end=04/07/2017 12:30:01    start_iso=2017-07-01T12:30:01+02:00    end_iso=2017-07-04T12:30:01+02:00
 &{P1C3}           pid=project-one    id=3    warning=80    success=95    passed=25    failed=1    errored=0    skipped=0    disabled=0
-...               duration=1.3s    time=03/07/2017 12:30:01
+...               start=03/07/2017 12:30:01    end=-
 &{P1C4}           pid=project-one    id=4    warning=80    success=95    passed=26    failed=0    errored=0    skipped=0    disabled=0
-...               duration=1.2s    time=04/07/2017 12:30:01
+...               start=04/07/2017 12:30:01    end=-
 &{P2C3}           pid=project-two    id=3    warning=80    success=95    passed=95    failed=4    errored=0    skipped=1    disabled=0
-...               duration=1.3s    time=03/07/2017 12:30:01
+...               start=03/07/2017 12:30:01    end=04/07/2017 12:30:01
 &{P3C3}           pid=project-three    id=3    warning=80    success=95    passed=80    failed=20    errored=0    skipped=0    disabled=0
-...               duration=1.3s    time=03/07/2017 12:30:01
+...               start=03/07/2017 12:30:01    end=-
 &{P4C2}           pid=project-four    id=2    warning=80    success=95    passed=80    failed=0    errored=20    skipped=0    disabled=0
-...               duration=1.3s    time=02/07/2017 12:30:01
+...               start=02/07/2017 12:30:01    end=-
 &{P4C3}           pid=project-four    id=3    warning=80    success=95    passed=79    failed=0    errored=21    skipped=0    disabled=0
-...               duration=1.3s    time=03/07/2017 12:30:01
+...               start=03/07/2017 12:30:01    end=-
 &{P5C4}           pid=project-five    id=4    warning=80    success=95    passed=50    failed=0    errored=0    skipped=0    disabled=50
-...               duration=1.3s    time=04/07/2017 12:30:01
+...               start=04/07/2017 12:30:01    end=-
 &{P1C4S1}         pid=project-one    cid=4    id=1    name=Name of suite 1 for campaign 4 Project 1    passed=13    failed=0    errored=0
 ...               skipped=0    disabled=0    duration=1.1s    time=04/07/2017 12:30:01
 &{P1C4S2}         pid=project-one    cid=4    id=2    name=Name of suite 2 for campaign 4 Project 1    passed=13    failed=0    errored=0

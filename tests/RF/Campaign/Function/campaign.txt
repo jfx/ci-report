@@ -1,8 +1,10 @@
 *** Settings ***
 Library           Selenium2Library
 Resource          ../Conf/campaign.txt
-Resource          ../../Project_Dashboard/Conf/dashboard.txt
-Resource          ../../Common/Conf/data.txt
+Resource          ../../Common/Function/common.txt
+Resource          ../../Common/Function/check.txt
+Resource          ../../Project_Dashboard/Function/dashboard.txt
+Resource          ../../Suite/Function/suite.txt
 
 *** Keywords ***
 Get campaign page location
@@ -29,8 +31,8 @@ I check campaign displayed values
     Element Should Contain    p-errored    ${campaign.errored}
     Element Should Contain    p-skipped    ${campaign.skipped}
     Element Should Contain    p-disabled    ${campaign.disabled}
-    Element Should Contain    p-duration    ${campaign.duration}
-    Element Should Contain    p-time    ${campaign.time}
+    Element Should Contain    p-start    ${campaign.start}
+    Element Should Contain    p-end    ${campaign.end}
 
 The table row should contain values of suite
     [Arguments]    ${row_table}    &{suite}

@@ -2,8 +2,6 @@
 Library           Collections
 Library           RequestsLibrary
 Resource          ../Conf/api.txt
-Resource          ../../Common/Conf/data.txt
-Resource          ../../Project_Dashboard/Conf/dashboard.txt
 Resource          ../../Common/Function/common.txt
 Resource          ../../Common/Function/check.txt
 

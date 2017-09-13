@@ -1,3 +1,7 @@
+*** Settings ***
+Resource          ../../Common/Conf/data.txt
+Resource          ../../Project_Dashboard/Conf/dashboard.txt
+
 *** Variables ***
 ${api_prefix}     /api
 &{P0}             refid=project-created    name=Project Created    warning=45    success=55    email=${EMAIL_TEST}

@@ -42,8 +42,8 @@
                 <p id="p-errored" class="card-text text-danger">Errored tests: {{ campaign.errored }}</p>
                 <p id="p-skipped" class="card-text text-warning">Skipped tests: {{ campaign.skipped }}</p>
                 <p id="p-disabled" class="card-text text-muted">Disabled tests: {{ campaign.disabled }}</p>
-                <p id="p-duration" class="card-text">Duration: {{ campaign.duration }}s</p>
-                <p id="p-time" class="card-text text-muted">Time: {{ campaign.start|date('d/m/Y H:i:s') }}</p>
+                <p id="p-start" class="card-text text-muted">Start: {{ datetimeFormat(campaign.start) }}</p>
+                <p id="p-end" class="card-text text-muted">End: {{ datetimeFormat(campaign.end) }}</p>
             </div>
         </div>
     </div>

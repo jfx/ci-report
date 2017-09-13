@@ -1,7 +1,9 @@
 *** Settings ***
 Library           Selenium2Library
 Resource          ../Conf/dashboard.txt
-Resource          ../../Common/Conf/data.txt
+Resource          ../../Common/Function/common.txt
+Resource          ../../Common/Function/check.txt
+Resource          ../../Campaign/Function/campaign.txt
 
 *** Keywords ***
 Get project dashboard location
@@ -31,8 +33,8 @@ I check last campaign displayed values
     Run Keyword Unless    ${campaign.skipped} == 0    Element Should Contain    p-skipped    ${campaign.skipped}
     Run Keyword If    ${campaign.disabled} == 0    Element Should Not Be Visible    p-disabled
     Run Keyword Unless    ${campaign.disabled} == 0    Element Should Contain    p-disabled    ${campaign.disabled}
-    Element Should Contain    p-duration    ${campaign.duration}
-    Element Should Contain    p-time    ${campaign.time}
+    Element Should Contain    p-start    ${campaign.start}
+    Element Should Contain    p-end    ${campaign.end}
 
 The table row should contain values of campaign
     [Arguments]    ${row_table}    &{campaign}
@@ -48,5 +50,5 @@ The table row should contain values of campaign
     Table Cell Should Contain    t-campaign    ${row}    5    ${campaign.errored}
     Table Cell Should Contain    t-campaign    ${row}    6    ${campaign.skipped}
     Table Cell Should Contain    t-campaign    ${row}    7    ${campaign.disabled}
-    Table Cell Should Contain    t-campaign    ${row}    8    ${campaign.duration}
-    Table Cell Should Contain    t-campaign    ${row}    9    ${campaign.time}
+    Table Cell Should Contain    t-campaign    ${row}    8    ${campaign.start}
+    Table Cell Should Contain    t-campaign    ${row}    9    ${campaign.end}

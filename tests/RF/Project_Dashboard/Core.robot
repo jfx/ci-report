@@ -1,16 +1,14 @@
 *** Settings ***
-Resource          ../Common/Function/common.txt
+Suite Setup       Load DB
+Test Setup        Setup
+Test Teardown     Teardown
 Resource          Function/dashboard.txt
 
 *** Test Cases ***
 Header should be visible
-    [Setup]    Setup
     When I go to project dahsboard    ${P1.refid}
     Then Page Should Contain Link    css=a.navbar-brand
-    [Teardown]    Teardown
 
 Footer should be visible
-    [Setup]    Setup
     When I go to project dahsboard    ${P1.refid}
     Then Page Should Contain    ci-report v
-    [Teardown]    Teardown

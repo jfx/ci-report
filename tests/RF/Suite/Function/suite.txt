@@ -1,9 +1,10 @@
 *** Settings ***
 Library           Selenium2Library
 Resource          ../Conf/suite.txt
-Resource          ../../Project_Dashboard/Conf/dashboard.txt
-Resource          ../../Campaign/Conf/campaign.txt
-Resource          ../../Common/Conf/data.txt
+Resource          ../../Common/Function/common.txt
+Resource          ../../Common/Function/check.txt
+Resource          ../../Project_Dashboard/Function/dashboard.txt
+Resource          ../../Campaign/Function/campaign.txt
 
 *** Keywords ***
 Get suite page location

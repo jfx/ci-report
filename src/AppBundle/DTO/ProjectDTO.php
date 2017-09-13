@@ -92,7 +92,7 @@ class ProjectDTO
      *
      * @return ProjectDTO
      */
-    public function setName(string $name): Project
+    public function setName(string $name): ProjectDTO
     {
         $this->name = $name;
 
@@ -116,7 +116,7 @@ class ProjectDTO
      *
      * @return ProjectDTO
      */
-    public function setWarning(int $warning): Project
+    public function setWarning(int $warning): ProjectDTO
     {
         $this->warning = $warning;
 
@@ -140,7 +140,7 @@ class ProjectDTO
      *
      * @return ProjectDTO
      */
-    public function setSuccess(int $success): Project
+    public function setSuccess(int $success): ProjectDTO
     {
         $this->success = $success;
 
@@ -164,7 +164,7 @@ class ProjectDTO
      *
      * @return ProjectDTO
      */
-    public function setEmail(string $email): Project
+    public function setEmail(string $email): ProjectDTO
     {
         $this->email = $email;
 
