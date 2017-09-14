@@ -1,22 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} / {{ project.name }} / Campaign #{{ campaign.refId }} / Suite #{{ suite.refId }}{% endblock %}
+{% block title %}{{ parent() }} / {{ project.name }} / Campaign #{{ campaign.refid }} / Suite #{{ suite.refid }}{% endblock %}
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a id="br_lvl1" href="{{ path('homepage') }}">ci-report</a></li>
     <li class="breadcrumb-item"><a id="br_lvl2" href="{{ path('project-view', {'refid': project.refid}) }}">{{ project.name }}</a></li>
-    <li class="breadcrumb-item"><a id="br_lvl3" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': campaign.refId}) }}">Campaign #{{ campaign.refId }}</a></li>
-    <li id="br_lvl4" class="breadcrumb-item active">Suite #{{ suite.refId }}</li>
+    <li class="breadcrumb-item"><a id="br_lvl3" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': campaign.refid}) }}">Campaign #{{ campaign.refid }}</a></li>
+    <li id="br_lvl4" class="breadcrumb-item active">Suite #{{ suite.refid }}</li>
     &nbsp;
     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="Previous Next">
         {% if prevSuite %}
-        <a id="a-top-prev" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': prevSuite.refId}) }}" class="btn btn-outline-dark">Prev</a>
+        <a id="a-top-prev" href="{{ path('suite-view', {'prefid': project.refid, 'crefid': campaign.refid, 'srefid': prevSuite.refid}) }}" class="btn btn-outline-dark">Prev</a>
         {% else %}
         <button id="b-top-prev" type="button" class="btn btn-outline-dark" disabled>Prev</button>
         {% endif %}
         {% if nextSuite %}
-        <a id="a-top-next" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': nextSuite.refId}) }}" class="btn btn-outline-dark">Next</a>
+        <a id="a-top-next" href="{{ path('suite-view', {'prefid': project.refid, 'crefid': campaign.refid, 'srefid': nextSuite.refid}) }}" class="btn btn-outline-dark">Next</a>
         {% else %}
         <button id="b-top-next" type="button" class="btn btn-outline-dark" disabled>Next</button>
         {% endif %}
@@ -35,7 +35,7 @@
                     </button>
                     &nbsp;{{ suite.percentage }} %
                 </h4>
-                <p id="p-id" class="card-text text-{{ statusColorClass(suite.status) }}">#{{ suite.refId }}</p>
+                <p id="p-id" class="card-text text-{{ statusColorClass(suite.status) }}">#{{ suite.refid }}</p>
                 <p id="p-passed" class="card-text text-success">Passed tests: {{ suite.passed }}
                     <span class="text-muted">/ {{ suite.enabled }}</span>
                 </p>
@@ -78,9 +78,9 @@
             </thead>
             <tbody>
                 {% for test in tests %}
-                <tr id="tr-test-{{ test.refId }}" class="table-{{ statusColorClass(test.status) }}">
+                <tr id="tr-test-{{ test.refid }}" class="table-{{ statusColorClass(test.status) }}">
                     <td>{{ test.name }}</td>
-                    <td><span id="s-test-{{ test.refId }}" class="text-{{ statusColorClass(test.status) }}">{{ test.labelStatus }}</span></td>
+                    <td><span id="s-test-{{ test.refid }}" class="text-{{ statusColorClass(test.status) }}">{{ test.labelStatus }}</span></td>
                     <td>{{ test.duration }}s</td>
                     <td></td>
                 </tr>
@@ -90,16 +90,16 @@
             </tbody>
         </table>
 
-        <a id="a-campaign" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': campaign.refId}) }}" class="btn btn-outline-dark">Back to campaign</a>
+        <a id="a-campaign" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': campaign.refid}) }}" class="btn btn-outline-dark">Back to campaign</a>
 
         <div class="btn-group" role="group" aria-label="Previous Next">
             {% if prevSuite %}
-            <a id="a-bottom-prev" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': prevSuite.refId}) }}" class="btn btn-outline-dark">Prev</a>
+            <a id="a-bottom-prev" href="{{ path('suite-view', {'prefid': project.refid, 'crefid': campaign.refid, 'srefid': prevSuite.refid}) }}" class="btn btn-outline-dark">Prev</a>
             {% else %}
             <button id="b-bottom-prev" type="button" class="btn btn-outline-dark" disabled>Prev</button>
             {% endif %}
             {% if nextSuite %}
-            <a id="a-bottom-next" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': nextSuite.refId}) }}" class="btn btn-outline-dark">Next</a>
+            <a id="a-bottom-next" href="{{ path('suite-view', {'prefid': project.refid, 'crefid': campaign.refid, 'srefid': nextSuite.refid}) }}" class="btn btn-outline-dark">Next</a>
             {% else %}
             <button id="b-bottom-next" type="button" class="btn btn-outline-dark" disabled>Next</button>
             {% endif %}

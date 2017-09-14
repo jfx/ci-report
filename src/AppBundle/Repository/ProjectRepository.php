@@ -39,7 +39,7 @@ class ProjectRepository extends EntityRepository
     /**
      * Check if refid already exists.
      *
-     * @param string $refid RefId to test
+     * @param string $refid Refid to test
      *
      * @return bool
      */

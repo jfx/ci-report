@@ -362,7 +362,7 @@ class Suite
      *
      * @return int
      */
-    public function getRefId(): int
+    public function getRefid(): int
     {
         return $this->position + 1;
     }

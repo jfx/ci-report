@@ -45,30 +45,22 @@ class CampaignController extends Controller
     /**
      * Index action.
      *
-     * @param Project $project Id of project
-     * @param int     $refId   Reference Id of campaign
+     * @param Project  $project  Project
+     * @param Campaign $campaign Campaign to display
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{prefid}/campaign/{refId}", name="campaign-view")
+     * @Route("/project/{prefid}/campaign/{refid}", name="campaign-view")
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
+     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
+     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "refid": "refid"},
+     *    "map_method_signature" = true
+     * })
      */
-    public function indexAction(Project $project, int $refId): Response
+    public function indexAction(Project $project, Campaign $campaign): Response
     {
-        $campaign = $this->getDoctrine()
-            ->getRepository(Campaign::class)
-            ->findCampaignByProjectAndRefId($project, $refId);
-        if (!$campaign) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'No campaign found for project refid %s and campaign #%d',
-                    $project->getRefid(),
-                    $refId
-                )
-            );
-        }
-
         $prevCampaign = $this->getDoctrine()
             ->getRepository(Campaign::class)
             ->findPrevCampaignByProject($project, $campaign);

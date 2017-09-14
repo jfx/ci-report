@@ -1,21 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ parent() }} / {{ project.name }} / Campaign #{{ campaign.refId }}{% endblock %}
+{% block title %}{{ parent() }} / {{ project.name }} / Campaign #{{ campaign.refid }}{% endblock %}
 
 {% block breadcrumb %}
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a id="br_lvl1" href="{{ path('homepage') }}">ci-report</a></li>
     <li class="breadcrumb-item"><a id="br_lvl2" href="{{ path('project-view', {'refid': project.refid}) }}">{{ project.name }}</a></li>
-    <li id="br_lvl3" class="breadcrumb-item active">Campaign #{{ campaign.refId }}</li>
+    <li id="br_lvl3" class="breadcrumb-item active">Campaign #{{ campaign.refid }}</li>
     &nbsp;
     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="Previous Next">
         {% if prevCampaign %}
-        <a id="a-top-prev" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': prevCampaign.refId}) }}" class="btn btn-outline-dark">Prev</a>
+        <a id="a-top-prev" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': prevCampaign.refid}) }}" class="btn btn-outline-dark">Prev</a>
         {% else %}
         <button id="b-top-prev" type="button" class="btn btn-outline-dark" disabled>Prev</button>
         {% endif %}
         {% if nextCampaign %}
-        <a id="a-top-next" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': nextCampaign.refId}) }}" class="btn btn-outline-dark">Next</a>
+        <a id="a-top-next" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': nextCampaign.refid}) }}" class="btn btn-outline-dark">Next</a>
         {% else %}
         <button id="b-top-next" type="button" class="btn btn-outline-dark" disabled>Next</button>
         {% endif %}
@@ -34,7 +34,7 @@
                     </button>
                     &nbsp;{{ campaign.percentage }} %
                 </h4>
-                <p id="p-id" class="card-text text-{{ statusColorClass(campaign.status) }}">#{{ campaign.refId }}</p>
+                <p id="p-id" class="card-text text-{{ statusColorClass(campaign.status) }}">#{{ campaign.refid }}</p>
                 <p id="p-passed" class="card-text text-success">Passed tests: {{ campaign.passed }}
                     <span class="text-muted">/ {{ campaign.enabled }}</span>
                 </p>
@@ -84,8 +84,8 @@
             </thead>
             <tbody>
                 {% for suite in suites %}
-                <tr id="tr-suite-{{ suite.refId }}" class="table-{{ statusColorClass(suite.status) }}">
-                    <td><a id="a-suite-{{ suite.refId }}" href="{{ path('suite-view', {'prefid': project.refid, 'crefId': campaign.refId, 'srefId': suite.refId}) }}">#{{ suite.refId }}</a></td>
+                <tr id="tr-suite-{{ suite.refid }}" class="table-{{ statusColorClass(suite.status) }}">
+                    <td><a id="a-suite-{{ suite.refid }}" href="{{ path('suite-view', {'prefid': project.refid, 'crefid': campaign.refid, 'srefid': suite.refid}) }}">#{{ suite.refid }}</a></td>
                     <td>{{ suite.name }}</td>
                     <td>{{ suite.percentage }} %</td>
                     <td>{{ suite.passed }} / {{ suite.enabled }}</td>
@@ -107,12 +107,12 @@
 
         <div class="btn-group" role="group" aria-label="Previous Next">
             {% if prevCampaign %}
-            <a id="a-bottom-prev" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': prevCampaign.refId}) }}" class="btn btn-outline-dark">Prev</a>
+            <a id="a-bottom-prev" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': prevCampaign.refid}) }}" class="btn btn-outline-dark">Prev</a>
             {% else %}
             <button id="b-bottom-prev" type="button" class="btn btn-outline-dark" disabled>Prev</button>
             {% endif %}
             {% if nextCampaign %}
-            <a id="a-bottom-next" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': nextCampaign.refId}) }}" class="btn btn-outline-dark">Next</a>
+            <a id="a-bottom-next" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': nextCampaign.refid}) }}" class="btn btn-outline-dark">Next</a>
             {% else %}
             <button id="b-bottom-next" type="button" class="btn btn-outline-dark" disabled>Next</button>
             {% endif %}

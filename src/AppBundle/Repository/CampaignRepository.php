@@ -59,22 +59,22 @@ class CampaignRepository extends SortableRepository
     }
 
     /**
-     * Get a campaign for a project refId and its refId.
+     * Get a campaign for a project refid and its refid.
      *
-     * @param Project $project The project
-     * @param int     $refId   RefId of the campaign in the project
+     * @param string $prefid The project refid
+     * @param int    $refid  Refid of the campaign of the project
      *
      * @return Campaign|null
      */
-    public function findCampaignByProjectAndRefId(Project $project, int $refId): ?Campaign
+    public function findCampaignByProjectRefidAndRefid(string $prefid, int $refid): ?Campaign
     {
-        $position = $refId - 1;
+        $position = $refid - 1;
 
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.project', 'p')
-            ->where('p.id = :projectId')
+            ->where('p.refid = :prefid')
             ->andWhere('c.position = :position')
-            ->setParameter('projectId', $project->getId())
+            ->setParameter('prefid', $prefid)
             ->setParameter('position', $position);
 
         $result = $qb->getQuery()->getOneOrNullResult();

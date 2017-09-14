@@ -22,7 +22,7 @@
                     </button>
                     &nbsp;{{ lastCampaign.percentage }} %
                 </h4>
-                <p id="p-id" class="card-text text-{{ statusColorClass(lastCampaign.status) }}">#{{ lastCampaign.refId }}</p>
+                <p id="p-id" class="card-text text-{{ statusColorClass(lastCampaign.status) }}">#{{ lastCampaign.refid }}</p>
                 <p id="p-passed" class="card-text text-success">Passed tests: {{ lastCampaign.passed }}
                     <span class="text-muted">/ {{ lastCampaign.enabled }}</span>
                 </p>
@@ -39,7 +39,7 @@
                 <p id="p-start" class="card-text text-muted">Start: {{ lastCampaign.start|date('d/m/Y H:i:s') }}</p>
                 <p id="p-end" class="card-text text-muted">End: {{ datetimeFormat(lastCampaign.end) }}</p>
                 <div class="text-center">
-                <a id="a-details" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': lastCampaign.refId}) }}" class="btn btn-outline-{{ statusColorClass(lastCampaign.status) }}">Details</a>
+                <a id="a-details" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': lastCampaign.refid}) }}" class="btn btn-outline-{{ statusColorClass(lastCampaign.status) }}">Details</a>
                 </div>
             </div>
         </div>  
@@ -74,8 +74,8 @@
     </thead>
     <tbody>
         {% for campaign in campaigns %}
-        <tr id="tr-campaign-{{ campaign.refId }}" class="table-{{ statusColorClass(campaign.status) }}">
-            <td><a id="a-campaign-{{ campaign.refId }}" href="{{ path('campaign-view', {'prefid': project.refid, 'refId': campaign.refId}) }}">#{{ campaign.refId }}</a></td>
+        <tr id="tr-campaign-{{ campaign.refid }}" class="table-{{ statusColorClass(campaign.status) }}">
+            <td><a id="a-campaign-{{ campaign.refid }}" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': campaign.refid}) }}">#{{ campaign.refid }}</a></td>
             <td>{{ campaign.percentage }} %</td>
             <td>{{ campaign.passed }} / {{ campaign.enabled }}</td>
             <td>{{ campaign.failed }}</td>

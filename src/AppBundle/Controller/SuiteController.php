@@ -46,44 +46,28 @@ class SuiteController extends Controller
     /**
      * Index action.
      *
-     * @param Project $project Id of project
-     * @param int     $crefId  Reference Id of campaign
-     * @param int     $srefId  Reference Id of suite
+     * @param Project  $project  Project
+     * @param Campaign $campaign Campaign
+     * @param Suite    $suite    The suite to display
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{prefid}/campaign/{crefId}/suite/{srefId}", name="suite-view")
+     * @Route("/project/{prefid}/campaign/{crefid}/suite/{srefid}", name="suite-view")
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
+     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
+     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "crefid": "refid"},
+     *    "map_method_signature" = true
+     * })
+     * @ParamConverter("suite", class="AppBundle:Suite", options={
+     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "refid"},
+     *    "map_method_signature" = true
+     * })
      */
-    public function indexAction(Project $project, int $crefId, int $srefId): Response
+    public function indexAction(Project $project, Campaign $campaign, Suite $suite): Response
     {
-        $campaign = $this->getDoctrine()
-            ->getRepository(Campaign::class)
-            ->findCampaignByProjectAndRefId($project, $crefId);
-        if (!$campaign) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'No campaign found for project refid %s and campaign #%d',
-                    $project->getRefid(),
-                    $crefId
-                )
-            );
-        }
-
-        $suite = $this->getDoctrine()
-            ->getRepository(Suite::class)
-            ->findSuiteByCampaignAndRefId($campaign, $srefId);
-        if (!$suite) {
-            throw $this->createNotFoundException(
-                sprintf(
-                    'No suite found for campaign #%d and suite #%d',
-                    $crefId,
-                    $srefId
-                )
-            );
-        }
-
         $prevSuite = $this->getDoctrine()
             ->getRepository(Suite::class)
             ->findPrevSuiteByCampaign($campaign, $suite);

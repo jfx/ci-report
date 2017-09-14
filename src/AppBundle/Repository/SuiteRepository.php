@@ -59,22 +59,27 @@ class SuiteRepository extends SortableRepository
     }
 
     /**
-     * Get a suite for a campaign and its refId.
+     * Get a suite for a campaign refid and its refid.
      *
-     * @param Campaign $campaign The campaign
-     * @param int      $refId    RefId of the suite in the campaign
+     * @param string $prefid The project refid
+     * @param int    $crefid The refid of the campaign
+     * @param int    $refid  Refid of the suite in the campaign
      *
      * @return Suite|null
      */
-    public function findSuiteByCampaignAndRefId(Campaign $campaign, int $refId): ?Suite
+    public function findSuiteByProjectRefidCampaignRefidAndRefid(string $prefid, int $crefid, int $refid): ?Suite
     {
-        $position = $refId - 1;
+        $cposition = $crefid - 1;
+        $position = $refid - 1;
 
         $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.campaign', 'c')
-            ->where('c.id = :campaignId')
+            ->innerJoin('c.project', 'p')
+            ->where('p.refid = :prefid')
+            ->andWhere('c.position = :cposition')
             ->andWhere('s.position = :position')
-            ->setParameter('campaignId', $campaign->getId())
+            ->setParameter('prefid', $prefid)
+            ->setParameter('cposition', $cposition)
             ->setParameter('position', $position);
 
         $result = $qb->getQuery()->getOneOrNullResult();
