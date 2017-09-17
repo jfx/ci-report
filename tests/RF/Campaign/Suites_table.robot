@@ -21,7 +21,7 @@ The first row should be the first suite
 
 Click on #Id should go to campaign page
     Given I go to campaign page    &{P1C4}
-    When Click Link    a-suite-${P1C4S1.id}
+    When Click Link    a-suite-${P1C4S1.srefid}
     Then I should be on suite page    &{P1C4S1}
 
 Check failed value cell
@@ -42,12 +42,12 @@ Check disabled value cell
 
 A row suite with more or equal 95% should have green background color
     When I go to campaign page    &{P1C4}
-    Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P1C4S1.id}" and @class="table-success"]
+    Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P1C4S1.srefid}" and @class="table-success"]
 
 A row suite between 80% and 95% should have yellow background color
     When I go to campaign page    &{P3C3}
-    Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P3C3S1.id}" and @class="table-warning"]
+    Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P3C3S1.srefid}" and @class="table-warning"]
 
 A row suite under 80% should have red background color
     When I go to campaign page    &{P4C3}
-    Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P4C3S1.id}" and @class="table-danger"]
+    Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P4C3S1.srefid}" and @class="table-danger"]

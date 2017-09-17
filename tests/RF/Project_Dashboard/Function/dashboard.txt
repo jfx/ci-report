@@ -23,7 +23,7 @@ I should be on project dashboard
 
 I check last campaign displayed values
     [Arguments]    &{campaign}
-    Element Should Contain    p-id    \#${campaign.id}
+    Element Should Contain    p-id    \#${campaign.crefid}
     ${enabled} =    Evaluate    ${campaign.passed}+${campaign.failed}+${campaign.errored}+${campaign.skipped}
     Element Should Contain    p-passed    ${campaign.passed} / ${enabled}
     Element Should Contain    p-failed    ${campaign.failed}
@@ -39,7 +39,7 @@ I check last campaign displayed values
 The table row should contain values of campaign
     [Arguments]    ${row_table}    &{campaign}
     ${row} =    Evaluate    ${row_table} + 1
-    Table Cell Should Contain    t-campaign    ${row}    1    \#${campaign.id}
+    Table Cell Should Contain    t-campaign    ${row}    1    \#${campaign.crefid}
     ${enabled} =    Evaluate    ${campaign.passed}+${campaign.failed}+${campaign.errored}+${campaign.skipped}
     ${percent} =    Get Table Cell    t-campaign    ${row}    2
     ${percent_expect} =    Evaluate    ${campaign.passed}/${enabled}*100

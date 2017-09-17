@@ -7,7 +7,7 @@ Resource          Function/campaign.txt
 *** Test Cases ***
 Fields
     When I go to campaign page    &{P1C4}
-    Then the breadcrumb should contain    ci-report    ${P1.name}    Campaign #${P1C4.id}
+    Then the breadcrumb should contain    ci-report    ${P1.name}    Campaign #${P1C4.crefid}
 
 Link to home
     Given I go to campaign page    &{P1C4}
@@ -17,4 +17,4 @@ Link to home
 Link to project
     Given I go to campaign page    &{P1C4}
     When I click on breadcrumb level    2
-    Then I should be on project dashboard    ${P1C4.pid}
+    Then I should be on project dashboard    ${P1C4.prefid}

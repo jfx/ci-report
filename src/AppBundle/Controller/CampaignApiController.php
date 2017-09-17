@@ -74,7 +74,7 @@ class CampaignApiController extends AbstractApiController
      *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
      *     },
      *     statusCodes={
-     *         200="Returned when successful array of public data of projects",
+     *         200="Returned when successful array of public data of campaigns",
      *         404="Returned when project not found"
      *     }
      * )
@@ -86,5 +86,56 @@ class CampaignApiController extends AbstractApiController
             ->findCampaignsByProject($project);
 
         return $campaigns;
+    }
+
+    /**
+     * Get campaign data. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -X GET
+     * </code></pre>.
+     *
+     * @param Campaign $campaign Campaign
+     *
+     * @return Campaign
+     *
+     * @Rest\Get("/projects/{prefid}/campaigns/{refid}")
+     * @Rest\View(serializerGroups={"public"})
+     *
+     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
+     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "refid": "refid"},
+     *    "map_method_signature" = true
+     * })
+     *
+     * @Doc\ApiDoc(
+     *     section="Campaigns",
+     *     description="Get campaign data.",
+     *     requirements={
+     *         {
+     *             "name"="prefid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         },
+     *         {
+     *             "name"="refid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the campaign."
+     *         }
+     *     },
+     *     output= {
+     *         "class"=Campaign::class,
+     *         "groups"={"public"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when project not found"
+     *     }
+     * )
+     */
+    public function getProjectAction(Campaign $campaign): Campaign
+    {
+        return $campaign;
     }
 }

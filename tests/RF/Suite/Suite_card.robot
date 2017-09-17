@@ -7,7 +7,7 @@ Resource          Function/suite.txt
 *** Test Cases ***
 Suite values should be displayed
     When I go to suite page    &{P1C4S1}
-    Then Element Should Contain    css=p.card-text    \#${P1C4S1.id}
+    Then Element Should Contain    css=p.card-text    \#${P1C4S1.srefid}
     And I check suite displayed values    &{P1C4S1}
 
 Suite with more or equal than 95% should be successfull

@@ -9,7 +9,7 @@ Resource          ../../Campaign/Function/campaign.txt
 *** Keywords ***
 Get suite page location
     [Arguments]    &{suite}
-    ${location} =    Set Variable    ${URL}${location_dashboard}/${suite.pid}${location_campaign}/${suite.cid}${location_suite}/${suite.id}
+    ${location} =    Set Variable    ${URL}${location_dashboard}/${suite.prefid}${location_campaign}/${suite.crefid}${location_suite}/${suite.srefid}
     [Return]    ${location}
 
 I go to suite page
@@ -24,7 +24,7 @@ I should be on suite page
 
 I check suite displayed values
     [Arguments]    &{suite}
-    Element Should Contain    p-id    \#${suite.id}
+    Element Should Contain    p-id    \#${suite.srefid}
     ${enabled} =    Evaluate    ${suite.passed}+${suite.failed}+${suite.errored}+${suite.skipped}
     Element Should Contain    p-passed    ${suite.passed} / ${enabled}
     Element Should Contain    p-failed    ${suite.failed}

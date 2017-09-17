@@ -9,7 +9,7 @@ Resource          ../../Suite/Function/suite.txt
 *** Keywords ***
 Get campaign page location
     [Arguments]    &{campaign}
-    ${location} =    Set Variable    ${URL}${location_dashboard}/${campaign.pid}${location_campaign}/${campaign.id}
+    ${location} =    Set Variable    ${URL}${location_dashboard}/${campaign.prefid}${location_campaign}/${campaign.crefid}
     [Return]    ${location}
 
 I go to campaign page
@@ -24,7 +24,7 @@ I should be on campaign page
 
 I check campaign displayed values
     [Arguments]    &{campaign}
-    Element Should Contain    p-id    \#${campaign.id}
+    Element Should Contain    p-id    \#${campaign.crefid}
     ${enabled} =    Evaluate    ${campaign.passed}+${campaign.failed}+${campaign.errored}+${campaign.skipped}
     Element Should Contain    p-passed    ${campaign.passed} / ${enabled}
     Element Should Contain    p-failed    ${campaign.failed}
@@ -37,7 +37,7 @@ I check campaign displayed values
 The table row should contain values of suite
     [Arguments]    ${row_table}    &{suite}
     ${row} =    Evaluate    ${row_table} + 1
-    Table Cell Should Contain    t-suite    ${row}    1    \#${suite.id}
+    Table Cell Should Contain    t-suite    ${row}    1    \#${suite.srefid}
     Table Cell Should Contain    t-suite    ${row}    2    ${suite.name}
     ${enabled} =    Evaluate    ${suite.passed}+${suite.failed}+${suite.errored}+${suite.skipped}
     ${percent} =    Get Table Cell    t-suite    ${row}    3

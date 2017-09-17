@@ -7,7 +7,7 @@ Resource          Function/campaign.txt
 *** Test Cases ***
 Title of window should contain project name and campaign ID
     When I go to campaign page    &{P1C4}
-    Then Title Should Be    ci-report / ${P1.name} / Campaign #${P1C4.id}
+    Then Title Should Be    ci-report / ${P1.name} / Campaign #${P1C4.crefid}
 
 Top Next button goes to next campaign
     Given I go to campaign page    &{P1C3}
@@ -42,4 +42,4 @@ Last campaign should have next buttons disabled
 "Back to project" button should go to the project dashboard of the campaign
     Given I go to campaign page    &{P1C4}
     When Click Element    a-project
-    Then I should be on project dashboard    ${P1C4.pid}
+    Then I should be on project dashboard    ${P1C4.prefid}

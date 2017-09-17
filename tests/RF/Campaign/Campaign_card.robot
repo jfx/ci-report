@@ -7,7 +7,7 @@ Resource          Function/campaign.txt
 *** Test Cases ***
 Campaign values should be displayed
     When I go to campaign page    &{P1C4}
-    Then Element Should Contain    css=p.card-text    \#${P1C4.id}
+    Then Element Should Contain    css=p.card-text    \#${P1C4.crefid}
     And I check campaign displayed values    &{P1C4}
 
 Campaign with more or equal than 95% should be successfull

@@ -7,7 +7,7 @@ Resource          Function/suite.txt
 *** Test Cases ***
 Title of window should contain project name, campaign and suite ID
     When I go to suite page    &{P1C4S1}
-    Then Title Should Be    ci-report / ${P1.name} / Campaign #${P1C4S1.cid} / Suite #${P1C4S1.id}
+    Then Title Should Be    ci-report / ${P1.name} / Campaign #${P1C4S1.crefid} / Suite #${P1C4S1.srefid}
 
 Top Next button goes to next suite
     Given I go to suite page    &{P1C4S1}
