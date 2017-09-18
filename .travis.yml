@@ -20,9 +20,16 @@ env:
 
 before-install:
 - composer self-update
+- curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.0.2
+- export PATH=$HOME/.yarn/bin:$PATH
+
+cache:
+  yarn: true
 
 install:
 - composer install
+- yarn install
+- yarn run encore production
 - cp app/config/parameters.yml.dist app/config/parameters.yml
 - php bin/console doctrine:database:create --no-interaction --env=test
 - php bin/console doctrine:schema:create --no-interaction --env=test
