@@ -89,17 +89,17 @@ class ProjectApiController extends AbstractApiController
      *
      * @return Project
      *
-     * @Rest\Get("/projects/{refid}")
+     * @Rest\Get("/projects/{prefid}")
      * @Rest\View(serializerGroups={"public"})
      *
-     * @ParamConverter("project", options={"mapping": {"refid": "refid"}})
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
      * @Doc\ApiDoc(
      *     section="Projects",
      *     description="Get public project data.",
      *     requirements={
      *         {
-     *             "name"="refid",
+     *             "name"="prefid",
      *             "dataType"="string",
      *             "requirement"="string",
      *             "description"="Unique short name of project defined on project creation."
@@ -131,10 +131,10 @@ class ProjectApiController extends AbstractApiController
      *
      * @return Project|View
      *
-     * @Rest\Get("/projects/{refid}/private")
+     * @Rest\Get("/projects/{prefid}/private")
      * @Rest\View(serializerGroups={"private"})
      *
-     * @ParamConverter("project", options={"mapping": {"refid": "refid"}})
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
      * @Doc\ApiDoc(
      *     section="Projects",
@@ -148,7 +148,7 @@ class ProjectApiController extends AbstractApiController
      *     },
      *     requirements={
      *         {
-     *             "name"="refid",
+     *             "name"="prefid",
      *             "dataType"="string",
      *             "requirement"="string",
      *             "description"="Unique short name of project defined on project creation."
@@ -243,10 +243,10 @@ class ProjectApiController extends AbstractApiController
      *
      * @return Project|View
      *
-     * @Rest\Put("/projects/{refid}")
+     * @Rest\Put("/projects/{prefid}")
      * @Rest\View(serializerGroups={"private"})
      *
-     * @ParamConverter("projectDB", options={"mapping": {"refid": "refid"}})
+     * @ParamConverter("projectDB", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("projectDTO", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
@@ -266,7 +266,7 @@ class ProjectApiController extends AbstractApiController
      *     },
      *     requirements={
      *         {
-     *             "name"="refid",
+     *             "name"="prefid",
      *             "dataType"="string",
      *             "requirement"="string",
      *             "description"="Unique short name of project defined on project creation."
@@ -323,10 +323,10 @@ class ProjectApiController extends AbstractApiController
      *
      * @return void|View
      *
-     * @Rest\Delete("/projects/{refid}")
+     * @Rest\Delete("/projects/{prefid}")
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      *
-     * @ParamConverter("project", options={"mapping": {"refid": "refid"}})
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
      * @Doc\ApiDoc(
      *     section="Projects",

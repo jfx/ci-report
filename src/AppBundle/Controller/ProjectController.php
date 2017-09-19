@@ -49,9 +49,9 @@ class ProjectController extends Controller
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{refid}", name="project-view")
+     * @Route("/project/{prefid}", name="project-view")
      *
-     * @ParamConverter("project", options={"mapping": {"refid": "refid"}})
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      */
     public function indexAction(Project $project): Response
     {

@@ -63,14 +63,14 @@ class SuiteRepository extends SortableRepository
      *
      * @param string $prefid The project refid
      * @param int    $crefid The refid of the campaign
-     * @param int    $refid  Refid of the suite in the campaign
+     * @param int    $srefid Refid of the suite in the campaign
      *
      * @return Suite|null
      */
-    public function findSuiteByProjectRefidCampaignRefidAndRefid(string $prefid, int $crefid, int $refid): ?Suite
+    public function findSuiteByProjectRefidCampaignRefidAndRefid(string $prefid, int $crefid, int $srefid): ?Suite
     {
         $cposition = $crefid - 1;
-        $position = $refid - 1;
+        $position = $srefid - 1;
 
         $qb = $this->createQueryBuilder('s')
             ->innerJoin('s.campaign', 'c')

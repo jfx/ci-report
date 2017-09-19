@@ -493,7 +493,7 @@ class Campaign
      */
     public function getPercentage(): float
     {
-        if ($this->getEnabled() !== 0) {
+        if (0 !== $this->getEnabled()) {
             return round($this->passed / $this->getEnabled() * 100);
         }
 

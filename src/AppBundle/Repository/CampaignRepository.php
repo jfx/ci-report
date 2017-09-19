@@ -62,13 +62,13 @@ class CampaignRepository extends SortableRepository
      * Get a campaign for a project refid and its refid.
      *
      * @param string $prefid The project refid
-     * @param int    $refid  Refid of the campaign of the project
+     * @param int    $crefid Refid of the campaign of the project
      *
      * @return Campaign|null
      */
-    public function findCampaignByProjectRefidAndRefid(string $prefid, int $refid): ?Campaign
+    public function findCampaignByProjectRefidAndRefid(string $prefid, int $crefid): ?Campaign
     {
-        $position = $refid - 1;
+        $position = $crefid - 1;
 
         $qb = $this->createQueryBuilder('c')
             ->innerJoin('c.project', 'p')

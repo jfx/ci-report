@@ -97,12 +97,12 @@ class CampaignApiController extends AbstractApiController
      *
      * @return Campaign
      *
-     * @Rest\Get("/projects/{prefid}/campaigns/{refid}")
+     * @Rest\Get("/projects/{prefid}/campaigns/{crefid}")
      * @Rest\View(serializerGroups={"public"})
      *
      * @ParamConverter("campaign", class="AppBundle:Campaign", options={
      *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "refid": "refid"},
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
      *    "map_method_signature" = true
      * })
      *
@@ -117,7 +117,7 @@ class CampaignApiController extends AbstractApiController
      *             "description"="Unique short name of project defined on project creation."
      *         },
      *         {
-     *             "name"="refid",
+     *             "name"="crefid",
      *             "dataType"="int",
      *             "requirement"="int",
      *             "description"="Reference id of the campaign."

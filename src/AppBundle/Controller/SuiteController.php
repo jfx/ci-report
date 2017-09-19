@@ -57,12 +57,12 @@ class SuiteController extends Controller
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("campaign", class="AppBundle:Campaign", options={
      *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "refid"},
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
      *    "map_method_signature" = true
      * })
      * @ParamConverter("suite", class="AppBundle:Suite", options={
      *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "refid"},
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
      *    "map_method_signature" = true
      * })
      */

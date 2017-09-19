@@ -5,8 +5,8 @@
 {% block breadcrumb %}
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a id="br_lvl1" href="{{ path('homepage') }}">ci-report</a></li>
-    <li class="breadcrumb-item"><a id="br_lvl2" href="{{ path('project-view', {'refid': project.refid}) }}">{{ project.name }}</a></li>
-    <li class="breadcrumb-item"><a id="br_lvl3" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': campaign.refid}) }}">Campaign #{{ campaign.refid }}</a></li>
+    <li class="breadcrumb-item"><a id="br_lvl2" href="{{ path('project-view', {'prefid': project.refid}) }}">{{ project.name }}</a></li>
+    <li class="breadcrumb-item"><a id="br_lvl3" href="{{ path('campaign-view', {'prefid': project.refid, 'crefid': campaign.refid}) }}">Campaign #{{ campaign.refid }}</a></li>
     <li id="br_lvl4" class="breadcrumb-item active">Suite #{{ suite.refid }}</li>
     &nbsp;
     <div class="btn-group btn-group-sm pull-right" role="group" aria-label="Previous Next">
@@ -90,7 +90,7 @@
             </tbody>
         </table>
 
-        <a id="a-campaign" href="{{ path('campaign-view', {'prefid': project.refid, 'refid': campaign.refid}) }}" class="btn btn-outline-dark">Back to campaign</a>
+        <a id="a-campaign" href="{{ path('campaign-view', {'prefid': project.refid, 'crefid': campaign.refid}) }}" class="btn btn-outline-dark">Back to campaign</a>
 
         <div class="btn-group" role="group" aria-label="Previous Next">
             {% if prevSuite %}
