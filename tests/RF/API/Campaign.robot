@@ -39,7 +39,6 @@ Resource          Function/api.txt
 "GET campaign" request returns campaign data
     ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/${P1C1.crefid}
     Then Should Be Equal As Strings    ${resp.status_code}    200
-    Log    ${resp.json()}
     And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C1.crefid}
     And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1C1.warning}
     And Dictionary Should Contain Item    ${resp.json()}    success    ${P1C1.success}
@@ -50,6 +49,13 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()}    disabled    ${P1C1.disabled}
     And Dictionary Should Contain Item    ${resp.json()}    start    ${P1C1.start_iso}
     And Dictionary Should Contain Item    ${resp.json()}    end    ${P1C1.end_iso}
+
+"GET campaign" request doesn't return end date when not defined
+    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/${P1C4.crefid}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    Log    ${resp.json()}
+    And Dictionary Should Contain Key    ${resp.json()}    start
+    And Dictionary Should Not Contain Key    ${resp.json()}    end
 
 "GET campaign" request should not contain not expose fields
     ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/${P1C1.crefid}
@@ -64,5 +70,42 @@ Resource          Function/api.txt
 
 "GET campaign" request with unknown campaign refid returns HTTP "404" error
     ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/0
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"GET campaign" request with not numeric campaign refid returns HTTP "404" error
+    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/X
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"GET last campaign" request returns data of last campaign
+    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/last
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    Log    ${resp.json()}
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C4.crefid}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1C4.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1C4.success}
+    And Dictionary Should Contain Item    ${resp.json()}    passed    ${P1C4.passed}
+    And Dictionary Should Contain Item    ${resp.json()}    failed    ${P1C4.failed}
+    And Dictionary Should Contain Item    ${resp.json()}    errored    ${P1C4.errored}
+    And Dictionary Should Contain Item    ${resp.json()}    skipped    ${P1C4.skipped}
+    And Dictionary Should Contain Item    ${resp.json()}    disabled    ${P1C4.disabled}
+    And Dictionary Should Contain Item    ${resp.json()}    start    ${P1C4.start_iso}
+
+"GET last campaign" request doesn't return end date when not defined
+    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/last
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    Log    ${resp.json()}
+    And Dictionary Should Contain Key    ${resp.json()}    start
+    And Dictionary Should Not Contain Key    ${resp.json()}    end
+
+"GET last campaign" request should not contain not expose fields
+    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/last
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Not Contain Key    ${resp.json()}    id
+    And Dictionary Should Not Contain Key    ${resp.json()}    position
+
+"GET last campaign" request with unknown project refid returns HTTP "404" error
+    ${resp} =    When Get Request    cir    /projects/X/campaigns/last
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404

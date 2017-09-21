@@ -43,3 +43,13 @@ Last suite should have next buttons disabled
     Given I go to suite page    &{P1C4S1}
     When Click Element    a-campaign
     Then I should be on campaign page    &{P1C4}
+
+URL with unknown suite refid returns HTTP "404" error
+    ${location} =    Get suite page location    &{P1C4S1}
+    When Go to    ${location}1
+    Then Page Should Contain    404
+
+URL with not numeric suite refid returns HTTP "404" error
+    ${location} =    Get suite page location    &{P1C4S1}
+    When Go to    ${location}X
+    Then Page Should Contain    404

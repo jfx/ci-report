@@ -50,7 +50,11 @@ class CampaignController extends Controller
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{prefid}/campaign/{crefid}", name="campaign-view")
+     * @Route(
+     *    "/project/{prefid}/campaign/{crefid}",
+     *    requirements={"crefid" = "\d+"},
+     *    name="campaign-view"
+     * )
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("campaign", class="AppBundle:Campaign", options={

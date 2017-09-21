@@ -97,7 +97,10 @@ class CampaignApiController extends AbstractApiController
      *
      * @return Campaign
      *
-     * @Rest\Get("/projects/{prefid}/campaigns/{crefid}")
+     * @Rest\Get(
+     *    "/projects/{prefid}/campaigns/{crefid}",
+     *    requirements={"crefid" = "\d+"}
+     * )
      * @Rest\View(serializerGroups={"public"})
      *
      * @ParamConverter("campaign", class="AppBundle:Campaign", options={
@@ -130,11 +133,56 @@ class CampaignApiController extends AbstractApiController
      *     },
      *     statusCodes={
      *         200="Returned when successful",
-     *         404="Returned when project not found"
+     *         404="Returned when project or campaign not found"
      *     }
      * )
      */
-    public function getProjectAction(Campaign $campaign): Campaign
+    public function getCampaignAction(Campaign $campaign): Campaign
+    {
+        return $campaign;
+    }
+
+    /**
+     * Get last added campaign data. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/last -X GET
+     * </code></pre>.
+     *
+     * @param Campaign $campaign Campaign
+     *
+     * @return Campaign
+     *
+     * @Rest\Get("/projects/{prefid}/campaigns/last")
+     * @Rest\View(serializerGroups={"public"})
+     *
+     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
+     *    "repository_method" = "findLastCampaignByProjectRefid",
+     *    "mapping": {"prefid": "prefid"},
+     *    "map_method_signature" = true
+     * })
+     *
+     * @Doc\ApiDoc(
+     *     section="Campaigns",
+     *     description="Get last added campaign data.",
+     *     requirements={
+     *         {
+     *             "name"="prefid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         }
+     *     },
+     *     output= {
+     *         "class"=Campaign::class,
+     *         "groups"={"public"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when no campaign exists for project"
+     *     }
+     * )
+     */
+    public function getLastCampaignAction(Campaign $campaign): Campaign
     {
         return $campaign;
     }

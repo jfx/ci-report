@@ -14,3 +14,7 @@ Project with no campaign should display only empty campaign table
     Then Page Should Not Contain Element    xpath=//div[@class="card-block"]
     And The table should contain X rows    t-campaign    1
     And I check table cell value    t-campaign    1    1    No campaign
+
+URL with unknown project refid returns HTTP "404" error
+    When I go to project dahsboard    X
+    Then Page Should Contain    404

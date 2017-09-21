@@ -23,4 +23,13 @@ class CampaignApiControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+    
+    public function testGetLastCampaign()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/api/projects/project-one/campaigns/last');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
 }

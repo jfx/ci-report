@@ -83,6 +83,27 @@ class CampaignRepository extends SortableRepository
     }
 
     /**
+     * Get last campaign for a project refid.
+     *
+     * @param string $prefid The project refid
+     *
+     * @return Campaign|null
+     */
+    public function findLastCampaignByProjectRefid(string $prefid): ?Campaign
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->innerJoin('c.project', 'p')
+            ->where('p.refid = :prefid')
+            ->setParameter('prefid', $prefid)
+            ->orderBy('c.position', 'DESC')
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getOneOrNullResult();
+
+        return $result;
+    }
+
+    /**
      * Get previous campaign for a campaign.
      *
      * @param Project  $project  The project

@@ -142,7 +142,7 @@ class Campaign
     protected $start;
 
     /**
-     * End Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01+02:00).
+     * End Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01+02:00). Returned if not null.
      *
      * @var DateTime
      *

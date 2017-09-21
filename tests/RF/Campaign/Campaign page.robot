@@ -43,3 +43,13 @@ Last campaign should have next buttons disabled
     Given I go to campaign page    &{P1C4}
     When Click Element    a-project
     Then I should be on project dashboard    ${P1C4.prefid}
+
+URL with unknown campaign refid returns HTTP "404" error
+    ${location} =    Get campaign page location    &{P1C4}
+    When Go to    ${location}1
+    Then Page Should Contain    404
+
+URL with not numeric campaign refid returns HTTP "404" error
+    ${location} =    Get campaign page location    &{P1C4}
+    When Go to    ${location}X
+    Then Page Should Contain    404

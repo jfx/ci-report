@@ -52,7 +52,11 @@ class SuiteController extends Controller
      *
      * @return Response A Response instance
      *
-     * @Route("/project/{prefid}/campaign/{crefid}/suite/{srefid}", name="suite-view")
+     * @Route(
+     *    "/project/{prefid}/campaign/{crefid}/suite/{srefid}",
+     *    requirements={"crefid" = "\d+", "srefid" = "\d+"},
+     *    name="suite-view"
+     * )
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("campaign", class="AppBundle:Campaign", options={
