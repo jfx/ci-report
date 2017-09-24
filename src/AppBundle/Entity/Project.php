@@ -22,7 +22,7 @@ declare(strict_types=1);
 namespace AppBundle\Entity;
 
 use AppBundle\DTO\ProjectDTO;
-use Datetime;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -102,6 +102,7 @@ class Project
      * @ORM\Column(name="warning", type="smallint")
      *
      * @Assert\NotBlank(groups={"input"})
+     * @Assert\Type("integer", groups={"input"})
      * @Assert\Range(min=0, max=100, groups={"input"})
      *
      * @Serializer\Groups({"public", "private"})
@@ -116,6 +117,7 @@ class Project
      * @ORM\Column(name="success", type="smallint")
      *
      * @Assert\NotBlank(groups={"input"})
+     * @Assert\Type("integer", groups={"input"})
      * @Assert\Range(min=0, max=100, groups={"input"})
      *
      * @Serializer\Groups({"public", "private"})
@@ -321,9 +323,9 @@ class Project
     /**
      * Get created date.
      *
-     * @return Datetime
+     * @return DateTime
      */
-    public function getCreated(): ?Datetime
+    public function getCreated(): ?DateTime
     {
         return $this->created;
     }

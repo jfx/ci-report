@@ -18,4 +18,5 @@
 /nbproject/private/
 /.php_cs.cache
 tests/RF/Common/Conf/mail.txt
+tests/RF/*.log
 /yarn-error.log

@@ -312,11 +312,11 @@ class Suite
     /**
      * Set datetime of suite.
      *
-     * @param DateTime $datetime Datetime of suite.
+     * @param DateTime $datetime DateTime of suite.
      *
      * @return Suite
      */
-    public function setDatetimeSuite(Datetime $datetime): Suite
+    public function setDateTimeSuite(DateTime $datetime): Suite
     {
         $this->datetimeSuite = $datetime;
 
@@ -328,7 +328,7 @@ class Suite
      *
      * @return DateTime
      */
-    public function getDatetimeSuite(): Datetime
+    public function getDateTimeSuite(): DateTime
     {
         return $this->datetimeSuite;
     }

@@ -21,11 +21,12 @@ declare(strict_types=1);
 
 namespace AppBundle\DTO;
 
+use DateTime;
 use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Project data transfert object class.
+ * Campaign data transfert object class.
  *
  * @category  ci-report app
  *
@@ -35,89 +36,62 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @see      https://www.ci-report.io
  */
-class ProjectDTO
+class CampaignDTO
 {
     /**
-     * Name of the project.
-     *
-     * @var string
-     *
-     * @Type("string")
-     *
-     * @Assert\NotBlank
-     */
-    private $name;
-
-    /**
-     * Tests warning limit. Integer between 0 and 100 %.
+     * Tests warning limit. Integer between 0 and 100 %. Warning limit of project by default.
      *
      * @var int
      *
      * @Type("integer")
      *
-     * @Assert\NotBlank
      * @Assert\Type("integer")
      * @Assert\Range(min=0, max=100)
      */
     private $warning;
 
     /**
-     * Tests success limit. Integer between 0 and 100 %.
+     * Tests success limit. Integer between 0 and 100 %. Success limit of project by default.
      *
      * @var int
      *
      * @Type("integer")
      *
-     * @Assert\NotBlank
      * @Assert\Type("integer")
      * @Assert\Range(min=0, max=100)
      */
     private $success;
 
     /**
-     * Email.
+     * Start Date time of the campaign in format (2017-07-01 12:30:01). Now by default.
      *
-     * @var string
+     * @var DateTime
      *
-     * @Type("string")
+     * @Type("DateTime<'Y-m-d H:i:s'>")
      *
-     * @Assert\NotBlank
-     * @Assert\Email(strict=true)
+     * @Assert\DateTime()
      */
-    private $email;
+    private $start;
 
     /**
-     * Set name.
+     * End Date time of the campaign in format (2017-07-01 12:30:01). Null by default.
      *
-     * @param string $name
+     * @var DateTime
      *
-     * @return ProjectDTO
+     * @Type("DateTime<'Y-m-d H:i:s'>")
+     *
+     * @Assert\DateTime()
      */
-    public function setName(string $name): ProjectDTO
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
+    private $end;
 
     /**
      * Set warning limit.
      *
      * @param int $warning
      *
-     * @return ProjectDTO
+     * @return CampaignDTO
      */
-    public function setWarning(int $warning): ProjectDTO
+    public function setWarning(int $warning): CampaignDTO
     {
         $this->warning = $warning;
 
@@ -129,7 +103,7 @@ class ProjectDTO
      *
      * @return int
      */
-    public function getWarning(): int
+    public function getWarning(): ?int
     {
         return $this->warning;
     }
@@ -139,9 +113,9 @@ class ProjectDTO
      *
      * @param int $success
      *
-     * @return ProjectDTO
+     * @return CampaignDTO
      */
-    public function setSuccess(int $success): ProjectDTO
+    public function setSuccess(int $success): CampaignDTO
     {
         $this->success = $success;
 
@@ -153,32 +127,56 @@ class ProjectDTO
      *
      * @return int
      */
-    public function getSuccess(): int
+    public function getSuccess(): ?int
     {
         return $this->success;
     }
 
     /**
-     * Set email.
+     * Set start datetime of campaign.
      *
-     * @param string $email
+     * @param DateTime $datetime start datetime of campaign.
      *
-     * @return ProjectDTO
+     * @return CampaignDTO
      */
-    public function setEmail(string $email): ProjectDTO
+    public function setStart(DateTime $datetime): CampaignDTO
     {
-        $this->email = $email;
+        $this->start = $datetime;
 
         return $this;
     }
 
     /**
-     * Get email.
+     * Get start datetime of campaign.
      *
-     * @return string
+     * @return DateTime
      */
-    public function getEmail(): string
+    public function getStart(): ?DateTime
     {
-        return $this->email;
+        return $this->start;
+    }
+
+    /**
+     * Set end datetime of campaign.
+     *
+     * @param DateTime $datetime end datetime of campaign.
+     *
+     * @return CampaignDTO
+     */
+    public function setEnd(DateTime $datetime): CampaignDTO
+    {
+        $this->end = $datetime;
+
+        return $this;
+    }
+
+    /**
+     * Get end datetime of campaign.
+     *
+     * @return DateTime
+     */
+    public function getEnd(): ?DateTime
+    {
+        return $this->end;
     }
 }

@@ -165,7 +165,7 @@ class ProjectApiController extends AbstractApiController
      *         404="Returned when project not found"
      *     },
      *     tags={
-     *         "token" = "#87ceeb"
+     *         "token" = "#2c3e50"
      *     }
      * )
      */
@@ -285,7 +285,7 @@ class ProjectApiController extends AbstractApiController
      *         404="Returned when project not found"
      *     },
      *     tags={
-     *         "token" = "#87ceeb"
+     *         "token" = "#2c3e50"
      *     }
      * )
      */
@@ -352,7 +352,7 @@ class ProjectApiController extends AbstractApiController
      *         404="Returned when project not found"
      *     },
      *     tags={
-     *         "token" = "#87ceeb"
+     *         "token" = "#2c3e50"
      *     }
      * )
      */

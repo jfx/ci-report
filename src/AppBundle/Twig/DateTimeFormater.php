@@ -22,12 +22,12 @@ declare(strict_types=1);
 
 namespace AppBundle\Twig;
 
-use Datetime;
+use DateTime;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
 /**
- * Datetime formater class Twig extension.
+ * DateTime formater class Twig extension.
  *
  * @category  ci-report app
  *
@@ -37,7 +37,7 @@ use Twig_SimpleFunction;
  *
  * @see      https://www.ci-report.io
  */
-class DatetimeFormater extends Twig_Extension
+class DateTimeFormater extends Twig_Extension
 {
     /**
      * Returns a list of functions to add to the existing list.
@@ -47,18 +47,18 @@ class DatetimeFormater extends Twig_Extension
     public function getFunctions(): array
     {
         return array(
-            new Twig_SimpleFunction('datetimeFormat', array($this, 'formatDatetime')),
+            new Twig_SimpleFunction('datetimeFormat', array($this, 'formatDateTime')),
         );
     }
 
     /**
      * Return formated datetime.
      *
-     * @param Datetime $datetime Datetime object
+     * @param DateTime $datetime DateTime object
      *
      * @return string
      */
-    public function formatDatetime(?Datetime $datetime): string
+    public function formatDateTime(?DateTime $datetime): string
     {
         if (null === $datetime) {
             return '-';

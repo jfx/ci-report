@@ -21,10 +21,12 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
+use AppBundle\DTO\CampaignDTO;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Campaign entity class.
@@ -60,6 +62,9 @@ class Campaign
      *
      * @ORM\Column(name="warning", type="smallint")
      *
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0, max=100)
+     *
      * @Serializer\Groups({"public", "private"})
      */
     private $warning;
@@ -70,6 +75,9 @@ class Campaign
      * @var int
      *
      * @ORM\Column(name="success", type="smallint")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0, max=100)
      *
      * @Serializer\Groups({"public", "private"})
      */
@@ -82,9 +90,12 @@ class Campaign
      *
      * @ORM\Column(name="passed", type="integer")
      *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
      * @Serializer\Groups({"public", "private"})
      */
-    private $passed;
+    private $passed = 0;
 
     /**
      * Total number of failed tests from all testsuites.
@@ -93,9 +104,12 @@ class Campaign
      *
      * @ORM\Column(name="failed", type="integer")
      *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
      * @Serializer\Groups({"public", "private"})
      */
-    private $failed;
+    private $failed = 0;
 
     /**
      * Total number of errored tests from all testsuites.
@@ -104,9 +118,12 @@ class Campaign
      *
      * @ORM\Column(name="errored", type="integer")
      *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
      * @Serializer\Groups({"public", "private"})
      */
-    private $errored;
+    private $errored = 0;
 
     /**
      * Total number of skipped tests from all testsuites.
@@ -115,9 +132,12 @@ class Campaign
      *
      * @ORM\Column(name="skipped", type="integer")
      *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
      * @Serializer\Groups({"public", "private"})
      */
-    private $skipped;
+    private $skipped = 0;
 
     /**
      * Total number of disabled tests from all testsuites.
@@ -126,9 +146,12 @@ class Campaign
      *
      * @ORM\Column(name="disabled", type="integer")
      *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
      * @Serializer\Groups({"public", "private"})
      */
-    private $disabled;
+    private $disabled = 0;
 
     /**
      * Start Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01+02:00).
@@ -136,6 +159,9 @@ class Campaign
      * @var DateTime
      *
      * @ORM\Column(name="start", type="datetime")
+     *
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      *
      * @Serializer\Groups({"public", "private"})
      */
@@ -147,6 +173,8 @@ class Campaign
      * @var DateTime
      *
      * @ORM\Column(name="end", type="datetime", nullable=true)
+     *
+     * @Assert\DateTime()
      *
      * @Serializer\Groups({"public", "private"})
      */
@@ -181,6 +209,7 @@ class Campaign
     {
         $this->setWarning($project->getWarning());
         $this->setSuccess($project->getSuccess());
+        $this->setStart(new DateTime());
         $this->setProject($project);
     }
 
@@ -381,7 +410,7 @@ class Campaign
      *
      * @return DateTime
      */
-    public function getStart(): Datetime
+    public function getStart(): DateTime
     {
         return $this->start;
     }
@@ -405,7 +434,7 @@ class Campaign
      *
      * @return DateTime
      */
-    public function getEnd(): ?Datetime
+    public function getEnd(): ?DateTime
     {
         return $this->end;
     }
@@ -515,5 +544,30 @@ class Campaign
         }
 
         return Status::SUCCESS;
+    }
+
+    /**
+     * Set from DTO campaign.
+     *
+     * @param CampaignDTO $dto DTO object
+     *
+     * @return Campaign
+     */
+    public function setFromDTO(CampaignDTO $dto): Campaign
+    {
+        if (null !== $dto->getWarning()) {
+            $this->setWarning($dto->getWarning());
+        }
+        if (null !== $dto->getSuccess()) {
+            $this->setSuccess($dto->getSuccess());
+        }
+        if (null !== $dto->getStart()) {
+            $this->setStart($dto->getStart());
+        }
+        if (null !== $dto->getEnd()) {
+            $this->setEnd($dto->getEnd());
+        }
+
+        return $this;
     }
 }

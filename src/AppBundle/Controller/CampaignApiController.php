@@ -22,11 +22,14 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
+use AppBundle\DTO\CampaignDTO;
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Campaign API controller class.
@@ -184,6 +187,89 @@ class CampaignApiController extends AbstractApiController
      */
     public function getLastCampaignAction(Campaign $campaign): Campaign
     {
+        return $campaign;
+    }
+
+    /**
+     * Create a campaign. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST --data '{"warning":80, "success":95, "start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
+     * </code></pre>.
+     *
+     * @param Project     $project     Project
+     * @param CampaignDTO $campaignDTO Project to create
+     * @param Request     $request     The request
+     *
+     * @return Campaign|View
+     *
+     * @Rest\Post("/projects/{prefid}/campaigns")
+     * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"public"})
+     *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
+     * @ParamConverter("campaignDTO", converter="fos_rest.request_body")
+     *
+     * @Doc\ApiDoc(
+     *     section="Campaigns",
+     *     description="Create a campaign.",
+     *     headers={
+     *         {
+     *             "name"="Content-Type",
+     *             "required"=true,
+     *             "description"="Type of content: application/json"
+     *         },
+     *         {
+     *             "name"="X-CIR-TKN",
+     *             "required"=true,
+     *             "description"="Private token"
+     *         }
+     *     },
+     *     requirements={
+     *         {
+     *             "name"="prefid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         }
+     *     },
+     *     input= { "class"=CampaignDTO::class },
+     *     output= {
+     *         "class"=Campaign::class,
+     *         "groups"={"public"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
+     *     statusCodes={
+     *         201="Returned when created",
+     *         400="Returned when a violation is raised by validation",
+     *         401="Returned when X-CIR-TKN private token value is invalid",
+     *         404="Returned when project not found"
+     *     },
+     *     tags={
+     *         "token" = "#2c3e50"
+     *     }
+     * )
+     */
+    public function postCampaignAction(Project $project, CampaignDTO $campaignDTO, Request $request)
+    {
+        if ($this->isInvalidToken($request, $project->getToken())) {
+            return $this->getInvalidTokenView();
+        }
+
+        $validator = $this->get('validator');
+        $violationsDTO = $validator->validate($campaignDTO);
+
+        if (count($violationsDTO) > 0) {
+            return $this->view($violationsDTO, Response::HTTP_BAD_REQUEST);
+        }
+        $campaign = new Campaign($project);
+        $campaign->setFromDTO($campaignDTO);
+
+        $violations = $validator->validate($campaign);
+        if (count($violations) > 0) {
+            return $this->view($violations, Response::HTTP_BAD_REQUEST);
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($campaign);
+        $em->flush();
+
         return $campaign;
     }
 }
