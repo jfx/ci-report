@@ -237,8 +237,8 @@ class ProjectApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"name":"Project To Update", "warning":85, "success":90, "email":"test-changed@example.com"}'
      * </code></pre>.
      *
-     * @param Project $projectDTO Project containing values to update
      * @param Project $projectDB  Project to update
+     * @param Project $projectDTO Project containing values to update
      * @param Request $request    The request
      *
      * @return Project|View
@@ -289,7 +289,7 @@ class ProjectApiController extends AbstractApiController
      *     }
      * )
      */
-    public function putProjectAction(ProjectDTO $projectDTO, Project $projectDB, Request $request)
+    public function putProjectAction(Project $projectDB, ProjectDTO $projectDTO, Request $request)
     {
         if ($this->isInvalidToken($request, $projectDB->getToken())) {
             return $this->getInvalidTokenView();

@@ -26,6 +26,7 @@ use AppBundle\DTO\CampaignDTO;
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -271,5 +272,100 @@ class CampaignApiController extends AbstractApiController
         $em->flush();
 
         return $campaign;
+    }
+
+    /**
+     * Update a campaign. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"warning":80, "success":95, "start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
+     * </code></pre>.
+     *
+     * @param Campaign    $campaignDB  Campaign
+     * @param CampaignDTO $campaignDTO Project to create
+     * @param Request     $request     The request
+     *
+     * @return Campaign|View
+     *
+     * @Rest\Put(
+     *    "/projects/{prefid}/campaigns/{crefid}",
+     *    requirements={"crefid" = "\d+"}
+     * )
+     * @Rest\View(serializerGroups={"public"})
+     *
+     * @ParamConverter("campaignDB", class="AppBundle:Campaign", options={
+     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
+     *    "map_method_signature" = true
+     * })
+     * @ParamConverter("campaignDTO", converter="fos_rest.request_body")
+     *
+     * @Doc\ApiDoc(
+     *     section="Campaigns",
+     *     description="Update a campaign.",
+     *     headers={
+     *         {
+     *             "name"="Content-Type",
+     *             "required"=true,
+     *             "description"="Type of content: application/json"
+     *         },
+     *         {
+     *             "name"="X-CIR-TKN",
+     *             "required"=true,
+     *             "description"="Private token"
+     *         }
+     *     },
+     *     requirements={
+     *         {
+     *             "name"="prefid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         },
+     *         {
+     *             "name"="crefid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the campaign."
+     *         }
+     *     },
+     *     input= { "class"=CampaignDTO::class },
+     *     output= {
+     *         "class"=Campaign::class,
+     *         "groups"={"public"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         400="Returned when a violation is raised by validation",
+     *         401="Returned when X-CIR-TKN private token value is invalid",
+     *         404="Returned when campaign not found",
+     *         405="Returned when campaign refid is not set in URL"
+     *     },
+     *     tags={
+     *         "token" = "#2c3e50"
+     *     }
+     * )
+     */
+    public function putCampaignAction(Campaign $campaignDB, CampaignDTO $campaignDTO, Request $request)
+    {
+        $project = $campaignDB->getProject();
+        if ($this->isInvalidToken($request, $project->getToken())) {
+            return $this->getInvalidTokenView();
+        }
+
+        $validator = $this->get('validator');
+        $violationsDTO = $validator->validate($campaignDTO);
+
+        if (count($violationsDTO) > 0) {
+            return $this->view($violationsDTO, Response::HTTP_BAD_REQUEST);
+        }
+        $campaignDB->setFromDTO($campaignDTO);
+
+        $violations = $validator->validate($campaignDB);
+        if (count($violations) > 0) {
+            return $this->view($violations, Response::HTTP_BAD_REQUEST);
+        }
+        $this->getDoctrine()->getManager()->flush();
+
+        return $campaignDB;
     }
 }
