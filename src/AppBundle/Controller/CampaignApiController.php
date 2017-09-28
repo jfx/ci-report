@@ -368,4 +368,72 @@ class CampaignApiController extends AbstractApiController
 
         return $campaignDB;
     }
+
+    /**
+     * Delete a campaign. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
+     * </code></pre>.
+     *
+     * @param Campaign $campaign Campaign to delete
+     * @param Request  $request  The request
+     *
+     * @return void|View
+     *
+     * @Rest\Delete(
+     *    "/projects/{prefid}/campaigns/{crefid}",
+     *    requirements={"crefid" = "\d+"}
+     * )
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     *
+     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
+     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
+     *    "map_method_signature" = true
+     * })
+     *
+     * @Doc\ApiDoc(
+     *     section="Campaigns",
+     *     description="Delete a campaign.",
+     *     headers={
+     *         {
+     *             "name"="X-CIR-TKN",
+     *             "required"=true,
+     *             "description"="Private token"
+     *         }
+     *     },
+     *     requirements={
+     *         {
+     *             "name"="prefid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         },
+     *         {
+     *             "name"="crefid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the campaign."
+     *         }
+     *     },
+     *     statusCodes={
+     *         204="Returned when successful",
+     *         401="Returned when X-CIR-TKN private token value is invalid",
+     *         404="Returned when campaign not found",
+     *         405="Returned when campaign refid is not set in URL"
+     *     },
+     *     tags={
+     *         "token" = "#2c3e50"
+     *     }
+     * )
+     */
+    public function deleteCampaignAction(Campaign $campaign, Request $request)
+    {
+        $project = $campaign->getProject();
+        if ($this->isInvalidToken($request, $project->getToken())) {
+            return $this->getInvalidTokenView();
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($campaign);
+        $em->flush();
+    }
 }

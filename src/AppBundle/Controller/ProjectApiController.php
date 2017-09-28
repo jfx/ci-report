@@ -340,7 +340,7 @@ class ProjectApiController extends AbstractApiController
      *     },
      *     requirements={
      *         {
-     *             "name"="refid",
+     *             "name"="prefid",
      *             "dataType"="string",
      *             "requirement"="string",
      *             "description"="Unique short name of project defined on project creation."
