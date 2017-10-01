@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}ci-report{% endblock %}</title>
         {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('build/global.css') }}">
         {% endblock %}
         <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
         <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
@@ -25,7 +25,7 @@
             <a class="navbar-brand" href="#"><i class="fa fa-pie-chart"></i> ci-report</a>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#"><i class="fa fa-cog"></i> Admin</a>
+                <a class="nav-item nav-link" href="#"><i class="fa fa-cog"></i></a>
             </div>
             </div>
         </nav>
@@ -44,7 +44,7 @@
             <div class="container">
                 <div class="d-flex justify-content-center">
                     <p>
-                        <a href="https://ci-report.io">
+                        <a href="https://www.ci-report.io">
                             ci-report v{{ version }} - {{ build }} - {{ cir_env }} - &copy; {{ 'now'|date('Y') }}
                         </a>
                     </p>
@@ -52,6 +52,8 @@
             </div>
         </footer>
         {% endblock %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+        <script src="{{ asset('build/app.js') }}"></script>
+        {% endblock %}
     </body>
 </html>

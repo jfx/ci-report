@@ -44,7 +44,9 @@
             </div>
         </div>  
     </div>
-    <div class="col-8">Graph</div>
+    <div class="col-8">
+    <canvas id="myChart" ></canvas>
+    </div>
     {% endif %}
 </div>
 
@@ -94,3 +96,55 @@
 </div>
 </div>
 {% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{% set lineGraphValues = graphLineCampaignsValues(campaigns)%}
+<script>
+    var graph_x_axis = [{{ lineGraphValues['xAxis']|raw }}];
+    var graph_red = [{{ lineGraphValues['red'] }}];
+    var graph_yellow = [{{ lineGraphValues['yellow'] }}];
+    var graph_green = [{{ lineGraphValues['green'] }}];
+
+    var ctx = document.getElementById("myChart");
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: graph_x_axis,
+        datasets: [
+          {
+            lineTension: 0,
+            data: graph_red,
+            label: "Failed/Errored",
+            fill: "origin",
+            borderColor: "#ff0000",
+            backgroundColor: "#f78181"
+          },
+          {
+            lineTension: 0,
+            data: graph_yellow,
+            label: "Skipped",
+            fill: "origin",
+            borderColor: "#ffbf00",
+            backgroundColor: "#f7d358"
+          },
+          {
+            lineTension: 0,
+            data: graph_green,
+            label: "Passed",
+            fill: "origin",
+            borderColor: "#31b404",
+            backgroundColor: "#9ff781"
+          }
+        ]
+      },
+      options: {
+        title: {
+            display: true,
+            text: 'Campaigns trend'
+        }
+      }
+    });
+</script>
+{% endblock %}
+

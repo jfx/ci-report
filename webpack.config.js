@@ -4,10 +4,11 @@ Encore
     .setOutputPath('web/build/')
     .setPublicPath('/build')
     .cleanupOutputBeforeBuild()
-    .autoProvidejQuery()
+    .addEntry('app', './assets/js/main.js')
+    .addStyleEntry('global', './assets/scss/global.scss')
     .enableSassLoader()
-    .enableVersioning(false)
-    .addStyleEntry('css/app', ['./assets/scss/app.scss'])
+    .autoProvidejQuery()
+    .enableVersioning(false)  
 ;
 
 module.exports = Encore.getWebpackConfig();

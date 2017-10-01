@@ -3,8 +3,10 @@
 &{P6}             id=6    prefid=project-six    name=Project Six    warning=80    success=95    email=email6@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f006
 &{P1C1}           prefid=project-one    crefid=1    warning=80    success=95    passed=25    failed=0    errored=0
 ...               skipped=0    disabled=0    start=01/07/2017 12:30:01    end=04/07/2017 12:30:01    start_iso=2017-07-01T12:30:01+02:00    end_iso=2017-07-04T12:30:01+02:00
+&{P1C2}           prefid=project-one    crefid=2    warning=80    success=95    passed=25    failed=0    errored=1
+...               skipped=0    disabled=0    start=02/07/2017 12:30:01    end=-    start_iso=2017-07-02T12:30:01+02:00    end_iso=
 &{P1C3}           prefid=project-one    crefid=3    warning=80    success=95    passed=25    failed=1    errored=0
-...               skipped=0    disabled=0    start=03/07/2017 12:30:01    end=-
+...               skipped=0    disabled=0    start=03/07/2017 12:30:01    end=-    start_iso=2017-07-03T12:30:01+02:00    end_iso=
 &{P1C4}           prefid=project-one    crefid=4    warning=80    success=95    passed=26    failed=0    errored=0
 ...               skipped=0    disabled=0    start=04/07/2017 12:30:01    end=-    start_iso=2017-07-04T12:30:01+02:00    end_iso=
 &{P2C3}           prefid=project-two    crefid=3    warning=80    success=95    passed=95    failed=4    errored=0

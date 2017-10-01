@@ -88,3 +88,11 @@ I get href from html link id
     ${line}=    Get Lines Containing String    ${content}    ${id}
     ${link} =    Get Regexp Matches    ${line}    href="(.*?)"    1
     [Return]    ${link[0]}
+
+I get list from js array
+    [Arguments]    ${content}    ${id}
+    ${lines}=    Get Lines Containing String    ${content}    ${id}
+    ${line}=    Get Lines Containing String    ${lines}    var
+    ${array} =    Get Regexp Matches    ${line}    \\[(.*?),\\]    1
+    @{list} =    Split String    ${array[0]}    ,
+    [Return]    @{list}
