@@ -53,3 +53,7 @@ A row test with "Failed" should have red background color
 A row test with "Errored" should have red background color
     When I go to suite page    &{P4C2S1}
     Then Page Should Contain Element    xpath=//tr[@id="tr-test-81" and @class="table-danger"]
+
+A suite without test should display "No test"
+    When I go to suite page    &{P8C1S1}
+    Then Page Should Contain    No test

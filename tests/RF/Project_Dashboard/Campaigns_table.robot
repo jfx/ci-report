@@ -51,3 +51,7 @@ A row campaign between 80% and 95% should have yellow background color
 A row campaign under 80% should have red background color
     When I go to project dahsboard    ${P4C3.prefid}
     Then Page Should Contain Element    xpath=//tr[@id="tr-campaign-${P4C3.crefid}" and @class="table-danger"]
+
+A project without campaign should display "No campaign"
+    When I go to project dahsboard    ${P6.prefid}
+    Then Page Should Contain    No campaign

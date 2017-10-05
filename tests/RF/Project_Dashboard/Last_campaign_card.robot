@@ -65,3 +65,7 @@ Button Details should go to last campaign page
     Given I go to project dahsboard    ${P1C4.prefid}
     When Click Link    a-details
     Then I should be on campaign page    &{P1C4}
+
+Last campaign should not be displayed for a project without campaign
+    When I go to project dahsboard    ${P6.prefid}
+    Then Page Should Not Contain Element    xpath=//div[@class="card-body"]
