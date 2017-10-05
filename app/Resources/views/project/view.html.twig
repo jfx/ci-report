@@ -44,8 +44,8 @@
             </div>
         </div>  
     </div>
-    <div class="col-8">
-    <canvas id="myChart" ></canvas>
+    <div class="col-8 justify-content-center align-self-center">
+        <canvas id="lineChart" ></canvas>
     </div>
     {% endif %}
 </div>
@@ -106,7 +106,7 @@
     var graph_yellow = [{{ lineGraphValues['yellow'] }}];
     var graph_green = [{{ lineGraphValues['green'] }}];
 
-    var ctx = document.getElementById("myChart");
+    var ctx = document.getElementById("lineChart");
     var myChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -118,7 +118,7 @@
             label: "Failed/Errored",
             fill: "origin",
             borderColor: "#ff0000",
-            backgroundColor: "#f78181"
+            backgroundColor: "#ff8f9a"
           },
           {
             lineTension: 0,
@@ -126,7 +126,7 @@
             label: "Skipped",
             fill: "origin",
             borderColor: "#ffbf00",
-            backgroundColor: "#f7d358"
+            backgroundColor: "#ffe28a"
           },
           {
             lineTension: 0,
@@ -134,7 +134,7 @@
             label: "Passed",
             fill: "origin",
             borderColor: "#31b404",
-            backgroundColor: "#9ff781"
+            backgroundColor: "#98e7aa"
           }
         ]
       },
@@ -142,6 +142,10 @@
         title: {
             display: true,
             text: 'Campaigns trend'
+        },
+        legend: {
+            position: 'bottom'   
+
         }
       }
     });

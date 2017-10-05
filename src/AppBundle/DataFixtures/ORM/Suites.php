@@ -309,6 +309,18 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'campaign' => 'p5c4-campaign',
                 'suiteRef' => 'p5c4s1',
             ),
+            array(
+                'name' => 'Name of suite 1 for campaign 1 Project 8',
+                'passed' => 0,
+                'failed' => 0,
+                'errored' => 0,
+                'skipped' => 0,
+                'disabled' => 0,
+                'duration' => 0,
+                'datetime' => $ref4Date,
+                'campaign' => 'p8c1-campaign',
+                'suiteRef' => 'p8c1s1',
+            ),
         );
         $objectList = array();
         foreach ($dataArray as $i => $data) {

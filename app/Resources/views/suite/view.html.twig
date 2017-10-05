@@ -48,7 +48,9 @@
             </div>
         </div>
     </div>
-    <div class="col-8">Graph</div>
+    <div class="col-8 justify-content-center align-self-center">
+        <canvas id="pieChart"></canvas>
+    </div>
 </div>
 
 <div class="row div-margin-top">
@@ -106,4 +108,36 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script>
+    var graph_label = ["Errored","Failed","Skipped","Passed"];
+    var graph_data = [{{ suite.errored }},{{ suite.failed }},{{ suite.skipped }},{{ suite.passed }},];
+
+    var ctx = document.getElementById("pieChart");
+    var myChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        labels: graph_label,
+        datasets: [
+          {
+            data: graph_data,
+            backgroundColor: ["#ff8f9a", "#ff8f9a","#ffe28a","#98e7aa"]
+          }
+        ]
+      },
+      options: {
+        title: {
+            display: true,
+            text: 'Suite report'
+        },
+        legend: {
+            position: 'bottom'   
+
+        }
+      }
+    });
+</script>
 {% endblock %}

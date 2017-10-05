@@ -80,6 +80,16 @@ class Projects extends AbstractFixture implements OrderedFixtureInterface
                 'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f006',
                 'email' => 'email6@example.com',
             ),
+            array(
+                'name' => 'Project Seven',
+                'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f007',
+                'email' => 'email7@example.com',
+            ),
+            array(
+                'name' => 'Project Eight',
+                'token' => '1f4ffb19e4b9-02278af07b7d-4e370a76f008',
+                'email' => 'email8@example.com',
+            ),
         );
         $objectList = array();
         foreach ($dataArray as $i => $data) {

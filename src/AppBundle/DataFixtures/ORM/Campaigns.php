@@ -244,6 +244,28 @@ class Campaigns extends AbstractFixture implements OrderedFixtureInterface
                 'project' => 'projectfive-project',
                 'campaignRef' => 'p5c4',
             ),
+            array(
+                'passed' => 0,
+                'failed' => 0,
+                'errored' => 0,
+                'skipped' => 0,
+                'disabled' => 0,
+                'start' => $ref4Date,
+                'end' => null,
+                'project' => 'projectseven-project',
+                'campaignRef' => 'p7c1',
+            ),
+            array(
+                'passed' => 0,
+                'failed' => 0,
+                'errored' => 0,
+                'skipped' => 0,
+                'disabled' => 0,
+                'start' => $ref4Date,
+                'end' => null,
+                'project' => 'projecteight-project',
+                'campaignRef' => 'p8c1',
+            ),
         );
         $objectList = array();
         foreach ($dataArray as $i => $data) {
