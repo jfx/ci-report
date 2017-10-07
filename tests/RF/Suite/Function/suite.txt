@@ -24,7 +24,7 @@ I should be on suite page
 
 I check suite displayed values
     [Arguments]    &{suite}
-    Element Should Contain    p-id    \#${suite.srefid}
+    Element Should Contain    p-id    ${suite.name}
     ${enabled} =    Evaluate    ${suite.passed}+${suite.failed}+${suite.errored}+${suite.skipped}
     Element Should Contain    p-passed    ${suite.passed} / ${enabled}
     Element Should Contain    p-failed    ${suite.failed}

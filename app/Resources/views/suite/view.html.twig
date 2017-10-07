@@ -35,7 +35,7 @@
                     </button>
                     &nbsp;{{ suite.percentage }} %
                 </h4>
-                <p id="p-id" class="card-text text-{{ statusColorClass(suite.status) }}">#{{ suite.refid }}</p>
+                <p id="p-id" class="card-text text-{{ statusColorClass(suite.status) }}">{{ suite.name }}</p>
                 <p id="p-passed" class="card-text text-success">Passed tests: {{ suite.passed }}
                     <span class="text-muted">/ {{ suite.enabled }}</span>
                 </p>

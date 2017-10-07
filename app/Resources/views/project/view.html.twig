@@ -96,12 +96,11 @@
 </div>
 </div>
 {% endblock %}
-
 {% block javascripts %}
 {{ parent() }}
-{% set lineGraphValues = graphLineCampaignsValues(campaigns)%}
+{% set lineGraphValues = graphLineCampaignsValues(campaigns) %}
 <script>
-    var graph_x_axis = [{{ lineGraphValues['xAxis'] }}];
+    var graph_x_axis = [{{ lineGraphValues['xAxis']|raw }}];
     var graph_red = [{{ lineGraphValues['red'] }}];
     var graph_yellow = [{{ lineGraphValues['yellow'] }}];
     var graph_green = [{{ lineGraphValues['green'] }}];

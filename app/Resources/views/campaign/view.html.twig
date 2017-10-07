@@ -47,7 +47,9 @@
             </div>
         </div>
     </div>
-    <div class="col-8">Graph</div>
+    <div class="col-8 justify-content-center align-self-center">
+        <canvas id="barChart" ></canvas>
+    </div>
 </div>
 
 <div class="row div-margin-top">
@@ -119,4 +121,58 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+{% set barGraphValues = graphBarSuitesValues(suites) %}
+<script>
+    var bar_y_axis = [{{ barGraphValues['yAxis']|raw }}];
+    var bar_red = [{{ barGraphValues['red'] }}];
+    var bar_yellow = [{{ barGraphValues['yellow'] }}];
+    var bar_green = [{{ barGraphValues['green'] }}];
+
+    var ctx = document.getElementById("barChart");
+    var myChart = new Chart(ctx, {
+      type: 'horizontalBar',
+      data: {
+        labels: bar_y_axis,
+        datasets: [
+          {
+            data: bar_red,
+            label: "Failed/Errored",
+            backgroundColor: "#ff8f9a"
+          },
+          {
+            data: bar_yellow,
+            label: "Skipped",
+            backgroundColor: "#ffe28a"
+          },
+          {
+            data: bar_green,
+            label: "Passed",
+            backgroundColor: "#98e7aa"
+          }
+        ]
+      },
+      options: {
+        title: {
+            display: true,
+            text: 'Suites trend'
+        },
+        legend: {
+            position: 'bottom'   
+
+        },
+        scales: {
+            yAxes: [{ 
+                stacked: true
+            }],
+            xAxes: [{ 
+                stacked: true
+            }]
+        }
+      }
+    });
+</script>
 {% endblock %}
