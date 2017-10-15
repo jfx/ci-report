@@ -64,7 +64,7 @@ class Test
      *
      * @ORM\Column(name="classname", type="string", length=256)
      */
-    private $className;
+    private $classname;
 
     /**
      * @var string
@@ -113,14 +113,14 @@ class Test
      *
      * @ORM\Column(name="system_out", type="text")
      */
-    private $systemOut;
+    private $systemout;
 
     /**
      * @var string
      *
      * @ORM\Column(name="system_err", type="text")
      */
-    private $systemErr;
+    private $systemerr;
 
     /**
      * @Gedmo\SortablePosition
@@ -188,9 +188,9 @@ class Test
      *
      * @return Test
      */
-    public function setClassName(string $classname): Test
+    public function setClassname(string $classname): Test
     {
-        $this->className = $classname;
+        $this->classname = $classname;
 
         return $this;
     }
@@ -200,9 +200,9 @@ class Test
      *
      * @return string
      */
-    public function getClassName(): string
+    public function getClassname(): string
     {
-        return $this->className;
+        return $this->classname;
     }
 
     /**
@@ -232,19 +232,19 @@ class Test
     /**
      * Set full class name including package.
      *
-     * @param string $fullClassName The full class name
+     * @param string $fullClassname The full class name
      *
      * @return Test
      */
-    public function setFullClassName(string $fullClassName): Test
+    public function setFullclassname(string $fullClassname): Test
     {
-        if (substr_count($fullClassName, '.') > 0) {
-            $index = strrpos($fullClassName, '.');
-            $this->setPackage(substr($fullClassName, 0, $index));
-            $this->setClassName(substr($fullClassName, $index + 1));
+        if (substr_count($fullClassname, '.') > 0) {
+            $index = strrpos($fullClassname, '.');
+            $this->setPackage(substr($fullClassname, 0, $index));
+            $this->setClassname(substr($fullClassname, $index + 1));
         } else {
             $this->setPackage(self::DEFAULT_PACKAGE);
-            $this->setClassName($fullClassName);
+            $this->setClassname($fullClassname);
         }
 
         return $this;
@@ -402,7 +402,7 @@ class Test
      *
      * @return string
      */
-    public function getLabelStatus(): string
+    public function getLabelstatus(): string
     {
         return Status::getLabel($this->getStatus());
     }
@@ -438,9 +438,9 @@ class Test
      *
      * @return Test
      */
-    public function setSystemOut(string $systemOut): Test
+    public function setSystemout(string $systemOut): Test
     {
-        $this->systemOut = $systemOut;
+        $this->systemout = $systemOut;
 
         return $this;
     }
@@ -450,9 +450,9 @@ class Test
      *
      * @return string
      */
-    public function getSystemOut(): string
+    public function getSystemout(): string
     {
-        return $this->systemOut;
+        return $this->systemout;
     }
 
     /**
@@ -462,9 +462,9 @@ class Test
      *
      * @return Test
      */
-    public function setSystemErr(string $systemErr): Test
+    public function setSystemerr(string $systemErr): Test
     {
-        $this->systemErr = $systemErr;
+        $this->systemerr = $systemErr;
 
         return $this;
     }
@@ -474,9 +474,9 @@ class Test
      *
      * @return string
      */
-    public function getSystemErr(): string
+    public function getSystemerr(): string
     {
-        return $this->systemErr;
+        return $this->systemerr;
     }
 
     /**

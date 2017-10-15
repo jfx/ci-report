@@ -163,7 +163,7 @@ class JunitParserService
 
         // Classname is required.
         // set package.class, if no dot use default package
-        $test->setFullClassName((string) $xmlTestcase['classname']);
+        $test->setFullclassname((string) $xmlTestcase['classname']);
 
         // If time not set, initialize at 0
         if (isset($xmlTestcase['time'])) {
@@ -174,12 +174,12 @@ class JunitParserService
 
         // If system-out set
         if (isset($xmlTestcase->{'system-out'})) {
-            $test->setSystemOut((string) $xmlTestcase->{'system-out'});
+            $test->setSystemout((string) $xmlTestcase->{'system-out'});
         }
 
         // If system-err set
         if (isset($xmlTestcase->{'system-err'})) {
-            $test->setSystemErr((string) $xmlTestcase->{'system-err'});
+            $test->setSystemerr((string) $xmlTestcase->{'system-err'});
         }
 
         // If error
@@ -188,19 +188,19 @@ class JunitParserService
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->error
             );
-            $test->setErrorFailSkipMessage($message);
+            $test->setPbmessage($message);
         } elseif (isset($xmlTestcase->failure)) {
             $test->setStatus(Status::FAILED);
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->failure
             );
-            $test->setErrorFailSkipMessage($message);
+            $test->setPbmessage($message);
         } elseif (isset($xmlTestcase->skipped)) {
             $test->setStatus(Status::SKIPPED);
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->skipped
             );
-            $test->setErrorFailSkipMessage($message);
+            $test->setPbmessage($message);
         } else {
             $test->setStatus(Status::SUCCESS);
         }

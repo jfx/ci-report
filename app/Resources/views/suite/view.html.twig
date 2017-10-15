@@ -82,7 +82,7 @@
                 {% for test in tests %}
                 <tr id="tr-test-{{ test.refid }}" class="table-{{ statusColorClass(test.status) }}">
                     <td>{{ test.name }}</td>
-                    <td><span id="s-test-{{ test.refid }}" class="text-{{ statusColorClass(test.status) }}">{{ test.labelStatus }}</span></td>
+                    <td><span id="s-test-{{ test.refid }}" class="text-{{ statusColorClass(test.status) }}">{{ test.labelstatus }}</span></td>
                     <td>{{ test.duration }}s</td>
                     <td></td>
                 </tr>

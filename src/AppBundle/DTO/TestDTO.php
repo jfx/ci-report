@@ -54,7 +54,7 @@ class TestDTO
      *
      * @Type("string")
      */
-    private $className = '';
+    private $classname = '';
 
     /**
      * @var string
@@ -86,21 +86,21 @@ class TestDTO
      *
      * @Type("string")
      */
-    private $errorFailSkipMessage = '';
+    private $pbmessage = '';
 
     /**
      * @var string
      *
      * @Type("string")
      */
-    private $systemOut = '';
+    private $systemout = '';
 
     /**
      * @var string
      *
      * @Type("string")
      */
-    private $systemErr = '';
+    private $systemerr = '';
 
     /**
      * Set name.
@@ -133,9 +133,9 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setClassName(string $classname): TestDTO
+    public function setClassname(string $classname): TestDTO
     {
-        $this->className = $classname;
+        $this->classname = $classname;
 
         return $this;
     }
@@ -145,9 +145,9 @@ class TestDTO
      *
      * @return string
      */
-    public function getClassName(): string
+    public function getClassname(): string
     {
-        return $this->className;
+        return $this->classname;
     }
 
     /**
@@ -177,19 +177,19 @@ class TestDTO
     /**
      * Set full class name including package.
      *
-     * @param string $fullClassName The full class name
+     * @param string $fullclassname The full class name
      *
      * @return TestDTO
      */
-    public function setFullClassName(string $fullClassName): TestDTO
+    public function setFullclassname(string $fullclassname): TestDTO
     {
-        if (substr_count($fullClassName, '.') > 0) {
-            $index = strrpos($fullClassName, '.');
-            $this->setPackage(substr($fullClassName, 0, $index));
-            $this->setClassName(substr($fullClassName, $index + 1));
+        if (substr_count($fullclassname, '.') > 0) {
+            $index = strrpos($fullclassname, '.');
+            $this->setPackage(substr($fullclassname, 0, $index));
+            $this->setClassName(substr($fullclassname, $index + 1));
         } else {
             $this->setPackage(Test::DEFAULT_PACKAGE);
-            $this->setClassName($fullClassName);
+            $this->setClassName($fullclassname);
         }
 
         return $this;
@@ -250,9 +250,9 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setErrorFailSkipMessage(string $message): TestDTO
+    public function setPbmessage(string $message): TestDTO
     {
-        $this->errorFailSkipMessage = $message;
+        $this->pbmessage = $message;
 
         return $this;
     }
@@ -262,21 +262,21 @@ class TestDTO
      *
      * @return string
      */
-    public function getErrorFailSkipMessage(): string
+    public function getPbmessage(): string
     {
-        return $this->errorFailSkipMessage;
+        return $this->pbmessage;
     }
 
     /**
      * Set system out message.
      *
-     * @param string $systemOut The message
+     * @param string $systemout The message
      *
      * @return TestDTO
      */
-    public function setSystemOut(string $systemOut): TestDTO
+    public function setSystemout(string $systemout): TestDTO
     {
-        $this->systemOut = $systemOut;
+        $this->systemout = $systemout;
 
         return $this;
     }
@@ -286,21 +286,21 @@ class TestDTO
      *
      * @return string
      */
-    public function getSystemOut(): string
+    public function getSystemout(): string
     {
-        return $this->systemOut;
+        return $this->systemout;
     }
 
     /**
      * Set system error message.
      *
-     * @param string $systemErr The message
+     * @param string $systemerr The message
      *
      * @return TestDTO
      */
-    public function setSystemErr(string $systemErr): TestDTO
+    public function setSystemerr(string $systemerr): TestDTO
     {
-        $this->systemErr = $systemErr;
+        $this->systemerr = $systemerr;
 
         return $this;
     }
@@ -310,8 +310,8 @@ class TestDTO
      *
      * @return string
      */
-    public function getSystemErr(): string
+    public function getSystemerr(): string
     {
-        return $this->systemErr;
+        return $this->systemerr;
     }
 }
