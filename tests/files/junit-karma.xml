@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<testsuite name="Chromium 58.0.3029 (Ubuntu 0.0.0)" package="Karma" timestamp="2017-06-27T18:45:10" id="0" hostname="hp-820" tests="56" errors="0" failures="0" time="1.276">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/58.0.3029.110 Chrome/58.0.3029.110 Safari/537.36"/>
+  </properties>
+  <testcase name="App: Tam4 should work" time="0.224" classname="Karma.App: Tam4"/>
+  <testcase name="App: Tam4 should contain as title 'tam4.io'" time="0.064" classname="Karma.App: Tam4"/>
+  <testcase name="AlertComponent should work" time="0.059" classname="Karma.AlertComponent"/>
+  <testcase name="Service: ActionMockService should work" time="0.014" classname="Karma.Service: ActionMockService"/>
+  <testcase name="Service: ActionMockService can instantiate service when inject service" time="0.019" classname="Karma.Service: ActionMockService"/>
+  <testcase name="Service: ActionMockService can instantiate service with &quot;new&quot;" time="0.017" classname="Karma.Service: ActionMockService"/>
+  <testcase name="Service: ActionMockService can instantiate service when inject service" time="0.014" classname="Karma.Service: ActionMockService"/>
+  <testcase name="Service: ActionMockService should have expected actions" time="0.018" classname="Karma.Service: ActionMockService"/>
+  <testcase name="Service: AuthMockService should create" time="0.012" classname="Karma.Service: AuthMockService"/>
+  <testcase name="Decimal 4 should be rounded with precision 2 to 4" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.123456 should be rounded with precision 0 to 4" time="0.001" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.123456 should be rounded with precision 1 to 4.1" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.123456 should be rounded with precision 2 to 4.12" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.129 should be rounded with precision 2 to 4.13" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.125 should be rounded with precision 2 to 4.13" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.1249 should be rounded with precision 2 to 4.12" time="0.002" classname="Karma.Decimal"/>
+  <testcase name="Decimal -4.123456 should be rounded with precision 2 to -4.12" time="0.001" classname="Karma.Decimal"/>
+  <testcase name="Decimal -4.129 should be rounded with precision 2 to -4.129" time="0.001" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4 should have no decimal" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.0 should have no decimal" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.2 should have 1 decimal" time="0.001" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.01 should have 2 decimals" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal 4.010 should have 2 decimals" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal -4 should have no decimal" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal -4.0 should have no decimal" time="0" classname="Karma.Decimal"/>
+  <testcase name="Decimal -4.2 should have 1 decimal" time="0.002" classname="Karma.Decimal"/>
+  <testcase name="Decimal -4.01 should have 2 decimals" time="0.001" classname="Karma.Decimal"/>
+  <testcase name="Id Generator Generate id should be a string with a length of 20" time="0" classname="Karma.Id Generator"/>
+  <testcase name="Id Generator First generate id should be lower than second generate id" time="0.001" classname="Karma.Id Generator"/>
+  <testcase name="PositionArray Array should be ordered by position" time="0.002" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Next position should be 1 for empty array" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Next position should be max position + 1" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Next position should be max position + 1 next integer" time="0.001" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Next position should be max position + 1 for negative value" time="0.001" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Next position should be max position + 1 next integer" time="0.002" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray First position should be 1 for empty array" time="0.001" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray First position should be min position - 1" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray First position should be min position - 1 previous integer" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray First position should be min position - 1 for negative value" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray First position should be max position -1 previous integer" time="0.001" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 integers" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 equal integers" time="0.001" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 decimals" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 decimals" time="0.002" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 decimals" time="0.002" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 negative integers" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 equal negative integers" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 negative decimals" time="0.001" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 negative decimals" time="0" classname="Karma.PositionArray"/>
+  <testcase name="PositionArray Position between 2 negative decimals" time="0" classname="Karma.PositionArray"/>
+  <testcase name="BannerComponent should create" time="0.025" classname="Karma.BannerComponent"/>
+  <testcase name="BannerComponent should render title" time="0.035" classname="Karma.BannerComponent"/>
+  <testcase name="LoginComponent should create" time="0.036" classname="Karma.LoginComponent"/>
+  <testcase name="NavbarComponent should create" time="0.069" classname="Karma.NavbarComponent"/>
+  <testcase name="ActionComponent should create" time="0.301" classname="Karma.ActionComponent"/>
+  <testcase name="TodayComponent should create" time="0.345" classname="Karma.TodayComponent"/>
+  <system-out>
+    <![CDATA[Chromium 58.0.3029 (Ubuntu 0.0.0) ERROR: 'Unhandled Promise rejection:', 'Cannot read property 'add' of undefined', '; Zone:', 'ProxyZone', '; Task:', 'XMLHttpRequest.addEventListener:error', '; Value:', TypeError{__zone_symbol__currentTask: ZoneTask{_zone: Zone{_properties: ..., _parent: ..., _name: ..., _zoneDelegate: ...}, runCount: 0, _zoneDelegates: null, _state: 'notScheduled', type: 'eventTask', source: 'XMLHttpRequest.addEventListener:error', data: Object{options: ..., eventName: ..., handler: ..., target: ..., name: ..., crossContext: ..., invokeAddFunc: ..., invokeRemoveFunc: ...}, scheduleFn: function scheduleEventListener(eventTask) { ... }, cancelFn: function cancelEventListener(eventTask) { ... }, callback: function (err) { ... }, invoke: function () { ... }}}, 'TypeError: Cannot read property 'add' of undefined
+    at CatchSubscriber.webpackJsonp.../../../../../src/app/core/service/action/action.mock.service.ts.ActionMockService.handleError [as selector] (http://localhost:9876/_karma_webpack_/main.bundle.js:339:728)
+    at CatchSubscriber.webpackJsonp.../../../../rxjs/operator/catch.js.CatchSubscriber.error (http://localhost:9876/_karma_webpack_/vendor.bundle.js:32397:31)
+    at MapSubscriber.webpackJsonp.../../../../rxjs/Subscriber.js.Subscriber._error (http://localhost:9876/_karma_webpack_/vendor.bundle.js:30467:26)
+    at MapSubscriber.webpackJsonp.../../../../rxjs/Subscriber.js.Subscriber.error (http://localhost:9876/_karma_webpack_/vendor.bundle.js:30441:18)
+    at XMLHttpRequest.onError (http://localhost:9876/_karma_webpack_/vendor.bundle.js:92674:34)
+    at ZoneDelegate.webpackJsonp.../../../../zone.js/dist/zone.js.ZoneDelegate.invokeTask (http://localhost:9876/_karma_webpack_/polyfills.bundle.js:2818:31)
+    at ProxyZoneSpec.webpackJsonp.../../../../zone.js/dist/proxy.js.ProxyZoneSpec.onInvokeTask (http://localhost:9876/_karma_webpack_/vendor.bundle.js:36590:39)
+    at ZoneDelegate.webpackJsonp.../../../../zone.js/dist/zone.js.ZoneDelegate.invokeTask (http://localhost:9876/_karma_webpack_/polyfills.bundle.js:2817:36)
+    at Zone.webpackJsonp.../../../../zone.js/dist/zone.js.Zone.runTask (http://localhost:9876/_karma_webpack_/polyfills.bundle.js:2585:47)
+    at XMLHttpRequest.ZoneTask.invoke (http://localhost:9876/_karma_webpack_/polyfills.bundle.js:2880:38)'
+,Chromium 58.0.3029 (Ubuntu 0.0.0) ERROR: Error{rejection: TypeError{__zone_symbol__currentTask: ZoneTask{_zone: ..., runCount: ..., _zoneDelegates: ..., _state: ..., type: ..., source: ..., data: ..., scheduleFn: ..., cancelFn: ..., callback: ..., invoke: ...}}, promise: ZoneAwarePromise{__zone_symbol__state: 0, __zone_symbol__value: TypeError{__zone_symbol__currentTask: ...}}, zone: Zone{_properties: Object{ProxyZoneSpec: ...}, _parent: Zone{_properties: ..., _parent: ..., _name: ..., _zoneDelegate: ...}, _name: 'ProxyZone', _zoneDelegate: ZoneDelegate{_taskCounts: ..., zone: ..., _parentDelegate: ..., _forkZS: ..., _forkDlgt: ..., _forkCurrZone: ..., _interceptZS: ..., _interceptDlgt: ..., _interceptCurrZone: ..., _invokeZS: ..., _invokeDlgt: ..., _invokeCurrZone: ..., _handleErrorZS: ..., _handleErrorDlgt: ..., _handleErrorCurrZone: ..., _scheduleTaskZS: ..., _scheduleTaskDlgt: ..., _scheduleTaskCurrZone: ..., _invokeTaskZS: ..., _invokeTaskDlgt: ..., _invokeTaskCurrZone: ..., _cancelTaskZS: ..., _cancelTaskDlgt: ..., _cancelTaskCurrZone: ..., _hasTaskZS: ..., _hasTaskDlgt: ..., _hasTaskDlgtOwner: ..., _hasTaskCurrZone: ...}}, task: ZoneTask{_zone: Zone{_properties: ..., _parent: ..., _name: ..., _zoneDelegate: ...}, runCount: 0, _zoneDelegates: null, _state: 'notScheduled', type: 'eventTask', source: 'XMLHttpRequest.addEventListener:error', data: Object{options: ..., eventName: ..., handler: ..., target: ..., name: ..., crossContext: ..., invokeAddFunc: ..., invokeRemoveFunc: ...}, scheduleFn: function scheduleEventListener(eventTask) { ... }, cancelFn: function cancelEventListener(eventTask) { ... }, callback: function (err) { ... }, invoke: function () { ... }}}
+
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>

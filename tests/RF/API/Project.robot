@@ -8,7 +8,7 @@ Resource          Function/api.txt
 "GET Projects" request contains Project One
     ${resp} =    When Get Request    cir    /projects
     Then Should Be Equal As Strings    ${resp.status_code}    200
-    And Response content should have x Items    ${resp.content}    6
+    And Response content should have x Items    ${resp.content}    8
     And Label item of list should be equal    ${resp.content}    "name"    ${P1.name}
     And Label item of list should be equal    ${resp.content}    "warning"    ${P1.warning}
     And Label item of list should be equal    ${resp.content}    "success"    ${P1.success}

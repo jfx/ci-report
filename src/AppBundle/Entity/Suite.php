@@ -104,7 +104,7 @@ class Suite
      *
      * @ORM\Column(name="datetime_suite", type="datetime")
      */
-    protected $datetimeSuite;
+    protected $datetime;
 
     /**
      * @Gedmo\SortablePosition
@@ -316,9 +316,9 @@ class Suite
      *
      * @return Suite
      */
-    public function setDateTimeSuite(DateTime $datetime): Suite
+    public function setDateTime(DateTime $datetime): Suite
     {
-        $this->datetimeSuite = $datetime;
+        $this->datetime = $datetime;
 
         return $this;
     }
@@ -328,9 +328,9 @@ class Suite
      *
      * @return DateTime
      */
-    public function getDateTimeSuite(): DateTime
+    public function getDateTime(): DateTime
     {
-        return $this->datetimeSuite;
+        return $this->datetime;
     }
 
     /**

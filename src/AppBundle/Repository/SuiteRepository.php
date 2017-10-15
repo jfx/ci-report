@@ -51,7 +51,7 @@ class SuiteRepository extends SortableRepository
             ->innerJoin('s.campaign', 'c')
             ->where('c.id = :campaignId')
             ->setParameter('campaignId', $campaign->getId())
-            ->orderBy('s.datetimeSuite', 'DESC', 's.position', 'DESC');
+            ->orderBy('s.datetime', 'DESC', 's.position', 'DESC');
 
         $result = $qb->getQuery()->getResult();
 

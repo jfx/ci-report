@@ -44,7 +44,7 @@
                 <p id="p-skipped" class="card-text text-warning">Skipped tests: {{ suite.skipped }}</p>
                 <p id="p-disabled" class="card-text text-muted">Disabled tests: {{ suite.disabled }}</p>
                 <p id="p-duration" class="card-text">Duration: {{ suite.duration }}s</p>
-                <p id="p-time" class="card-text text-muted">Time: {{ suite.datetimeSuite|date('d/m/Y H:i:s') }}</p>
+                <p id="p-time" class="card-text text-muted">Time: {{ suite.datetime|date('d/m/Y H:i:s') }}</p>
             </div>
         </div>
     </div>

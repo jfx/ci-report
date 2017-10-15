@@ -332,7 +332,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
             $objectList[$i]->setSkipped($data['skipped']);
             $objectList[$i]->setDisabled($data['disabled']);
             $objectList[$i]->setDuration($data['duration']);
-            $objectList[$i]->setDateTimeSuite($data['datetime']);
+            $objectList[$i]->setDateTime($data['datetime']);
 
             $manager->persist($objectList[$i]);
             $ref = $data['suiteRef'].'-suite';

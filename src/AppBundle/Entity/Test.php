@@ -255,7 +255,7 @@ class Test
      *
      * @return Test
      */
-    public function setpassed(): Test
+    public function setPassed(): Test
     {
         $this->passed = 1;
         $this->failed = 0;

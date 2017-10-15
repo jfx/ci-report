@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite failures="24" tests="24" errors="0" name="RF" skip="0">
+<testcase classname="RF.Dashboard.Dashboard" name="Greetings" time="5">
+<failure message="Page should have contained text 'Hello !' but did not" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Personal" name="Titles" time="5">
+<failure message="Page should have contained text 'Sprint backlog' but did not" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="The backlog should display some actions" time="25">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Details of an action should be viewed in backlog" time="26">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be edited by a button" time="25">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be edited by a link" time="26">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be modified with an edit form" time="30">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Modification of action can be undone by pressing close button" time="25">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be added with an edit form" time="30">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Adding an action can be undone by pressing close button" time="26">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be removed with a modal message" time="30">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Deleting an action can be undone when I do not confirm" time="26">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Deleting an action can be undone when I close confirm modal" time="26">
+<failure message="Text 'Learn &quot;Introduction to TypeScript&quot; course with very very long title and some other things' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="The backlog should display some actions" time="25">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Details of an action should be viewed in backlog" time="26">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be edited by a button" time="26">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be edited by a link" time="26">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be modified with an edit form" time="32">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Modification of action can be undone by pressing close button" time="27">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be added with an edit form" time="32">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Adding an action can be undone by pressing close button" time="27">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be removed with a modal message" time="31">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Deleting an action can be undone when I do not confirm" time="26">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Deleting an action can be undone when I close confirm modal" time="26">
+<failure message="Text 'Read &quot;Scaling Lean &amp; Agile Development&quot;' did not appear in 20 seconds" type="AssertionError"></failure>
+</testcase>
+</testsuite>

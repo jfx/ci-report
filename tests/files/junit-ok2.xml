@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="JUnitXmlReporter.constructor" tests="4" >
+  <testcase classname="JUnitXmlReporter.constructor" name="name1" />
+  <testcase classname="JUnitXmlReporter.constructor" name="name2" time="1" />
+  <testcase classname="JUnitXmlReporter.constructor" name="name3" time="2" />
+</testsuite>

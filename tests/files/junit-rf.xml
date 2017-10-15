@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite failures="0" tests="24" errors="0" name="RF" skip="0">
+<testcase classname="RF.Dashboard.Dashboard" name="Greetings" time="6">
+</testcase>
+<testcase classname="RF.Personal.Personal" name="Titles" time="6">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="The backlog should display some actions" time="6">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Details of an action should be viewed in backlog" time="6">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be edited by a button" time="6">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be edited by a link" time="6">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be modified with an edit form" time="13">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Modification of action can be undone by pressing close button" time="8">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be added with an edit form" time="8">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Adding an action can be undone by pressing close button" time="7">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Action can be removed with a modal message" time="7">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Deleting an action can be undone when I do not confirm" time="7">
+</testcase>
+<testcase classname="RF.Personal.Sprint backlog" name="Deleting an action can be undone when I close confirm modal" time="7">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="The backlog should display some actions" time="5">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Details of an action should be viewed in backlog" time="5">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be edited by a button" time="6">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be edited by a link" time="6">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be modified with an edit form" time="6">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Modification of action can be undone by pressing close button" time="6">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be added with an edit form" time="6">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Adding an action can be undone by pressing close button" time="7">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Action can be removed with a modal message" time="6">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Deleting an action can be undone when I do not confirm" time="6">
+</testcase>
+<testcase classname="RF.Personal.Today backlog" name="Deleting an action can be undone when I close confirm modal" time="5">
+</testcase>
+</testsuite>
