@@ -41,43 +41,46 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
 "GET suite" request returns suite data
-    ${resp} =    When Get Request    cir    /projects/${P1C1.prefid}/campaigns/${P1C1.crefid}
+    ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}
     Then Should Be Equal As Strings    ${resp.status_code}    200
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C1.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1C1.warning}
-    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1C1.success}
-    And Dictionary Should Contain Item    ${resp.json()}    passed    ${P1C1.passed}
-    And Dictionary Should Contain Item    ${resp.json()}    failed    ${P1C1.failed}
-    And Dictionary Should Contain Item    ${resp.json()}    errored    ${P1C1.errored}
-    And Dictionary Should Contain Item    ${resp.json()}    skipped    ${P1C1.skipped}
-    And Dictionary Should Contain Item    ${resp.json()}    disabled    ${P1C1.disabled}
-    And Dictionary Should Contain Item    ${resp.json()}    start    ${P1C1.start_iso}
-    And Dictionary Should Contain Item    ${resp.json()}    end    ${P1C1.end_iso}
-
-"GET suite" request doesn't return end date when not defined
-    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/${P1C4.crefid}
-    Then Should Be Equal As Strings    ${resp.status_code}    200
-    And Dictionary Should Contain Key    ${resp.json()}    start
-    And Dictionary Should Not Contain Key    ${resp.json()}    end
+    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C4S1.srefid}
+    And Dictionary Should Contain Item    ${resp.json()}    name    ${P1C4S1.name}
+    And Dictionary Should Contain Item    ${resp.json()}    passed    ${P1C4S1.passed}
+    And Dictionary Should Contain Item    ${resp.json()}    failed    ${P1C4S1.failed}
+    And Dictionary Should Contain Item    ${resp.json()}    errored    ${P1C4S1.errored}
+    And Dictionary Should Contain Item    ${resp.json()}    skipped    ${P1C4S1.skipped}
+    And Dictionary Should Contain Item    ${resp.json()}    disabled    ${P1C4S1.disabled}
+    And Dictionary Should Contain Item    ${resp.json()}    duration    ${P1C4S1.duration}
+    And Dictionary Should Contain Item    ${resp.json()}    datetime    ${P1C4S1.time_iso}
 
 "GET suite" request should not contain not expose fields
-    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/${P1C1.crefid}
+    ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Dictionary Should Not Contain Key    ${resp.json()}    id
     And Dictionary Should Not Contain Key    ${resp.json()}    position
 
-"GET campaign" request with unknown project refid returns HTTP "404" error
-    ${resp} =    When Get Request    cir    /projects/X/campaigns/1
+"GET suite" request with unknown project refid returns HTTP "404" error
+    ${resp} =    When Get Request    cir    /projects/XXX/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"GET campaign" request with unknown campaign refid returns HTTP "404" error
-    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/0
+"GET suite" request with unknown campaign refid returns HTTP "404" error
+    ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/0/suites/${P1C4S1.srefid}
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"GET campaign" request with not numeric campaign refid returns HTTP "404" error
-    ${resp} =    When Get Request    cir    /projects/${P1.prefid}/campaigns/X
+"GET suite" request with unknown suite refid returns HTTP "404" error
+    ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/0
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"GET suite" request with not numeric campaign refid returns HTTP "404" error
+    ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/X/suites/${P1C4S1.srefid}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"GET suite" request with not numeric suite refid returns HTTP "404" error
+    ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/X
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 

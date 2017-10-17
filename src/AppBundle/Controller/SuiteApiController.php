@@ -104,6 +104,66 @@ class SuiteApiController extends AbstractApiController
     }
 
     /**
+     * Get suite data. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -X GET
+     * </code></pre>.
+     *
+     * @param Suite $suite Suite
+     *
+     * @return Suite
+     *
+     * @Rest\Get(
+     *    "/projects/{prefid}/campaigns/{crefid}/suites/{srefid}",
+     *    requirements={"crefid" = "\d+", "srefid" = "\d+"}
+     * )
+     * @Rest\View(serializerGroups={"public"})
+     *
+     * @ParamConverter("suite", class="AppBundle:Suite", options={
+     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
+     *    "map_method_signature" = true
+     * })
+     *
+     * @Doc\ApiDoc(
+     *     section="Suites",
+     *     description="Get suite data.",
+     *     requirements={
+     *         {
+     *             "name"="prefid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         },
+     *         {
+     *             "name"="crefid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the campaign."
+     *         },
+     *         {
+     *             "name"="srefid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the suite."
+     *         }
+     *     },
+     *     output= {
+     *         "class"=Suite::class,
+     *         "groups"={"public"},
+     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
+     *     },
+     *     statusCodes={
+     *         200="Returned when successful",
+     *         404="Returned when project or campaign not found"
+     *     }
+     * )
+     */
+    public function getSuiteAction(Suite $suite): Suite
+    {
+        return $suite;
+    }
+
+    /**
      * Create a suite. Example: </br>
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST --data '{"warning":80, "success":95, "start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
      * </code></pre>.

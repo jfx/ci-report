@@ -15,12 +15,12 @@ class SuiteApiControllerTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
-//    public function testGetSuite()
-//    {
-//        $client = static::createClient();
-//
-//        $client->request('GET', '/api/projects/project-one/campaigns/1/suites/1');
-//
-//        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//    }
+    public function testGetSuite()
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/api/projects/project-one/campaigns/1/suites/1');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
 }
