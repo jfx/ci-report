@@ -28,6 +28,7 @@ use AppBundle\Entity\Status;
 use AppBundle\Util\SuiteTests;
 use DateTime;
 use DOMDocument;
+use ReflectionClass;
 use SimpleXMLElement;
 
 /**
@@ -46,7 +47,7 @@ class JunitParserService
     /**
      * @var string
      */
-    protected $schemaPath = __DIR__.'/../../../junit/xsd/junit-10.xsd';
+    protected $schemaRelativePath = '/../../../junit/xsd/junit-10.xsd';
 
     /**
      * Validate the XML document.
@@ -59,7 +60,9 @@ class JunitParserService
     {
         libxml_use_internal_errors(true);
 
-        $domDoc->schemaValidate($this->schemaPath);
+        $reflClass = new ReflectionClass(get_class($this));
+        $schemaAbsolutePath = dirname($reflClass->getFileName()).$this->schemaRelativePath;
+        $domDoc->schemaValidate($schemaAbsolutePath);
         $errors = libxml_get_errors();
 
         libxml_clear_errors();

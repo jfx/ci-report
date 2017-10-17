@@ -24,6 +24,8 @@ namespace AppBundle\Entity;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Suite entity class.
@@ -47,68 +49,125 @@ class Suite
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Exclude
      */
     private $id;
 
     /**
+     * Name of the suite.
+     *
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50)
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $name;
 
     /**
+     * Total number of passed tests.
+     *
      * @var int
      *
      * @ORM\Column(name="passed", type="integer")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    private $passed;
+    private $passed = 0;
 
     /**
+     * Total number of disabled tests.
+     *
      * @var int
      *
      * @ORM\Column(name="failed", type="integer")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    private $failed;
+    private $failed = 0;
 
     /**
+     * Total number of errored tests.
+     *
      * @var int
      *
      * @ORM\Column(name="errored", type="integer")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    private $errored;
+    private $errored = 0;
 
     /**
+     * Total number of skipped tests.
+     *
      * @var int
      *
      * @ORM\Column(name="skipped", type="integer")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    private $skipped;
+    private $skipped = 0;
 
     /**
+     * Total number of disabled tests.
+     *
      * @var int
      *
      * @ORM\Column(name="disabled", type="integer")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    private $disabled;
+    private $disabled = 0;
 
     /**
+     * Duration of the suite in seconds.
+     *
      * @var float
      *
      * @ORM\Column(name="duration", type="float")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("float")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
-    private $duration;
+    private $duration = 0;
 
     /**
+     * Date time of the suite in ISO 8601 format (2017-07-01T12:30:01+02:00).
+     *
      * @var DateTime
      *
      * @ORM\Column(name="datetime_suite", type="datetime")
+     *
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     protected $datetime;
 
     /**
      * @Gedmo\SortablePosition
      * @ORM\Column(name="position", type="integer")
+     *
+     * @Serializer\Exclude
      */
     private $position;
 
@@ -118,6 +177,8 @@ class Suite
      * @Gedmo\SortableGroup
      * @ORM\ManyToOne(targetEntity="Campaign")
      * @ORM\JoinColumn(name="campaign_id", referencedColumnName="id", nullable=false, onDelete="cascade")
+     *
+     * @Serializer\Exclude
      */
     private $campaign;
 
@@ -358,9 +419,14 @@ class Suite
     }
 
     /**
-     * Get reference id.
+     * Get reference id (Incremental integer).
      *
      * @return int
+     *
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("refid")
+     * @Serializer\Type("int")
+     * @Serializer\Groups({"public", "private"})
      */
     public function getRefid(): int
     {

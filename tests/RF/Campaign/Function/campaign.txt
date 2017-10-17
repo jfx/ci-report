@@ -49,5 +49,5 @@ The table row should contain values of suite
     Table Cell Should Contain    t-suite    ${row}    6    ${suite.errored}
     Table Cell Should Contain    t-suite    ${row}    7    ${suite.skipped}
     Table Cell Should Contain    t-suite    ${row}    8    ${suite.disabled}
-    Table Cell Should Contain    t-suite    ${row}    9    ${suite.duration}
+    Table Cell Should Contain    t-suite    ${row}    9    ${suite._display}
     Table Cell Should Contain    t-suite    ${row}    10    ${suite.time}

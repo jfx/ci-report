@@ -31,5 +31,5 @@ I check suite displayed values
     Element Should Contain    p-errored    ${suite.errored}
     Element Should Contain    p-skipped    ${suite.skipped}
     Element Should Contain    p-disabled    ${suite.disabled}
-    Element Should Contain    p-duration    ${suite.duration}
+    Element Should Contain    p-duration    ${suite.duration_display}
     Element Should Contain    p-time    ${suite.time}

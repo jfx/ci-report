@@ -197,7 +197,7 @@ class CampaignApiController extends AbstractApiController
      * </code></pre>.
      *
      * @param Project     $project     Project
-     * @param CampaignDTO $campaignDTO Project to create
+     * @param CampaignDTO $campaignDTO Campaign to create
      * @param Request     $request     The request
      *
      * @return Campaign|View

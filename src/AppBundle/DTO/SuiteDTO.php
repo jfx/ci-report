@@ -50,6 +50,8 @@ class SuiteDTO
     private $name;
 
     /**
+     * Number of disabled tests.
+     *
      * @var int
      *
      * @Type("integer")
@@ -60,6 +62,8 @@ class SuiteDTO
     private $disabled = 0;
 
     /**
+     * Duration of the suite in seconds.
+     *
      * @var float
      *
      * @Type("float")
