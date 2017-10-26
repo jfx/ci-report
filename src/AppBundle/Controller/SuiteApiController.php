@@ -257,4 +257,78 @@ class SuiteApiController extends AbstractApiController
 
         return $suite;
     }
+    
+    /**
+     * Delete a suite. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
+     * </code></pre>.
+     *
+     * @param Suite   $suite   Suite to delete
+     * @param Request $request The request
+     *
+     * @return void|View
+     *
+     * @Rest\Delete(
+     *    "/projects/{prefid}/campaigns/{crefid}/suites/{srefid}",
+     *    requirements={"crefid" = "\d+", "srefid" = "\d+"}
+     * )
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     *
+     * @ParamConverter("suite", class="AppBundle:Suite", options={
+     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
+     *    "map_method_signature" = true
+     * })
+     *
+     * @Doc\ApiDoc(
+     *     section="Suites",
+     *     description="Delete a campaign.",
+     *     headers={
+     *         {
+     *             "name"="X-CIR-TKN",
+     *             "required"=true,
+     *             "description"="Private token"
+     *         }
+     *     },
+     *     requirements={
+     *         {
+     *             "name"="prefid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         },
+     *         {
+     *             "name"="crefid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the campaign."
+     *         },
+     *         {
+     *             "name"="srefid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the suite."
+     *         }
+     *     },
+     *     statusCodes={
+     *         204="Returned when successful",
+     *         401="Returned when X-CIR-TKN private token value is invalid",
+     *         404="Returned when suite not found",
+     *         405="Returned when suite refid is not set in URL"
+     *     },
+     *     tags={
+     *         "token" = "#2c3e50"
+     *     }
+     * )
+     */
+    public function deleteSuiteAction(Suite $suite, Request $request)
+    {
+        $project = $suite->getCampaign()->getProject();
+        if ($this->isInvalidToken($request, $project->getToken())) {
+            return $this->getInvalidTokenView();
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($suite);
+        $em->flush();
+    }
 }

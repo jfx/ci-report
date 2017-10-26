@@ -84,143 +84,63 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"POST suites" request returns HTTP "201" with suite data
+"DELETE suites" request removes suite 2 of campaign 4 of Project One
     [Tags]    EDIT    DB
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    warning=${P1C0.warning}    success=${P1C0.success}    start=${P1C0.start_sql}    end=${P1C0.end_sql}
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1C0.warning}
-    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1C0.success}
-    And Dictionary Should Contain Item    ${resp.json()}    passed    ${P1C0.passed}
-    And Dictionary Should Contain Item    ${resp.json()}    failed    ${P1C0.failed}
-    And Dictionary Should Contain Item    ${resp.json()}    errored    ${P1C0.errored}
-    And Dictionary Should Contain Item    ${resp.json()}    skipped    ${P1C0.skipped}
-    And Dictionary Should Contain Item    ${resp.json()}    disabled    ${P1C0.disabled}
-    And Dictionary Should Contain Item    ${resp.json()}    start    ${P1C0.start_iso}
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=${P1C0.warning} and success=${P1C0.success} and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and start="${P1C0.start_sql}" and end="${P1C0.end_sql}"
+    ${cposition} =    Evaluate    ${P1C4S2.crefid} - 1
+    ${sposition} =    Evaluate    ${P1C4S2.srefid} - 1
+    Check If Exists In Database    select id from cir_campaign where project_id ="${P1.id}" and position = ${cposition}
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition}
+    Check If Exists In Database    select cir_test.id from cir_test, cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.id = suite_id and cir_suite.position = ${sposition}
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    204
+    Check If Exists In Database    select id from cir_campaign where project_id ="${P1.id}" and position = ${cposition}
+    Check If Not Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition}
+    Check If Not Exists In Database    select cir_test.id from cir_test, cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.id = suite_id and cir_suite.position = ${sposition}
 
-"POST campaigns" request with default values returns HTTP "201" with campaign data
-    [Tags]    EDIT    DB
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1.warning}
-    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1.success}
-    And Dictionary Should Contain Item    ${resp.json()}    passed    ${P1C0.passed}
-    And Dictionary Should Contain Item    ${resp.json()}    failed    ${P1C0.failed}
-    And Dictionary Should Contain Item    ${resp.json()}    errored    ${P1C0.errored}
-    And Dictionary Should Contain Item    ${resp.json()}    skipped    ${P1C0.skipped}
-    And Dictionary Should Contain Item    ${resp.json()}    disabled    ${P1C0.disabled}
-    And Dictionary Should Contain Key    ${resp.json()}    start
-    And Dictionary Should Not Contain Key    ${resp.json()}    end
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=${P1.warning} and success=${P1.success} and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
-
-"POST campaigns" request without start datetime sets it to actual datetime
-    [Tags]    EDIT    DB
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    @{queryResults} =    Query    select start from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position}
-    And Time should be between 1 minute before and now    ${queryResults[0][0]}
-
-"POST campaigns" request should not contain not expose fields
-    [Tags]    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Not Contain Key    ${resp.json()}    id
-    And Dictionary Should Not Contain Key    ${resp.json()}    position
-
-"POST campaigns" request with wrong token returns HTTP "401" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=XXX
-    &{data} =    And Create Dictionary    warning=${P1C0.warning}    success=${P1C0.success}    start=${P1C0.start_sql}    end=${P1C0.end_sql}
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
+"DELETE suites" request with wrong token returns HTTP "401" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=XXX
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    401
+    And Dictionary Should Contain Item    ${resp.json()}    code    401
+    And Dictionary Should Contain Item    ${resp.json()}    message    Invalid token
 
-"POST campaigns" request without token returns HTTP "401" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json
-    &{data} =    And Create Dictionary    warning=${P1C0.warning}    success=${P1C0.success}    start=${P1C0.start_sql}    end=${P1C0.end_sql}
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
+"DELETE suites" request without token returns HTTP "401" error
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}
     Then Should Be Equal As Strings    ${resp.status_code}    401
+    And Dictionary Should Contain Item    ${resp.json()}    code    401
+    And Dictionary Should Contain Item    ${resp.json()}    message    Invalid token
 
-"POST campaigns" request with invalid type warning limit sets it to 0
-    [Tags]    DB    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    warning=XXX
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning    0
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=0 and success=${P1.success} and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
+"DELETE suites" request with unknown project refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/X/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}    headers=${headers}
+    Then Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"POST campaigns" request with float type warning limit round it
-    [Tags]    DB    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    warning=79.7
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning    79
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=79 and success=${P1.success} and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
-
-"POST campaigns" request with warning limit out of range returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    warning=120
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
-
-"POST campaigns" request with invalid type success limit sets it to 0
-    [Tags]    DB    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    success=XXX
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    success    0
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=${P1.warning} and success=0 and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
-
-"POST campaigns" request with float type success limit round it
-    [Tags]    DB    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    success=79.7
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    success    79
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=${P1.warning} and success=79 and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
-
-"POST campaigns" request with success limit out of range returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    success=120
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
-
-"POST campaigns" request with invalid start datetime returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    start=2017-07-01
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Should Contain    ${resp.json()['message']}    Invalid datetime
-
-"POST campaigns" request with invalid end datetime returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    end=2017-07-01
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Should Contain    ${resp.json()['message']}    Invalid datetime
-
-"POST campaigns" request with unknown project refid returns HTTP "404" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    warning=${P1C0.warning}    success=${P1C0.success}    start=${P1C0.start_sql}    end=${P1C0.end_sql}
-    ${resp} =    And Post Request    cir    /projects/X/campaigns    data=${data}    headers=${headers}
+"DELETE suites" request with unknown campaign refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    And Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/0/suites/${P1C4S2.srefid}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE suites" request with not numeric campaign refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    And Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/X/suites/${P1C4S2.srefid}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE suites" request with unknown suite refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    And Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/0    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE suites" request with not numeric suite refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    And Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/X    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE suites" request without campaign refid returns HTTP "405" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    And Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    405
