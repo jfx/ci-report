@@ -39,30 +39,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CampaignDTO
 {
     /**
-     * Tests warning limit. Integer between 0 and 100 %. Warning limit of project by default.
-     *
-     * @var int
-     *
-     * @Type("integer")
-     *
-     * @Assert\Type("integer")
-     * @Assert\Range(min=0, max=100)
-     */
-    private $warning;
-
-    /**
-     * Tests success limit. Integer between 0 and 100 %. Success limit of project by default.
-     *
-     * @var int
-     *
-     * @Type("integer")
-     *
-     * @Assert\Type("integer")
-     * @Assert\Range(min=0, max=100)
-     */
-    private $success;
-
-    /**
      * Start Date time of the campaign in format (2017-07-01 12:30:01). Now by default.
      *
      * @var DateTime
@@ -83,54 +59,6 @@ class CampaignDTO
      * @Assert\DateTime()
      */
     private $end;
-
-    /**
-     * Set warning limit.
-     *
-     * @param int $warning
-     *
-     * @return CampaignDTO
-     */
-    public function setWarning(int $warning): CampaignDTO
-    {
-        $this->warning = $warning;
-
-        return $this;
-    }
-
-    /**
-     * Get warning limit.
-     *
-     * @return int
-     */
-    public function getWarning(): ?int
-    {
-        return $this->warning;
-    }
-
-    /**
-     * Set success limit.
-     *
-     * @param int $success
-     *
-     * @return CampaignDTO
-     */
-    public function setSuccess(int $success): CampaignDTO
-    {
-        $this->success = $success;
-
-        return $this;
-    }
-
-    /**
-     * Get success limit.
-     *
-     * @return int
-     */
-    public function getSuccess(): ?int
-    {
-        return $this->success;
-    }
 
     /**
      * Set start datetime of campaign.

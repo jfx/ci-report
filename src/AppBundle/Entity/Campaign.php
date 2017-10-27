@@ -56,34 +56,6 @@ class Campaign
     private $id;
 
     /**
-     * Tests warning limit.
-     *
-     * @var int
-     *
-     * @ORM\Column(name="warning", type="smallint")
-     *
-     * @Assert\NotBlank()
-     * @Assert\Range(min=0, max=100)
-     *
-     * @Serializer\Groups({"public", "private"})
-     */
-    private $warning;
-
-    /**
-     * Tests success limit.
-     *
-     * @var int
-     *
-     * @ORM\Column(name="success", type="smallint")
-     *
-     * @Assert\NotBlank()
-     * @Assert\Range(min=0, max=100)
-     *
-     * @Serializer\Groups({"public", "private"})
-     */
-    private $success;
-
-    /**
      * Total number of passed tests from all testsuites.
      *
      * @var int
@@ -154,6 +126,20 @@ class Campaign
     private $disabled = 0;
 
     /**
+     * Status of campaign defined by lowest status of all suites. If no suite, status is warning.
+     *
+     * @var int
+     *
+     * @ORM\Column(name="status", type="smallint")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
+     *
+     * @Serializer\Groups({"public", "private"})
+     */
+    private $status = 16;
+
+    /**
      * Start Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01+02:00).
      *
      * @var DateTime
@@ -207,8 +193,6 @@ class Campaign
      */
     public function __construct(Project $project)
     {
-        $this->setWarning($project->getWarning());
-        $this->setSuccess($project->getSuccess());
         $this->setStart(new DateTime());
         $this->setProject($project);
     }
@@ -221,54 +205,6 @@ class Campaign
     public function getId(): int
     {
         return $this->id;
-    }
-
-    /**
-     * Set warning limit.
-     *
-     * @param int $warning Warning limit
-     *
-     * @return Campaign
-     */
-    public function setWarning(int $warning): Campaign
-    {
-        $this->warning = $warning;
-
-        return $this;
-    }
-
-    /**
-     * Get warning limit.
-     *
-     * @return int
-     */
-    public function getWarning(): int
-    {
-        return $this->warning;
-    }
-
-    /**
-     * Set success limit.
-     *
-     * @param int $success Success limit
-     *
-     * @return Campaign
-     */
-    public function setSuccess(int $success): Campaign
-    {
-        $this->success = $success;
-
-        return $this;
-    }
-
-    /**
-     * Get success limit.
-     *
-     * @return int
-     */
-    public function getSuccess(): int
-    {
-        return $this->success;
     }
 
     /**
@@ -389,6 +325,30 @@ class Campaign
     public function getDisabled(): int
     {
         return $this->disabled;
+    }
+
+    /**
+     * Set status.
+     *
+     * @param int $status Status
+     *
+     * @return Campaign
+     */
+    public function setStatus(int $status): Campaign
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status of campaign.
+     *
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
     }
 
     /**
@@ -530,23 +490,6 @@ class Campaign
     }
 
     /**
-     * Get campaign status.
-     *
-     * @return int Status::FAILED|Status::WARNING|Status::SUCCESS
-     */
-    public function getStatus(): int
-    {
-        if ($this->getPercentage() < $this->getWarning()) {
-            return Status::FAILED;
-        }
-        if ($this->getPercentage() < $this->getSuccess()) {
-            return Status::WARNING;
-        }
-
-        return Status::SUCCESS;
-    }
-
-    /**
      * Set from DTO campaign.
      *
      * @param CampaignDTO $dto DTO object
@@ -555,12 +498,6 @@ class Campaign
      */
     public function setFromDTO(CampaignDTO $dto): Campaign
     {
-        if (null !== $dto->getWarning()) {
-            $this->setWarning($dto->getWarning());
-        }
-        if (null !== $dto->getSuccess()) {
-            $this->setSuccess($dto->getSuccess());
-        }
         if (null !== $dto->getStart()) {
             $this->setStart($dto->getStart());
         }

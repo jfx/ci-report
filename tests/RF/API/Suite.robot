@@ -11,6 +11,8 @@ Resource          Function/api.txt
     And Response content should have x Items    ${resp.content}    2
     And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S1.srefid}
     And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S1.name}
+    And Label item of list should be equal    ${resp.content}    "warning"    ${P1C4S1.warning}
+    And Label item of list should be equal    ${resp.content}    "success"    ${P1C4S1.success}
     And Label item of list should be equal    ${resp.content}    "passed"    ${P1C4S1.passed}
     And Label item of list should be equal    ${resp.content}    "failed"    ${P1C4S1.failed}
     And Label item of list should be equal    ${resp.content}    "errored"    ${P1C4S1.errored}
@@ -45,6 +47,8 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C4S1.srefid}
     And Dictionary Should Contain Item    ${resp.json()}    name    ${P1C4S1.name}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1C4S1.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1C4S1.success}
     And Dictionary Should Contain Item    ${resp.json()}    passed    ${P1C4S1.passed}
     And Dictionary Should Contain Item    ${resp.json()}    failed    ${P1C4S1.failed}
     And Dictionary Should Contain Item    ${resp.json()}    errored    ${P1C4S1.errored}

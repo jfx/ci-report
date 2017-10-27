@@ -257,7 +257,7 @@ class SuiteApiController extends AbstractApiController
 
         return $suite;
     }
-    
+
     /**
      * Delete a suite. Example: </br>
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE

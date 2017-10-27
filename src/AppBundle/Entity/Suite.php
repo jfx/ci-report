@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
+use AppBundle\DTO\SuiteDTO;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -64,6 +65,34 @@ class Suite
      * @Serializer\Groups({"public", "private"})
      */
     private $name;
+
+    /**
+     * Tests warning limit.
+     *
+     * @var int
+     *
+     * @ORM\Column(name="warning", type="smallint")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0, max=100)
+     *
+     * @Serializer\Groups({"public", "private"})
+     */
+    private $warning;
+
+    /**
+     * Tests success limit.
+     *
+     * @var int
+     *
+     * @ORM\Column(name="success", type="smallint")
+     *
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0, max=100)
+     *
+     * @Serializer\Groups({"public", "private"})
+     */
+    private $success;
 
     /**
      * Total number of passed tests.
@@ -185,10 +214,13 @@ class Suite
     /**
      * Constructor.
      *
+     * @param Project  $project
      * @param Campaign $campaign
      */
-    public function __construct(Campaign $campaign)
+    public function __construct(Project $project, Campaign $campaign)
     {
+        $this->setWarning($project->getWarning());
+        $this->setSuccess($project->getSuccess());
         $this->setCampaign($campaign);
     }
 
@@ -224,6 +256,54 @@ class Suite
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * Set warning limit.
+     *
+     * @param int $warning Warning limit
+     *
+     * @return Suite
+     */
+    public function setWarning(int $warning): Suite
+    {
+        $this->warning = $warning;
+
+        return $this;
+    }
+
+    /**
+     * Get warning limit.
+     *
+     * @return int
+     */
+    public function getWarning(): int
+    {
+        return $this->warning;
+    }
+
+    /**
+     * Set success limit.
+     *
+     * @param int $success Success limit
+     *
+     * @return Suite
+     */
+    public function setSuccess(int $success): Suite
+    {
+        $this->success = $success;
+
+        return $this;
+    }
+
+    /**
+     * Get success limit.
+     *
+     * @return int
+     */
+    public function getSuccess(): int
+    {
+        return $this->success;
     }
 
     /**
@@ -491,13 +571,32 @@ class Suite
      */
     public function getStatus(): int
     {
-        if ($this->getPercentage() < $this->campaign->getWarning()) {
+        if ($this->getPercentage() < $this->getWarning()) {
             return Status::FAILED;
         }
-        if ($this->getPercentage() < $this->campaign->getSuccess()) {
+        if ($this->getPercentage() < $this->getSuccess()) {
             return Status::WARNING;
         }
 
         return Status::SUCCESS;
+    }
+
+    /**
+     * Set from DTO suite.
+     *
+     * @param SuiteDTO $dto DTO object
+     *
+     * @return Suite
+     */
+    public function setFromDTO(SuiteDTO $dto): Suite
+    {
+        if (null !== $dto->getWarning()) {
+            $this->setWarning($dto->getWarning());
+        }
+        if (null !== $dto->getSuccess()) {
+            $this->setSuccess($dto->getSuccess());
+        }
+
+        return $this;
     }
 }
