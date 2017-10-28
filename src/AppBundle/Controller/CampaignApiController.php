@@ -279,8 +279,8 @@ class CampaignApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"warning":80, "success":95, "start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
      * </code></pre>.
      *
-     * @param Campaign    $campaignDB  Campaign
-     * @param CampaignDTO $campaignDTO Project to create
+     * @param Campaign    $campaignDB  Campaign to update
+     * @param CampaignDTO $campaignDTO Object containing input data
      * @param Request     $request     The request
      *
      * @return Campaign|View

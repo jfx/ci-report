@@ -15,3 +15,6 @@ ${api_prefix}     /api
 &{P1C4M}          pid=1    prefid=project-one    position=3    crefid=4    passed=26    failed=0    errored=0
 ...               skipped=0    disabled=0    start=04/07/2017 12:30:01    end=-    start_sql=2017-07-04 12:30:01    end_sql=    start_iso=2017-07-04T12:30:01+02:00
 ...               end_iso=
+&{P2C3S1M}        pid=2    prefid=project-two    crefid=3    srefid=1    name=Name of suite 1 for campaign 3 Project 2    warning=96    success=99
+...               passed=95    failed=4    errored=0    skipped=1    disabled=0    duration=1.1    duration_display=1.1s
+...               duration_display=1.1s    time=03/07/2017 12:30:01    time_iso=2017-07-03T12:30:01+02:00
