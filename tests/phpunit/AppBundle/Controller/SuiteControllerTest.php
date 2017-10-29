@@ -18,7 +18,7 @@ class SuiteControllerTest extends WebTestCase
             $crawler->filter('title')->text()
         );
     }
-    
+
     public function testProjectNotFound()
     {
         $client = static::createClient();
@@ -27,7 +27,7 @@ class SuiteControllerTest extends WebTestCase
 
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testCampaignNotFound()
     {
         $client = static::createClient();
@@ -36,7 +36,7 @@ class SuiteControllerTest extends WebTestCase
 
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testSuiteNotFound()
     {
         $client = static::createClient();

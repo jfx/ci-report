@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\NullOutput;
 abstract class AbstractKernelControllerTest extends WebTestCase
 {
     protected $application;
-    
+
     protected function setUp()
     {
         parent::setUp();
@@ -19,7 +19,7 @@ abstract class AbstractKernelControllerTest extends WebTestCase
         $this->application = new Application(self::$kernel);
         $this->application->setAutoExit(false);
     }
-    
+
     protected function execute($command)
     {
         $input = new StringInput($command);
@@ -27,7 +27,7 @@ abstract class AbstractKernelControllerTest extends WebTestCase
 
         $this->application->run($input, $output);
     }
-    
+
     protected function tearDown()
     {
         parent::tearDown();

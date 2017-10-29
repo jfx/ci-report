@@ -19,7 +19,7 @@ class ProjectApiEditControllerTest extends AbstractKernelControllerTest
 
         $this->assertEquals(201, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testPutProjects()
     {
         $client = static::createClient();
@@ -35,7 +35,7 @@ class ProjectApiEditControllerTest extends AbstractKernelControllerTest
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testDeleteProjects()
     {
         $client = static::createClient();

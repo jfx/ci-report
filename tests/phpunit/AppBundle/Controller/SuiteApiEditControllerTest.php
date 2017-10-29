@@ -19,7 +19,7 @@ class SuiteApiEditControllerTest extends AbstractKernelControllerTest
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testDeleteSuites()
     {
         $client = static::createClient();

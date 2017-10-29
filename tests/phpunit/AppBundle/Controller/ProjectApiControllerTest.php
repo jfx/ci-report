@@ -38,7 +38,7 @@ class ProjectApiControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testGetProjectsNotFound()
     {
         $client = static::createClient();

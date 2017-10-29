@@ -14,7 +14,7 @@ class SuiteApiControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testGetSuite()
     {
         $client = static::createClient();

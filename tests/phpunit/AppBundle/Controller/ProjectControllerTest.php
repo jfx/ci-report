@@ -18,7 +18,7 @@ class ProjectControllerTest extends WebTestCase
             $crawler->filter('title')->text()
         );
     }
-    
+
     public function testProjectNotFound()
     {
         $client = static::createClient();

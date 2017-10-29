@@ -19,7 +19,7 @@ class CamapaignApiEditControllerTest extends AbstractKernelControllerTest
 
         $this->assertEquals(201, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testPutCampaigns()
     {
         $client = static::createClient();
@@ -35,7 +35,7 @@ class CamapaignApiEditControllerTest extends AbstractKernelControllerTest
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-    
+
     public function testDeleteCampaigns()
     {
         $client = static::createClient();
