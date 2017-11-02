@@ -162,62 +162,6 @@ Resource          Function/api.txt
     ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    401
 
-"POST campaigns" request with invalid type warning limit sets it to 0
-    [Tags]    DB    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    warning=XXX
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning    0
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=0 and success=${P1.success} and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
-
-"POST campaigns" request with float type warning limit round it
-    [Tags]    DB    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    warning=79.7
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    warning    79
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=79 and success=${P1.success} and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
-
-"POST campaigns" request with warning limit out of range returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    warning=120
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
-
-"POST campaigns" request with invalid type success limit sets it to 0
-    [Tags]    DB    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    success=XXX
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    success    0
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=${P1.warning} and success=0 and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
-
-"POST campaigns" request with float type success limit round it
-    [Tags]    DB    EDIT
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    success=79.7
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    201
-    And Dictionary Should Contain Item    ${resp.json()}    refid    ${P1C0.crefid}
-    And Dictionary Should Contain Item    ${resp.json()}    success    79
-    Check If Exists In Database    select id from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position} and warning=${P1.warning} and success=79 and passed=${P1C0.passed} and failed=${P1C0.failed} and errored=${P1C0.errored} and skipped=${P1C0.skipped} and disabled=${P1C0.disabled} and end is null
-
-"POST campaigns" request with success limit out of range returns HTTP "400" error
-    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
-    &{data} =    And Create Dictionary    success=120
-    ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
-
 "POST campaigns" request with invalid start datetime returns HTTP "400" error
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary    start=2017-07-01

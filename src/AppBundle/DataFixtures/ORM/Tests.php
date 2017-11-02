@@ -120,7 +120,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(1, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -166,7 +166,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -306,13 +306,13 @@ EOT;
             $arrayStatus[] = 1;
         }
         for ($i = 0; $i < $failed; ++$i) {
-            $arrayStatus[] = 2;
-        }
-        for ($i = 0; $i < $errored; ++$i) {
             $arrayStatus[] = 4;
         }
-        for ($i = 0; $i < $skipped; ++$i) {
+        for ($i = 0; $i < $errored; ++$i) {
             $arrayStatus[] = 8;
+        }
+        for ($i = 0; $i < $skipped; ++$i) {
+            $arrayStatus[] = 16;
         }
         $fillInArray['status'] = $arrayStatus;
 

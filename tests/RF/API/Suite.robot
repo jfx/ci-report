@@ -107,7 +107,25 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()}    datetime    ${P2C3S1M.time_iso}
     ${cposition} =    Evaluate    ${P2C3S1M.crefid} - 1
     ${sposition} =    Evaluate    ${P2C3S1M.srefid} - 1
-    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id ="${P2C3S1M.pid}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.warning = ${P2C3S1M.warning} and cir_suite.success = ${P2C3S1M.success} and cir_suite.passed=${P2C3S1M.passed} and cir_suite.failed=${P2C3S1M.failed} and cir_suite.errored=${P2C3S1M.errored} and cir_suite.skipped=${P2C3S1M.skipped} and cir_suite.disabled=${P2C3S1M .disabled}
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P2C3S1M.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.warning = ${P2C3S1M.warning} and cir_suite.success = ${P2C3S1M.success} and cir_suite.passed=${P2C3S1M.passed} and cir_suite.failed=${P2C3S1M.failed} and cir_suite.errored=${P2C3S1M.errored} and cir_suite.skipped=${P2C3S1M.skipped} and cir_suite.disabled=${P2C3S1M .disabled}
+
+"PUT suite limits" request could change campaign status from passed to warning
+    [Tags]    EDIT    DB
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}
+    &{data} =    And Create Dictionary    warning=60    success=98
+    ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    ${cposition} =    Evaluate    ${P2C3S1M.crefid} - 1
+    Check If Exists In Database    select cir_campaign.id from cir_campaign where project_id = ${P2C3S1M.pid} and cir_campaign.position = ${cposition} and status = 2
+
+"PUT suite limits" request could change campaign status from passed to failed
+    [Tags]    EDIT    DB
+    &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}
+    &{data} =    And Create Dictionary    warning=97    success=99
+    ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    ${cposition} =    Evaluate    ${P2C3S1M.crefid} - 1
+    Check If Exists In Database    select cir_campaign.id from cir_campaign where project_id = ${P2C3S1M.pid} and cir_campaign.position = ${cposition} and status = 4
 
 "PUT suite limits" request should not contain not expose fields
     [Tags]    EDIT
@@ -248,15 +266,31 @@ Resource          Function/api.txt
     [Tags]    EDIT    DB
     ${cposition} =    Evaluate    ${P1C4S2.crefid} - 1
     ${sposition} =    Evaluate    ${P1C4S2.srefid} - 1
-    Check If Exists In Database    select id from cir_campaign where project_id ="${P1.id}" and position = ${cposition}
-    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition}
-    Check If Exists In Database    select cir_test.id from cir_test, cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.id = suite_id and cir_suite.position = ${sposition}
+    Check If Exists In Database    select id from cir_campaign where project_id =${P1.id} and position = ${cposition}
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition}
+    Check If Exists In Database    select cir_test.id from cir_test, cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.id = suite_id and cir_suite.position = ${sposition}
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     ${resp} =    When Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    204
-    Check If Exists In Database    select id from cir_campaign where project_id ="${P1.id}" and position = ${cposition}
-    Check If Not Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition}
-    Check If Not Exists In Database    select cir_test.id from cir_test, cir_suite, cir_campaign where project_id ="${P1.id}" and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.id = suite_id and cir_suite.position = ${sposition}
+    Check If Exists In Database    select id from cir_campaign where project_id =${P1.id} and position = ${cposition}
+    Check If Not Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition}
+    Check If Not Exists In Database    select cir_test.id from cir_test, cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.id = suite_id and cir_suite.position = ${sposition}
+
+"DELETE suites" request changes camapign status and updates tests count
+    [Tags]    EDIT    DB
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C3S1D.prefid}/campaigns/${P1C3S1D.crefid}/suites/${P1C3S1D.srefid}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    204
+    ${cposition} =    Evaluate    ${P1C3S1D.crefid} - 1
+    Check If Exists In Database    select id from cir_campaign where project_id =${P1C3S1D.pid} and position = ${cposition} and status = 1 and passed = 13 and failed = 0 and errored = 0 and skipped = 0 and disabled = 0
+
+"DELETE suites" request with deleting unique suite changes camapign status to warning and updates tests count
+    [Tags]    EDIT    DB
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P2.token}
+    ${resp} =    When Delete Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    204
+    ${cposition} =    Evaluate    ${P2C3S1M.crefid} - 1
+    Check If Exists In Database    select id from cir_campaign where project_id =${P2C3S1M.pid} and position = ${cposition} and status = 2 and passed = 0 and failed = 0 and errored = 0 and skipped = 0 and disabled = 0
 
 "DELETE suites" request with wrong token returns HTTP "401" error
     &{headers} =    When Create Dictionary    X-CIR-TKN=XXX

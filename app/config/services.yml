@@ -31,6 +31,8 @@ services:
         
     AppBundle\Service\ProjectService:
         public: true
+    AppBundle\Service\RefreshService:
+        public: true
 
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:

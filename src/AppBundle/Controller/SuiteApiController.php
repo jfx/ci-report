@@ -27,6 +27,7 @@ use AppBundle\DTO\SuiteLimitsDTO;
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Suite;
+use AppBundle\Service\RefreshService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -356,6 +357,9 @@ class SuiteApiController extends AbstractApiController
             return $this->view($violations, Response::HTTP_BAD_REQUEST);
         }
         $this->getDoctrine()->getManager()->flush();
+        $this->get(RefreshService::class)->refreshCampaign(
+            $suiteDB->getCampaign()
+        );
 
         return $suiteDB;
     }
@@ -432,5 +436,8 @@ class SuiteApiController extends AbstractApiController
         $em = $this->getDoctrine()->getManager();
         $em->remove($suite);
         $em->flush();
+        $this->get(RefreshService::class)->refreshCampaign(
+            $suite->getCampaign()
+        );
     }
 }
