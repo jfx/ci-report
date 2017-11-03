@@ -87,7 +87,7 @@ class SuiteTests
      *
      * @param array $tests Array of tests
      *
-     * @return Test
+     * @return SuiteTests
      */
     public function setTests(array $tests): SuiteTests
     {
@@ -111,7 +111,7 @@ class SuiteTests
      *
      * @param Test $test Test object
      *
-     * @return TestDTO
+     * @return SuiteTests
      */
     public function addTest(TestDTO $test): SuiteTests
     {

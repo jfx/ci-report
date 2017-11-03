@@ -180,13 +180,15 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
 
-"PUT suite limits" request without warning limit returns HTTP "400" error
+"PUT suite limits" request without warning limit sets with project limit value
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
+    ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}    data=${data}    headers=${headers}
     &{data} =    And Create Dictionary    success=${P2C3S1M.success}
     ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1M.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P2C3S1M.success}
 
 "PUT suite limits" request with invalid type success limit sets it to 0
     [Tags]    DB    EDIT
@@ -220,13 +222,15 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
 
-"PUT suite limits" request without success limit returns HTTP "400" error
+"PUT suite limits" request without success limit sets with project limit value
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}
+    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
+    ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}    data=${data}    headers=${headers}
     &{data} =    And Create Dictionary    warning=${P2C3S1M.warning}
     ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
-    Then Should Be Equal As Strings    ${resp.status_code}    400
-    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
-    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should not be blank.
+    Then Should Be Equal As Strings    ${resp.status_code}    200
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P2C3S1M.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1M.success}
 
 "PUT suite limits" request with unknown project refid returns HTTP "404" error
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}

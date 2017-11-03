@@ -25,7 +25,7 @@ use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Suite data transfert object class.
+ * Suite limits data transfert object class.
  *
  * @category  ci-report app
  *
@@ -38,30 +38,28 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SuiteLimitsDTO
 {
     /**
-     * Tests warning limit. Integer between 0 and 100 %.
+     * Tests warning limit. Integer between 0 and 100 %. Limit defined on project by default.
      *
      * @var int
      *
      * @Type("integer")
      *
-     * @Assert\NotBlank
      * @Assert\Type("integer")
      * @Assert\Range(min=0, max=100)
      */
-    private $warning;
+    protected $warning;
 
     /**
-     * Tests success limit. Integer between 0 and 100 %.
+     * Tests success limit. Integer between 0 and 100 %. Limit defined on project by default.
      *
      * @var int
      *
      * @Type("integer")
      *
-     * @Assert\NotBlank
      * @Assert\Type("integer")
      * @Assert\Range(min=0, max=100)
      */
-    private $success;
+    protected $success;
 
     /**
      * Set warning limit.

@@ -36,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @see      https://www.ci-report.io
  */
-class SuiteDTO
+class SuiteDTO extends SuiteLimitsDTO
 {
     /**
      * Name of the suite.
@@ -48,30 +48,6 @@ class SuiteDTO
      * @Assert\NotBlank
      */
     private $name;
-
-    /**
-     * Tests warning limit. Integer between 0 and 100 %. Warning limit of project by default.
-     *
-     * @var int
-     *
-     * @Type("integer")
-     *
-     * @Assert\Type("integer")
-     * @Assert\Range(min=0, max=100)
-     */
-    private $warning;
-
-    /**
-     * Tests success limit. Integer between 0 and 100 %. Success limit of project by default.
-     *
-     * @var int
-     *
-     * @Type("integer")
-     *
-     * @Assert\Type("integer")
-     * @Assert\Range(min=0, max=100)
-     */
-    private $success;
 
     /**
      * Number of disabled tests.
@@ -130,54 +106,6 @@ class SuiteDTO
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * Set warning limit.
-     *
-     * @param int $warning
-     *
-     * @return SuiteDTO
-     */
-    public function setWarning(int $warning): SuiteDTO
-    {
-        $this->warning = $warning;
-
-        return $this;
-    }
-
-    /**
-     * Get warning limit.
-     *
-     * @return int
-     */
-    public function getWarning(): ?int
-    {
-        return $this->warning;
-    }
-
-    /**
-     * Set success limit.
-     *
-     * @param int $success
-     *
-     * @return SuiteDTO
-     */
-    public function setSuccess(int $success): SuiteDTO
-    {
-        $this->success = $success;
-
-        return $this;
-    }
-
-    /**
-     * Get success limit.
-     *
-     * @return int
-     */
-    public function getSuccess(): ?int
-    {
-        return $this->success;
     }
 
     /**

@@ -21,7 +21,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
-use AppBundle\DTO\SuiteDTO;
+use AppBundle\DTO\SuiteLimitsDTO;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -584,17 +584,23 @@ class Suite
     /**
      * Set from DTO suite.
      *
-     * @param SuiteDTO $dto DTO object
+     * @param SuiteLimitsDTO $dto DTO object
      *
      * @return Suite
      */
-    public function setFromDTO(SuiteDTO $dto): Suite
+    public function setFromDTO(SuiteLimitsDTO $dto): Suite
     {
         if (null !== $dto->getWarning()) {
             $this->setWarning($dto->getWarning());
+        } else {
+            $project = $this->getCampaign()->getProject();
+            $this->setWarning($project->getWarning());
         }
         if (null !== $dto->getSuccess()) {
             $this->setSuccess($dto->getSuccess());
+        } else {
+            $project = $this->getCampaign()->getProject();
+            $this->setSuccess($project->getSuccess());
         }
 
         return $this;
