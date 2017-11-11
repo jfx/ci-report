@@ -29,6 +29,12 @@ services:
         public: true
         tags: ['controller.service_arguments']
         
+    AppBundle\Service\FileUploaderService:
+        public: true
+        arguments:
+            $targetDir: '%app.upload_dir%'
+    AppBundle\Service\JunitParserService:
+        public: true
     AppBundle\Service\ProjectService:
         public: true
     AppBundle\Service\RefreshService:

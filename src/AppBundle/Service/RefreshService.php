@@ -25,6 +25,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Status;
 use AppBundle\Entity\Suite;
+use AppBundle\Entity\Test;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -59,8 +60,9 @@ class RefreshService
      * Refresh campaign status and tests results by scanning all suites.
      *
      * @param Campaign $campaign Campaign
+     * @param bool     $all      Refresh Campaign and suites
      */
-    public function refreshCampaign(Campaign $campaign): void
+    public function refreshCampaign(Campaign $campaign, bool $all = false): void
     {
         $repository = $this->doctrine->getRepository(Suite::class);
         $suites = $repository->findSuitesByCampaign($campaign);
@@ -73,6 +75,9 @@ class RefreshService
         $status = 0;
 
         foreach ($suites as $suite) {
+            if ($all) {
+                $this->refreshSuite($suite);
+            }
             $passed += $suite->getPassed();
             $failed += $suite->getFailed();
             $errored += $suite->getErrored();
@@ -92,6 +97,36 @@ class RefreshService
         } else {
             $campaign->setStatus($status);
         }
+        $this->doctrine->getManager()->flush();
+    }
+
+    /**
+     * Refresh suite status and tests results by scanning all tests.
+     *
+     * @param Suite $suite Suite
+     */
+    public function refreshSuite(Suite $suite): void
+    {
+        $repository = $this->doctrine->getRepository(Test::class);
+        $tests = $repository->findTestsBySuite($suite);
+
+        $passed = 0;
+        $failed = 0;
+        $errored = 0;
+        $skipped = 0;
+
+        foreach ($tests as $test) {
+            $passed += $test->getPassed();
+            $failed += $test->getFailed();
+            $errored += $test->getErrored();
+            $skipped += $test->getSkipped();
+        }
+        $suite->setPassed($passed)
+            ->setFailed($failed)
+            ->setErrored($errored)
+            ->setSkipped($skipped);
+        // Duration is not re-evaluate.
+
         $this->doctrine->getManager()->flush();
     }
 }

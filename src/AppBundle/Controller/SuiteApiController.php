@@ -27,8 +27,11 @@ use AppBundle\DTO\SuiteLimitsFilesDTO;
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Suite;
+use AppBundle\Entity\Test;
+use AppBundle\Service\FileUploaderService;
 use AppBundle\Service\JunitParserService;
 use AppBundle\Service\RefreshService;
+use DOMDocument;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
@@ -239,32 +242,80 @@ class SuiteApiController extends AbstractApiController
 //            return $this->getInvalidTokenView();
 //        }
 
+        $fileUploaderService = $this->get(FileUploaderService::class);
+        $junitParserService = $this->get(JunitParserService::class);
+
         $junitFilesArray = $request->files->get('junitFiles');
 
-        return var_dump($junitFilesArray);
-//        $junitParserService = $this->get(JunitParserService::class);
-//
-//        foreach ($junitFilesArray as $file) {
-//
-//        }
+//        $logger = $this->get('logger');
+//        $logger->info('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>start');
+//        $logger->info(print_r($junitFilesArray, true));
 
-//        $junitFilesArray = $paramFetcher->get('junitFiles');
-//        return var_dump($junitFilesArray);
+        $fileNames = array();
+        foreach ($junitFilesArray as $file) {
+            $fileNameUId = $fileUploaderService->upload($file);
+            $fileNames[$fileNameUId] = $file->getClientOriginalName();
+        }
+        // $logger->info(print_r($fileNames, true));
+        $errors = array();
+        foreach (array_keys($fileNames) as $fileName) {
+            $doc = new DOMDocument();
+            $doc->load($fileUploaderService->getFullPath($fileName));
+
+            $parseErrors = $junitParserService->validate($doc);
+            if (count($parseErrors) > 0) {
+                $errors[$fileNames[$fileName]] = $junitParserService->validate($doc);
+            }
+        }
+        if (count($errors) > 0) {
+            return $this->view($errors, Response::HTTP_BAD_REQUEST);
+        }
+
+        $suitesArray = array();
+        foreach (array_keys($fileNames) as $fileName) {
+            $doc = new DOMDocument();
+            $doc->load($fileUploaderService->getFullPath($fileName));
+
+            $suitesArray = array_merge($suitesArray, $junitParserService->parse($doc));
+        }
 
         $validator = $this->get('validator');
+        $em = $this->getDoctrine()->getManager();
 
-        $suite = new Suite($campaign);
-//        $suite->setFromDTO($suiteDTO);
-//
-//        $violations = $validator->validate($suite);
-//        if (count($violations) > 0) {
-//            return $this->view($violations, Response::HTTP_BAD_REQUEST);
-//        }
-//        $em = $this->getDoctrine()->getManager();
-//        $em->persist($suite);
-//        $em->flush();
+        $suitesEntity = array();
 
-        return $suite;
+        foreach ($suitesArray as $suiteTests) {
+            $suiteDTO = $suiteTests->getSuite();
+            // TODO : Set limits from form
+
+            $suite = new Suite($project, $campaign);
+            $suite->setFromDTO($suiteDTO);
+
+            $violations = $validator->validate($suite);
+            if (count($violations) > 0) {
+                return $this->view($violations, Response::HTTP_BAD_REQUEST);
+            }
+            $em->persist($suite);
+
+            foreach ($suiteTests->getTests() as $testDTO) {
+                $test = new Test($suite);
+                $test->setFromDTO($testDTO);
+
+                $violations = $validator->validate($test);
+                if (count($violations) > 0) {
+                    return $this->view($violations, Response::HTTP_BAD_REQUEST);
+                }
+                $em->persist($test);
+            }
+            $em->flush();
+            $this->get(RefreshService::class)->refreshCampaign(
+                $suite->getCampaign(),
+                true
+            );
+            $suitesEntity[] = $suite;
+        }
+
+        return $suitesEntity;
     }
 
     /**
@@ -356,7 +407,7 @@ class SuiteApiController extends AbstractApiController
         if (count($violationsDTO) > 0) {
             return $this->view($violationsDTO, Response::HTTP_BAD_REQUEST);
         }
-        $suiteDB->setFromDTO($suiteLimitsDTO);
+        $suiteDB->setFromLimitsDTO($suiteLimitsDTO);
 
         $violations = $validator->validate($suiteDB);
         if (count($violations) > 0) {

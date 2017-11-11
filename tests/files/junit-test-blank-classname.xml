@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+   <testsuite name="JUnitXmlReporter" errors="0" tests="0" failures="0" time="0" timestamp="2013-05-24T10:23:58" />
+   <testsuite name="JUnitXmlReporter.constructor" errors="1" skipped="1" tests="5" failures="1" disabled="1" time="0.005" timestamp="2013-05-24T10:23:59">
+      <properties>
+         <property name="java.vendor" value="Sun Microsystems Inc." />
+         <property name="compiler.debug" value="on" />
+         <property name="project.jdk.classpath" value="jdk.classpath.1.6" />
+      </properties>
+      <testcase classname="" name="should default consolidate to true" time="0">
+         <error message="Error message">Error details</error>
+      </testcase>
+      <testcase classname="JUnitXmlReporter.constructor" name="should default path to an empty string" time="0.006">
+         <failure message="test failure">Assertion failed</failure>
+         <system-out>STDOUT dump</system-out>
+         <system-err>STDERR dump</system-err>
+      </testcase>
+      <testcase classname="JUnitXmlReporter.constructor" name="should default consolidate to true" time="0">
+         <skipped />
+      </testcase>
+      <testcase classname="JUnitXmlReporter.constructor" name="should default useDotNotation to true" time="0" />
+   </testsuite>
+</testsuites>

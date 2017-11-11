@@ -51,10 +51,34 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals(0, count($errors));
     }
 
-    public function testValidateWrongFile()
+    public function testValidateErrorSyntax()
     {
         $doc = new DOMDocument();
-        $doc->load($this->testFilesDir.'/junit-err1.xml');
+        $doc->load($this->testFilesDir.'/junit-err-syntax.xml');
+        $errors = $this->junitParserService->validate($doc);
+        $this->assertCount(1, $errors);
+    }
+
+    public function testValidateErrorSuiteWithoutName()
+    {
+        $doc = new DOMDocument();
+        $doc->load($this->testFilesDir.'/junit-err-suite-without-name.xml');
+        $errors = $this->junitParserService->validate($doc);
+        $this->assertCount(1, $errors);
+    }
+
+    public function testValidateErrorTestWithoutName()
+    {
+        $doc = new DOMDocument();
+        $doc->load($this->testFilesDir.'/junit-err-test-without-name.xml');
+        $errors = $this->junitParserService->validate($doc);
+        $this->assertCount(1, $errors);
+    }
+
+    public function testValidateErrorTestWithoutClassame()
+    {
+        $doc = new DOMDocument();
+        $doc->load($this->testFilesDir.'/junit-err-test-without-classname.xml');
         $errors = $this->junitParserService->validate($doc);
         $this->assertCount(1, $errors);
     }
@@ -232,5 +256,47 @@ class JunitParserServiceTest extends TestCase
         foreach ($tests as $test) {
             $this->assertEquals(Status::FAILED, $test->getStatus());
         }
+    }
+
+    public function testParseSuiteBlankName()
+    {
+        $doc = new DOMDocument();
+        $doc->load($this->testFilesDir.'/junit-suite-blank-name.xml');
+        $suitesArray = $this->junitParserService->parse($doc);
+        $this->assertCount(2, $suitesArray);
+
+        $this->assertEquals('DEFAULT_SUITE_NAME', $suitesArray[1]->getSuite()->getName());
+    }
+
+    public function testParseTestBlankName()
+    {
+        $doc = new DOMDocument();
+        $doc->load($this->testFilesDir.'/junit-test-blank-name.xml');
+        $suitesArray = $this->junitParserService->parse($doc);
+        $this->assertCount(2, $suitesArray);
+
+        $this->assertEquals('DEFAULT_NAME', $suitesArray[1]->getTests()[0]->getName());
+    }
+
+    public function testParseTestBlankClassname()
+    {
+        $doc = new DOMDocument();
+        $doc->load($this->testFilesDir.'/junit-test-blank-classname.xml');
+        $suitesArray = $this->junitParserService->parse($doc);
+        $this->assertCount(2, $suitesArray);
+
+        $this->assertEquals('_ROOT_', $suitesArray[1]->getTests()[0]->getPackage());
+        $this->assertEquals('DEFAULT_CLASSNAME', $suitesArray[1]->getTests()[0]->getClassname());
+    }
+
+    public function testParseTestClassnameWithNoDot()
+    {
+        $doc = new DOMDocument();
+        $doc->load($this->testFilesDir.'/junit-test-classname-no-dot.xml');
+        $suitesArray = $this->junitParserService->parse($doc);
+        $this->assertCount(2, $suitesArray);
+
+        $this->assertEquals('_ROOT_', $suitesArray[1]->getTests()[0]->getPackage());
+        $this->assertEquals('ClassnameWithNoDot', $suitesArray[1]->getTests()[0]->getClassname());
     }
 }

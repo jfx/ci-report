@@ -1,6 +1,7 @@
 *** Settings ***
 Library           Collections
 Library           RequestsLibrary
+Library           RequestsUploadFiles.py
 Resource          ../Conf/api.txt
 Resource          ../../Common/Function/common.txt
 Resource          ../../Common/Function/check.txt

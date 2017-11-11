@@ -88,6 +88,19 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
+"POST suites" request with junit file returns HTTP "201" with suite data
+    &{headers} =    When Create Dictionary    Content-Type=multipart/form-data    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=60    success=70
+    ${resp}=    Post Request With File Upload    60    70
+    Comment    ${files} =    Evaluate    [('junitFiles', ('junit-ok1.xml', open('${CURDIR}/../../files/junit-ok1.xml', 'rb'), 'application/xml'))]
+    Comment    ${files} =    [('junitFiles', ('junit-ok1.xml', open('${CURDIR}/../../files/junit-ok1.xml', 'rb'), 'application/xml'))]
+    Comment    ${resp}=    Evaluate    requests.post('http://localhost:8000/app_dev.php/api/projects/project-one/campaigns/1/suites/junit', data=$data, files=$files)    modules=requests
+    Log    ${resp.json()}
+    Comment    &{files} =    And Create Dictionary    file=${file_data}
+    Comment    ${resp} =    And Post Request    cir    /projects/${P1C1M.prefid}/campaigns/${P1C1M.crefid}/suites/junit    files=${files}    data=${data}
+    ...    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+
 "PUT suite limits" request returns HTTP "200" with suite data
     [Tags]    EDIT    DB
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}

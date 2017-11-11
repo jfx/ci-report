@@ -22,8 +22,11 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
+use AppBundle\DTO\TestDTO;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation as Serializer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Test entity class.
@@ -41,7 +44,9 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Test
 {
-    const DEFAULT_PACKAGE = '_root_';
+    const DEFAULT_NAME = 'DEFAULT_NAME';
+    const DEFAULT_CLASSNAME = 'DEFAULT_CLASSNAME';
+    const DEFAULT_PACKAGE = '_ROOT_';
 
     /**
      * @var int
@@ -49,6 +54,8 @@ class Test
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Exclude
      */
     private $id;
 
@@ -56,6 +63,10 @@ class Test
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=256)
+     *
+     * @Assert\NotBlank
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $name;
 
@@ -63,6 +74,8 @@ class Test
      * @var string
      *
      * @ORM\Column(name="classname", type="string", length=256)
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $classname;
 
@@ -70,6 +83,8 @@ class Test
      * @var string
      *
      * @ORM\Column(name="package", type="string", length=256)
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $package;
 
@@ -77,6 +92,11 @@ class Test
      * @var int
      *
      * @ORM\Column(name="passed", type="smallint")
+     *
+     * @Assert\Type("integer")
+     * @Assert\GreaterThanOrEqual(0)
+     *
+     * @Serializer\Exclude
      */
     private $passed;
 
@@ -84,6 +104,11 @@ class Test
      * @var int
      *
      * @ORM\Column(name="failed", type="smallint")
+     *
+     * @Assert\Type("integer")
+     * @Assert\GreaterThanOrEqual(0)
+     *
+     * @Serializer\Exclude
      */
     private $failed;
 
@@ -91,6 +116,11 @@ class Test
      * @var int
      *
      * @ORM\Column(name="errored", type="smallint")
+     *
+     * @Assert\Type("integer")
+     * @Assert\GreaterThanOrEqual(0)
+     *
+     * @Serializer\Exclude
      */
     private $errored;
 
@@ -98,6 +128,11 @@ class Test
      * @var int
      *
      * @ORM\Column(name="skipped", type="smallint")
+     *
+     * @Assert\Type("integer")
+     * @Assert\GreaterThanOrEqual(0)
+     *
+     * @Serializer\Exclude
      */
     private $skipped;
 
@@ -105,6 +140,11 @@ class Test
      * @var float
      *
      * @ORM\Column(name="duration", type="float")
+     *
+     * @Assert\Type("float")
+     * @Assert\GreaterThanOrEqual(0)
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $duration;
 
@@ -112,6 +152,8 @@ class Test
      * @var string
      *
      * @ORM\Column(name="system_out", type="text")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $systemout;
 
@@ -119,12 +161,15 @@ class Test
      * @var string
      *
      * @ORM\Column(name="system_err", type="text")
+     *
+     * @Serializer\Groups({"public", "private"})
      */
     private $systemerr;
 
     /**
      * @Gedmo\SortablePosition
-     * @ORM\Column(name="position", type="integer")
+     *
+     * @ORM\Column(name="position", type="integer"))
      */
     private $position;
 
@@ -132,8 +177,11 @@ class Test
      * @var Suite
      *
      * @Gedmo\SortableGroup
+     *
      * @ORM\ManyToOne(targetEntity="Suite")
      * @ORM\JoinColumn(name="suite_id", referencedColumnName="id", nullable=false, onDelete="cascade")
+     *
+     * @Serializer\Exclude
      */
     private $suite;
 
@@ -507,6 +555,11 @@ class Test
      * Get reference id.
      *
      * @return int
+     *
+     * @Serializer\VirtualProperty
+     * @Serializer\SerializedName("refid")
+     * @Serializer\Type("int")
+     * @Serializer\Groups({"public", "private"})
      */
     public function getRefid(): int
     {
@@ -535,5 +588,25 @@ class Test
     public function getSuite(): Suite
     {
         return $this->suite;
+    }
+
+    /**
+     * Set from DTO test.
+     *
+     * @param TestDTO $dto DTO object
+     *
+     * @return Test
+     */
+    public function setFromDTO(TestDTO $dto): Test
+    {
+        $this->setName($dto->getName());
+        $this->setClassname($dto->getClassname());
+        $this->setPackage($dto->getPackage());
+        $this->setStatus($dto->getStatus());
+        $this->setDuration($dto->getDuration());
+        $this->setSystemout($dto->getSystemout());
+        $this->setSystemerr($dto->getSystemerr());
+
+        return $this;
     }
 }

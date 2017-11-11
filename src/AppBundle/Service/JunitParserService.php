@@ -25,6 +25,8 @@ namespace AppBundle\Service;
 use AppBundle\DTO\SuiteDTO;
 use AppBundle\DTO\TestDTO;
 use AppBundle\Entity\Status;
+use AppBundle\Entity\Suite;
+use AppBundle\Entity\Test;
 use AppBundle\Util\SuiteTests;
 use DateTime;
 use DOMDocument;
@@ -63,7 +65,27 @@ class JunitParserService
         $reflClass = new ReflectionClass(get_class($this));
         $schemaAbsolutePath = dirname($reflClass->getFileName()).$this->schemaRelativePath;
         $domDoc->schemaValidate($schemaAbsolutePath);
-        $errors = libxml_get_errors();
+        $errors = array();
+
+        foreach (libxml_get_errors() as $libxmlError) {
+            switch ($libxmlError->level) {
+                case LIBXML_ERR_WARNING:
+                    $level = 'Warning';
+                    break;
+                case LIBXML_ERR_ERROR:
+                    $level = 'Error';
+                    break;
+                case LIBXML_ERR_FATAL:
+                    $level = 'Fatal error';
+                    break;
+            }
+            $error = array(
+                'level' => $level,
+                'line' => $libxmlError->line,
+                'message' => $libxmlError->message,
+            );
+            $errors[] = $error;
+        }
 
         libxml_clear_errors();
 
@@ -109,7 +131,12 @@ class JunitParserService
         $suiteTests = new SuiteTests($suite);
 
         // Name is required
-        $suite->setName((string) $xmlTestsuite['name']);
+        $name = (string) $xmlTestsuite['name'];
+        if (0 === strlen($name)) {
+            $suite->setName(Suite::DEFAULT_NAME);
+        } else {
+            $suite->setName($name);
+        }
 
         // If timestamp not set, initialize with now value
         if (isset($xmlTestsuite['timestamp'])) {
@@ -162,11 +189,21 @@ class JunitParserService
         $test = new TestDTO();
 
         // Name is required
-        $test->setName((string) $xmlTestcase['name']);
+        $name = (string) $xmlTestcase['name'];
+        if (0 === strlen($name)) {
+            $test->setName(Test::DEFAULT_NAME);
+        } else {
+            $test->setName($name);
+        }
 
         // Classname is required.
         // set package.class, if no dot use default package
-        $test->setFullclassname((string) $xmlTestcase['classname']);
+        $fullClassname = (string) $xmlTestcase['classname'];
+        if (0 === strlen($fullClassname)) {
+            $test->setFullclassname(Test::DEFAULT_CLASSNAME);
+        } else {
+            $test->setFullclassname($fullClassname);
+        }
 
         // If time not set, initialize at 0
         if (isset($xmlTestcase['time'])) {

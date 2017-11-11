@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
+use AppBundle\DTO\SuiteDTO;
 use AppBundle\DTO\SuiteLimitsDTO;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
@@ -44,6 +45,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Suite
 {
+    const DEFAULT_NAME = 'DEFAULT_SUITE_NAME';
+
     /**
      * @var int
      *
@@ -61,6 +64,8 @@ class Suite
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=50)
+     *
+     * @Assert\NotBlank()
      *
      * @Serializer\Groups({"public", "private"})
      */
@@ -582,13 +587,13 @@ class Suite
     }
 
     /**
-     * Set from DTO suite.
+     * Set from DTO limits suite.
      *
      * @param SuiteLimitsDTO $dto DTO object
      *
      * @return Suite
      */
-    public function setFromDTO(SuiteLimitsDTO $dto): Suite
+    public function setFromLimitsDTO(SuiteLimitsDTO $dto): Suite
     {
         if (null !== $dto->getWarning()) {
             $this->setWarning($dto->getWarning());
@@ -602,6 +607,25 @@ class Suite
             $project = $this->getCampaign()->getProject();
             $this->setSuccess($project->getSuccess());
         }
+
+        return $this;
+    }
+
+    /**
+     * Set from DTO suite.
+     *
+     * @param SuiteDTO $dto DTO object
+     *
+     * @return Suite
+     */
+    public function setFromDTO(SuiteDTO $dto): Suite
+    {
+        $this->setFromLimitsDTO($dto);
+
+        $this->setName($dto->getName());
+        $this->setDisabled($dto->getDisabled());
+        $this->setDuration($dto->getDuration());
+        $this->setDateTime($dto->getDatetime());
 
         return $this;
     }

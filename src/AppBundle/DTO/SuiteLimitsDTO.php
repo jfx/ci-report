@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace AppBundle\DTO;
 
+use AppBundle\Entity\Project;
 use JMS\Serializer\Annotation\Type;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -60,6 +61,15 @@ class SuiteLimitsDTO
      * @Assert\Range(min=0, max=100)
      */
     protected $success;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->setWarning(Project::DEFAULT_WARNING_LIMIT);
+        $this->setSuccess(Project::DEFAULT_SUCCESS_LIMIT);
+    }
 
     /**
      * Set warning limit.
