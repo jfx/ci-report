@@ -12,7 +12,7 @@ Fields
 Link to home
     Given I go to campaign page    &{P1C4}
     When I click on breadcrumb level    1
-    Then Location Should Be    ${URL}/
+    Then Location Should Be    ${WEB_URL}/
 
 Link to project
     Given I go to campaign page    &{P1C4}

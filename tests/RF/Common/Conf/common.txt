@@ -1,7 +1,7 @@
 *** Variables ***
-${URL}            \    # Set in "I go to site" keyword
-${URL_LOCAL}      http://localhost:8000
-${URL_REMOTE}     http://localhost:4202
+${WEB_HOST}       http://localhost:8000
+${WEB_URL}        ${WEB_HOST}/app_dev.php
+${API_URL}        ${WEB_HOST}/app_dev.php/api
 ${ENV}            DEV
 ${DB_REMOTE}      False
 &{DB}             host=127.0.0.1    port=3306    name=ci_reportdb    user=ci_reportuser    password=

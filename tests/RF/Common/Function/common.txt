@@ -11,21 +11,15 @@ Resource          ../Conf/common.txt
 Resource          ../Conf/mail.txt
 
 *** Keywords ***
-Set URL
-    Run Keyword If    ${REMOTE}    Set Global Variable    ${URL}    ${URL_REMOTE}
-    Run Keyword Unless    ${REMOTE}    Set Global Variable    ${URL}    ${URL_LOCAL}
-
 I open browser
-    Set URL
-    Run Keyword If    ${GRID}    Open Browser    ${URL}    ${BROWSER}    remote_url=${HUB}
-    Run Keyword Unless    ${GRID}    Open Browser    ${URL}    ${BROWSER}
+    Run Keyword If    ${GRID}    Open Browser    ${WEB_URL}    ${BROWSER}    remote_url=${HUB}
+    Run Keyword Unless    ${GRID}    Open Browser    ${WEB_URL}    ${BROWSER}
     Maximize Browser Window
     Run Keyword If    '${ENV}' == 'DEV'    Wait Until Page Contains Element    xpath=//a[@title='Close Toolbar']
     Run Keyword If    '${ENV}' == 'DEV'    Click element    xpath=//a[@title='Close Toolbar']
 
 I create an API session named "cir"
-    Set URL
-    Create Session    cir    ${URL}${api_prefix}
+    Create Session    cir    ${API_URL}
 
 Load DB
     Run Keyword If    ${DB_REMOTE}    Load remote DB

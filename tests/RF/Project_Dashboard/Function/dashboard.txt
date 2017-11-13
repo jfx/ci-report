@@ -8,7 +8,7 @@ Resource          ../../Campaign/Function/campaign.txt
 *** Keywords ***
 Get project dashboard location
     [Arguments]    ${refid}
-    ${location} =    Set Variable    ${URL}${location_dashboard}/${refid}
+    ${location} =    Set Variable    ${WEB_URL}${location_dashboard}/${refid}
     [Return]    ${location}
 
 I go to project dahsboard

@@ -170,8 +170,8 @@ class SuiteApiController extends AbstractApiController
     }
 
     /**
-     * Create suites for a campaign by uploading junit files. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST --data '{"warning":80, "success":95, "start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
+     * Create suites for a campaign by uploading junit file. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/junit -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST -F 'junitFile=@tests/files/junit.xml'
      * </code></pre>.
      *
      * @param Project  $project  Project
@@ -192,13 +192,8 @@ class SuiteApiController extends AbstractApiController
      *
      * @Doc\ApiDoc(
      *     section="Suites",
-     *     description="Create a suite by uploading junit files.",
+     *     description="Create a suite by uploading junit file.",
      *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         },
      *         {
      *             "name"="X-CIR-TKN",
      *             "required"=true,
@@ -238,46 +233,23 @@ class SuiteApiController extends AbstractApiController
      */
     public function postSuiteAction(Project $project, Campaign $campaign, Request $request)
     {
-//        if ($this->isInvalidToken($request, $project->getToken())) {
-//            return $this->getInvalidTokenView();
-//        }
+        if ($this->isInvalidToken($request, $project->getToken())) {
+            return $this->getInvalidTokenView();
+        }
 
         $fileUploaderService = $this->get(FileUploaderService::class);
         $junitParserService = $this->get(JunitParserService::class);
 
-        $junitFilesArray = $request->files->get('junitFiles');
+        $file = $request->files->get('junitFile');
+        $fileNameUId = $fileUploaderService->upload($file);
 
-//        $logger = $this->get('logger');
-//        $logger->info('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>start');
-//        $logger->info(print_r($junitFilesArray, true));
-
-        $fileNames = array();
-        foreach ($junitFilesArray as $file) {
-            $fileNameUId = $fileUploaderService->upload($file);
-            $fileNames[$fileNameUId] = $file->getClientOriginalName();
-        }
-        // $logger->info(print_r($fileNames, true));
-        $errors = array();
-        foreach (array_keys($fileNames) as $fileName) {
-            $doc = new DOMDocument();
-            $doc->load($fileUploaderService->getFullPath($fileName));
-
-            $parseErrors = $junitParserService->validate($doc);
-            if (count($parseErrors) > 0) {
-                $errors[$fileNames[$fileName]] = $junitParserService->validate($doc);
-            }
-        }
+        $doc = new DOMDocument();
+        $doc->load($fileUploaderService->getFullPath($fileNameUId));
+        $errors = $junitParserService->validate($doc);
         if (count($errors) > 0) {
             return $this->view($errors, Response::HTTP_BAD_REQUEST);
         }
-
-        $suitesArray = array();
-        foreach (array_keys($fileNames) as $fileName) {
-            $doc = new DOMDocument();
-            $doc->load($fileUploaderService->getFullPath($fileName));
-
-            $suitesArray = array_merge($suitesArray, $junitParserService->parse($doc));
-        }
+        $suitesArray = $junitParserService->parse($doc);
 
         $validator = $this->get('validator');
         $em = $this->getDoctrine()->getManager();

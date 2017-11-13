@@ -5,4 +5,4 @@ Resource          ../../Common/Function/common.txt
 
 *** Keywords ***
 I go to Dashboard
-    Go to    ${URL}${location_home}
+    Go to    ${WEB_URL}${location_home}

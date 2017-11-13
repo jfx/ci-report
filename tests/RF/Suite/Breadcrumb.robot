@@ -12,7 +12,7 @@ Fields
 Link to home
     When I go to suite page    &{P1C4S1}
     When I click on breadcrumb level    1
-    Then Location Should Be    ${URL}/
+    Then Location Should Be    ${WEB_URL}/
 
 Link to project
     When I go to suite page    &{P1C4S1}

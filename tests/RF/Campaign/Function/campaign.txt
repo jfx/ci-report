@@ -9,7 +9,7 @@ Resource          ../../Suite/Function/suite.txt
 *** Keywords ***
 Get campaign page location
     [Arguments]    &{campaign}
-    ${location} =    Set Variable    ${URL}${location_dashboard}/${campaign.prefid}${location_campaign}/${campaign.crefid}
+    ${location} =    Set Variable    ${WEB_URL}${location_dashboard}/${campaign.prefid}${location_campaign}/${campaign.crefid}
     [Return]    ${location}
 
 I go to campaign page

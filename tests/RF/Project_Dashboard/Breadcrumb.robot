@@ -12,7 +12,7 @@ Fields
 Link to home
     Given I go to project dahsboard    ${P1.prefid}
     When I click on breadcrumb level    1
-    Then Location Should Be    ${URL}/
+    Then Location Should Be    ${WEB_URL}/
 
 Link to project
     Given I go to project dahsboard    ${P1.prefid}
