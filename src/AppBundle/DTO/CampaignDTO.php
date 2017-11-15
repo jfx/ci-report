@@ -67,7 +67,7 @@ class CampaignDTO
      *
      * @return CampaignDTO
      */
-    public function setStart(DateTime $datetime): CampaignDTO
+    public function setStart(DateTime $datetime): self
     {
         $this->start = $datetime;
 
@@ -91,7 +91,7 @@ class CampaignDTO
      *
      * @return CampaignDTO
      */
-    public function setEnd(DateTime $datetime): CampaignDTO
+    public function setEnd(DateTime $datetime): self
     {
         $this->end = $datetime;
 

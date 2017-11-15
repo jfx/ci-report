@@ -76,9 +76,9 @@ class SuiteLimitsDTO
      *
      * @param int $warning
      *
-     * @return SuiteDTO
+     * @return SuiteLimitsDTO
      */
-    public function setWarning(int $warning): SuiteDTO
+    public function setWarning(int $warning): self
     {
         $this->warning = $warning;
 
@@ -100,9 +100,9 @@ class SuiteLimitsDTO
      *
      * @param int $success
      *
-     * @return SuiteDTO
+     * @return SuiteLimitsDTO
      */
-    public function setSuccess(int $success): SuiteDTO
+    public function setSuccess(int $success): self
     {
         $this->success = $success;
 

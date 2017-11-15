@@ -91,7 +91,7 @@ class SuiteDTO extends SuiteLimitsDTO
      *
      * @return SuiteDTO
      */
-    public function setName(string $name): SuiteDTO
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -115,7 +115,7 @@ class SuiteDTO extends SuiteLimitsDTO
      *
      * @return SuiteDTO
      */
-    public function setDisabled(int $disabled): SuiteDTO
+    public function setDisabled(int $disabled): self
     {
         $this->disabled = $disabled;
 
@@ -139,7 +139,7 @@ class SuiteDTO extends SuiteLimitsDTO
      *
      * @return SuiteDTO
      */
-    public function setDuration(float $duration): SuiteDTO
+    public function setDuration(float $duration): self
     {
         $this->duration = $duration;
 
@@ -163,7 +163,7 @@ class SuiteDTO extends SuiteLimitsDTO
      *
      * @return SuiteDTO
      */
-    public function setDatetime(DateTime $datetime): SuiteDTO
+    public function setDatetime(DateTime $datetime): self
     {
         $this->datetime = $datetime;
 

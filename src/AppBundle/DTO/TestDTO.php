@@ -109,7 +109,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setName(string $name): TestDTO
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -133,7 +133,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setClassname(string $classname): TestDTO
+    public function setClassname(string $classname): self
     {
         $this->classname = $classname;
 
@@ -157,7 +157,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setPackage(string $package): TestDTO
+    public function setPackage(string $package): self
     {
         $this->package = $package;
 
@@ -181,7 +181,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setFullclassname(string $fullclassname): TestDTO
+    public function setFullclassname(string $fullclassname): self
     {
         if (substr_count($fullclassname, '.') > 0) {
             $index = strrpos($fullclassname, '.');
@@ -202,7 +202,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setStatus(int $status): TestDTO
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
@@ -226,7 +226,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setDuration(float $duration): TestDTO
+    public function setDuration(float $duration): self
     {
         $this->duration = $duration;
 
@@ -250,7 +250,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setPbmessage(string $message): TestDTO
+    public function setPbmessage(string $message): self
     {
         $this->pbmessage = $message;
 
@@ -274,7 +274,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setSystemout(string $systemout): TestDTO
+    public function setSystemout(string $systemout): self
     {
         $this->systemout = $systemout;
 
@@ -298,7 +298,7 @@ class TestDTO
      *
      * @return TestDTO
      */
-    public function setSystemerr(string $systemerr): TestDTO
+    public function setSystemerr(string $systemerr): self
     {
         $this->systemerr = $systemerr;
 

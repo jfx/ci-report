@@ -214,7 +214,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setpassed(int $passed): Campaign
+    public function setpassed(int $passed): self
     {
         $this->passed = $passed;
 
@@ -238,7 +238,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setFailed(int $failed): Campaign
+    public function setFailed(int $failed): self
     {
         $this->failed = $failed;
 
@@ -262,7 +262,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setErrored(int $errored): Campaign
+    public function setErrored(int $errored): self
     {
         $this->errored = $errored;
 
@@ -286,7 +286,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setSkipped(int $skipped): Campaign
+    public function setSkipped(int $skipped): self
     {
         $this->skipped = $skipped;
 
@@ -310,7 +310,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setDisabled(int $disabled): Campaign
+    public function setDisabled(int $disabled): self
     {
         $this->disabled = $disabled;
 
@@ -334,7 +334,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setStatus(int $status): Campaign
+    public function setStatus(int $status): self
     {
         $this->status = $status;
 
@@ -358,7 +358,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setStart(DateTime $datetime): Campaign
+    public function setStart(DateTime $datetime): self
     {
         $this->start = $datetime;
 
@@ -382,7 +382,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setEnd(DateTime $datetime): Campaign
+    public function setEnd(DateTime $datetime): self
     {
         $this->end = $datetime;
 
@@ -406,7 +406,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setPosition(int $position): Campaign
+    public function setPosition(int $position): self
     {
         $this->position = $position;
 
@@ -445,7 +445,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setProject(Project $project): Campaign
+    public function setProject(Project $project): self
     {
         $this->project = $project;
 
@@ -496,7 +496,7 @@ class Campaign
      *
      * @return Campaign
      */
-    public function setFromDTO(CampaignDTO $dto): Campaign
+    public function setFromDTO(CampaignDTO $dto): self
     {
         if (null !== $dto->getStart()) {
             $this->setStart($dto->getStart());

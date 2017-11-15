@@ -69,14 +69,14 @@ class JunitParserService
 
         foreach (libxml_get_errors() as $libxmlError) {
             switch ($libxmlError->level) {
-                case LIBXML_ERR_WARNING:
-                    $level = 'Warning';
-                    break;
                 case LIBXML_ERR_ERROR:
                     $level = 'Error';
                     break;
                 case LIBXML_ERR_FATAL:
                     $level = 'Fatal error';
+                    break;
+                default:
+                    $level = 'Warning';
                     break;
             }
             $error = array(

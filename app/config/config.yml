@@ -8,7 +8,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    app.version: '0.6.0'
+    app.version: '0.6.1'
     app.build: 'bbb'
     app.host: '%web_host%'
     app.upload_dir: '%kernel.project_dir%/var/tmp'

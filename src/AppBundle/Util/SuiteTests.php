@@ -65,7 +65,7 @@ class SuiteTests
      *
      * @return SuiteTests
      */
-    public function setSuite(SuiteDTO $suite): SuiteTests
+    public function setSuite(SuiteDTO $suite): self
     {
         $this->suite = $suite;
 
@@ -89,7 +89,7 @@ class SuiteTests
      *
      * @return SuiteTests
      */
-    public function setTests(array $tests): SuiteTests
+    public function setTests(array $tests): self
     {
         $this->tests = $tests;
 
@@ -109,11 +109,11 @@ class SuiteTests
     /**
      * Add a test.
      *
-     * @param Test $test Test object
+     * @param TestDTO $test Test object
      *
      * @return SuiteTests
      */
-    public function addTest(TestDTO $test): SuiteTests
+    public function addTest(TestDTO $test): self
     {
         $this->tests[] = $test;
 

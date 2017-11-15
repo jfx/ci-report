@@ -246,7 +246,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setName(string $name): Suite
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -270,7 +270,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setWarning(int $warning): Suite
+    public function setWarning(int $warning): self
     {
         $this->warning = $warning;
 
@@ -294,7 +294,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setSuccess(int $success): Suite
+    public function setSuccess(int $success): self
     {
         $this->success = $success;
 
@@ -318,7 +318,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setpassed(int $passed): Suite
+    public function setpassed(int $passed): self
     {
         $this->passed = $passed;
 
@@ -342,7 +342,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setFailed(int $failed): Suite
+    public function setFailed(int $failed): self
     {
         $this->failed = $failed;
 
@@ -366,7 +366,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setErrored(int $errored): Suite
+    public function setErrored(int $errored): self
     {
         $this->errored = $errored;
 
@@ -390,7 +390,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setSkipped(int $skipped): Suite
+    public function setSkipped(int $skipped): self
     {
         $this->skipped = $skipped;
 
@@ -414,7 +414,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setDisabled(int $disabled): Suite
+    public function setDisabled(int $disabled): self
     {
         $this->disabled = $disabled;
 
@@ -438,7 +438,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setDuration(float $duration): Suite
+    public function setDuration(float $duration): self
     {
         $this->duration = $duration;
 
@@ -462,7 +462,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setDateTime(DateTime $datetime): Suite
+    public function setDateTime(DateTime $datetime): self
     {
         $this->datetime = $datetime;
 
@@ -486,7 +486,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setPosition(int $position): Suite
+    public function setPosition(int $position): self
     {
         $this->position = $position;
 
@@ -525,7 +525,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setCampaign(Campaign $campaign): Suite
+    public function setCampaign(Campaign $campaign): self
     {
         $this->campaign = $campaign;
 
@@ -593,7 +593,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setFromLimitsDTO(SuiteLimitsDTO $dto): Suite
+    public function setFromLimitsDTO(SuiteLimitsDTO $dto): self
     {
         if (null !== $dto->getWarning()) {
             $this->setWarning($dto->getWarning());
@@ -618,7 +618,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setFromDTO(SuiteDTO $dto): Suite
+    public function setFromDTO(SuiteDTO $dto): self
     {
         $this->setFromLimitsDTO($dto);
 

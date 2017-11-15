@@ -183,7 +183,7 @@ class Project
      *
      * @return Project
      */
-    public function setName(string $name): Project
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -207,7 +207,7 @@ class Project
      *
      * @return Project
      */
-    public function setRefid(string $refid): Project
+    public function setRefid(string $refid): self
     {
         $this->refid = $refid;
 
@@ -231,7 +231,7 @@ class Project
      *
      * @return Project
      */
-    public function setToken(string $token): Project
+    public function setToken(string $token): self
     {
         $this->token = $token;
 
@@ -255,7 +255,7 @@ class Project
      *
      * @return Project
      */
-    public function setWarning(int $warning): Project
+    public function setWarning(int $warning): self
     {
         $this->warning = $warning;
 
@@ -279,7 +279,7 @@ class Project
      *
      * @return Project
      */
-    public function setSuccess(int $success): Project
+    public function setSuccess(int $success): self
     {
         $this->success = $success;
 
@@ -303,7 +303,7 @@ class Project
      *
      * @return Project
      */
-    public function setEmail(string $email): Project
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -337,7 +337,7 @@ class Project
      *
      * @return Project
      */
-    public function setFromDTO(ProjectDTO $dto): Project
+    public function setFromDTO(ProjectDTO $dto): self
     {
         $this->setName($dto->getName())
             ->setEmail($dto->getEmail())

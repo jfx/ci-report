@@ -212,7 +212,7 @@ class Test
      *
      * @return Test
      */
-    public function setName(string $name): Test
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -236,7 +236,7 @@ class Test
      *
      * @return Test
      */
-    public function setClassname(string $classname): Test
+    public function setClassname(string $classname): self
     {
         $this->classname = $classname;
 
@@ -260,7 +260,7 @@ class Test
      *
      * @return Test
      */
-    public function setPackage(string $package): Test
+    public function setPackage(string $package): self
     {
         $this->package = $package;
 
@@ -284,7 +284,7 @@ class Test
      *
      * @return Test
      */
-    public function setFullclassname(string $fullClassname): Test
+    public function setFullclassname(string $fullClassname): self
     {
         if (substr_count($fullClassname, '.') > 0) {
             $index = strrpos($fullClassname, '.');
@@ -303,7 +303,7 @@ class Test
      *
      * @return Test
      */
-    public function setPassed(): Test
+    public function setPassed(): self
     {
         $this->passed = 1;
         $this->failed = 0;
@@ -328,7 +328,7 @@ class Test
      *
      * @return Test
      */
-    public function setFailed(): Test
+    public function setFailed(): self
     {
         $this->passed = 0;
         $this->failed = 1;
@@ -353,7 +353,7 @@ class Test
      *
      * @return Test
      */
-    public function setErrored(): Test
+    public function setErrored(): self
     {
         $this->passed = 0;
         $this->failed = 0;
@@ -378,7 +378,7 @@ class Test
      *
      * @return Test
      */
-    public function setSkipped(): Test
+    public function setSkipped(): self
     {
         $this->passed = 0;
         $this->failed = 0;
@@ -405,7 +405,7 @@ class Test
      *
      * @return Test
      */
-    public function setStatus(int $status): Test
+    public function setStatus(int $status): self
     {
         switch ($status) {
             case Status::SUCCESS:
@@ -462,7 +462,7 @@ class Test
      *
      * @return Test
      */
-    public function setDuration(float $duration): Test
+    public function setDuration(float $duration): self
     {
         $this->duration = $duration;
 
@@ -486,7 +486,7 @@ class Test
      *
      * @return Test
      */
-    public function setSystemout(string $systemOut): Test
+    public function setSystemout(string $systemOut): self
     {
         $this->systemout = $systemOut;
 
@@ -510,7 +510,7 @@ class Test
      *
      * @return Test
      */
-    public function setSystemerr(string $systemErr): Test
+    public function setSystemerr(string $systemErr): self
     {
         $this->systemerr = $systemErr;
 
@@ -534,7 +534,7 @@ class Test
      *
      * @return Test
      */
-    public function setPosition(int $position): Test
+    public function setPosition(int $position): self
     {
         $this->position = $position;
 
@@ -573,7 +573,7 @@ class Test
      *
      * @return Test
      */
-    public function setSuite(Suite $suite): Test
+    public function setSuite(Suite $suite): self
     {
         $this->suite = $suite;
 
@@ -597,7 +597,7 @@ class Test
      *
      * @return Test
      */
-    public function setFromDTO(TestDTO $dto): Test
+    public function setFromDTO(TestDTO $dto): self
     {
         $this->setName($dto->getName());
         $this->setClassname($dto->getClassname());

@@ -178,7 +178,7 @@ class SuiteApiController extends AbstractApiController
      * @param Campaign $campaign Campaign
      * @param Request  $request  The request
      *
-     * @return Suite|View
+     * @return array|View
      *
      * @Rest\Post("/projects/{prefid}/campaigns/{crefid}/suites/junit")
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"public"})

@@ -73,10 +73,8 @@ class FileUploaderService
      * Remove file from temporary directory.
      *
      * @param string $fileName File to remove
-     *
-     * @return string
      */
-    public function remove(string $fileName): string
+    public function remove(string $fileName)
     {
         $fileNameWithoutPath = basename($fileName);
         unlink($this->getTargetDir().'/'.$fileNameWithoutPath);
