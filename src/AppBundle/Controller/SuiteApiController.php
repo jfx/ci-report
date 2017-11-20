@@ -170,9 +170,10 @@ class SuiteApiController extends AbstractApiController
     }
 
     /**
-     * Create suites for a campaign by uploading junit file. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/junit -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST -F 'junitFile=@tests/files/junit.xml'
-     * </code></pre>.
+     * Create suites for a campaign by uploading a junit file. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/junit -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST -F warning=80 -F success=95 -F 'junitfile=@/path/to/junit.xml'
+     * </code></pre>
+     * <p style="font-size:10px;">(@ symbol is mandatory at the beginning of the file path)</p>.
      *
      * @param Project  $project  Project
      * @param Campaign $campaign Campaign
@@ -192,7 +193,7 @@ class SuiteApiController extends AbstractApiController
      *
      * @Doc\ApiDoc(
      *     section="Suites",
-     *     description="Create a suite by uploading junit file.",
+     *     description="Create suites by uploading a junit file.",
      *     headers={
      *         {
      *             "name"="X-CIR-TKN",
@@ -239,26 +240,38 @@ class SuiteApiController extends AbstractApiController
 
         $fileUploaderService = $this->get(FileUploaderService::class);
         $junitParserService = $this->get(JunitParserService::class);
+        $validator = $this->get('validator');
 
-        $file = $request->files->get('junitFile');
-        $fileNameUId = $fileUploaderService->upload($file);
+        $suiteLimitsFilesDTO = new SuiteLimitsFilesDTO($project, $request);
+
+        $violations = $validator->validate($suiteLimitsFilesDTO);
+        if (count($violations) > 0) {
+            return $this->view($violations, Response::HTTP_BAD_REQUEST);
+        }
+
+        $fileNameUId = $fileUploaderService->upload(
+            $suiteLimitsFilesDTO->getJunitfile()
+        );
 
         $doc = new DOMDocument();
         $doc->load($fileUploaderService->getFullPath($fileNameUId));
         $errors = $junitParserService->validate($doc);
         if (count($errors) > 0) {
+            $fileUploaderService->remove($fileNameUId);
+
             return $this->view($errors, Response::HTTP_BAD_REQUEST);
         }
         $suitesArray = $junitParserService->parse($doc);
+        $fileUploaderService->remove($fileNameUId);
 
-        $validator = $this->get('validator');
         $em = $this->getDoctrine()->getManager();
 
         $suitesEntity = array();
 
         foreach ($suitesArray as $suiteTests) {
             $suiteDTO = $suiteTests->getSuite();
-            // TODO : Set limits from form
+            $suiteDTO->setWarning($suiteLimitsFilesDTO->getWarning());
+            $suiteDTO->setSuccess($suiteLimitsFilesDTO->getSuccess());
 
             $suite = new Suite($project, $campaign);
             $suite->setFromDTO($suiteDTO);
@@ -371,6 +384,13 @@ class SuiteApiController extends AbstractApiController
         $project = $suiteDB->getCampaign()->getProject();
         if ($this->isInvalidToken($request, $project->getToken())) {
             return $this->getInvalidTokenView();
+        }
+        // If limit not defined get limit from suite
+        if (null === $suiteLimitsDTO->getWarning()) {
+            $suiteLimitsDTO->setWarning($suiteDB->getWarning());
+        }
+        if (null === $suiteLimitsDTO->getSuccess()) {
+            $suiteLimitsDTO->setSuccess($suiteDB->getSuccess());
         }
 
         $validator = $this->get('validator');

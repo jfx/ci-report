@@ -576,6 +576,13 @@ class Suite
      */
     public function getStatus(): int
     {
+        if (0 === $this->getEnabled()) {
+            if ((0 === $this->getWarning()) && (0 === $this->getSuccess())) {
+                return Status::SUCCESS;
+            }
+
+            return Status::WARNING;
+        }
         if ($this->getPercentage() < $this->getWarning()) {
             return Status::FAILED;
         }

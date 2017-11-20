@@ -21,6 +21,12 @@ declare(strict_types=1);
 
 namespace AppBundle\DTO;
 
+use AppBundle\Entity\Project;
+use JMS\Serializer\Annotation\Type;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * Suite limits and junit files data transfert object class.
  *
@@ -34,4 +40,72 @@ namespace AppBundle\DTO;
  */
 class SuiteLimitsFilesDTO extends SuiteLimitsDTO
 {
+    /**
+     * XML junit file.
+     *
+     * @var File
+     *
+     * @Type("File")
+     *
+     * @Assert\NotBlank(
+     *     message = "A junit file must be specified."
+     * )
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"application/xml"},
+     *     mimeTypesMessage = "Please upload a valid XML file"
+     * )
+     */
+    protected $junitfile;
+
+    /**
+     * Constructor.
+     *
+     * @param Project $project
+     * @param Request $request
+     */
+    public function __construct(Project $project, Request $request)
+    {
+        $warning = $request->request->get('warning');
+        if (null !== $warning) {
+            $this->setWarning((int) $warning);
+        } else {
+            $this->setWarning($project->getWarning());
+        }
+        $success = $request->request->get('success');
+        if (null !== $success) {
+            $this->setSuccess((int) $success);
+        } else {
+            $this->setSuccess($project->getSuccess());
+        }
+
+        $file = $request->files->get('junitfile');
+        if (null !== $file) {
+            $this->setJunitfile($file);
+        }
+    }
+
+    /**
+     * Set junit xml file.
+     *
+     * @param File $file
+     *
+     * @return SuiteLimitsFilesDTO
+     */
+    public function setJunitfile(File $file): self
+    {
+        $this->junitfile = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get junit xml file.
+     *
+     * @return File
+     */
+    public function getJunitfile(): ?File
+    {
+        return $this->junitfile;
+    }
 }

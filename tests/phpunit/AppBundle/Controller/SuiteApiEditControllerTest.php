@@ -2,8 +2,35 @@
 
 namespace Tests\AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 class SuiteApiEditControllerTest extends AbstractKernelControllerTest
 {
+    protected $testFilesDir = __DIR__.'/../../../files';
+
+    public function testPostJunitSuites()
+    {
+        copy(
+            $this->testFilesDir.'/junit-ok2.xml',
+            $this->testFilesDir.'/junit2upload.xml'
+        );
+        $junitFile = new UploadedFile(
+            $this->testFilesDir.'/junit2upload.xml',
+            'junit2upload.xml'
+        );
+
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            '/api/projects/project-one/campaigns/1/suites/junit',
+            array('warning' => 50, 'success' => 60),
+            array('junitfile' => $junitFile),
+            array('CONTENT_TYPE' => 'multipart/form-data', 'HTTP_X-CIR-TKN' => '1f4ffb19e4b9-02278af07b7d-4e370a76f001')
+        );
+
+        $this->assertEquals(201, $client->getResponse()->getStatusCode());
+    }
+
     public function testPutLimitsSuites()
     {
         $client = static::createClient();

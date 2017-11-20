@@ -61,6 +61,7 @@ class JunitParserService
     public function validate(DOMDocument $domDoc): array
     {
         libxml_use_internal_errors(true);
+        libxml_clear_errors();
 
         $reflClass = new ReflectionClass(get_class($this));
         $schemaAbsolutePath = dirname($reflClass->getFileName()).$this->schemaRelativePath;

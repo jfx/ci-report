@@ -88,29 +88,49 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"POST suites" upload junit file request and default limits returns HTTP "201" with suite data
+"POST suites" upload junit file request and limits returns HTTP "201" with suite data
     [Tags]    EDIT    DB
-    &{file} =    Create Dictionary    form_field=junitFile    path_file=${CURDIR}/../../files/junit-ok1.xml    mime_type=application/xml
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml    mime_type=application/xml
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=${P1C4S3Ja.warning}    success=${P1C4S3Ja.success}
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S3Ja.prefid}/campaigns/${P1C4S3Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Response content should have x Items    ${resp.content}    2
+    And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S3Ja.srefid}
+    And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S4Ja.srefid}
+    And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S3Ja.name}
+    And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S4Ja.name}
+    ${cposition} =    Evaluate    ${P1C4S3Ja.crefid} - 1
+    ${s3position} =    Evaluate    ${P1C4S3Ja.srefid} - 1
+    ${s4position} =    Evaluate    ${P1C4S4Ja.srefid} - 1
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1C4S3Ja.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${s3position} and cir_suite.warning = ${P1C4S3Ja.warning} and cir_suite.success = ${P1C4S3Ja.success} and cir_suite.passed=${P1C4S3Ja.passed} and cir_suite.failed=${P1C4S3Ja.failed} and cir_suite.errored=${P1C4S3Ja.errored} and cir_suite.skipped=${P1C4S3Ja.skipped} and cir_suite.disabled=${P1C4S3Ja.disabled}
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1C4S4Ja.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${s4position} and cir_suite.warning = ${P1C4S4Ja.warning} and cir_suite.success = ${P1C4S4Ja.success} and cir_suite.passed=${P1C4S4Ja.passed} and cir_suite.failed=${P1C4S4Ja.failed} and cir_suite.errored=${P1C4S4Ja.errored} and cir_suite.skipped=${P1C4S4Ja.skipped} and cir_suite.disabled=${P1C4S4Ja.disabled}
+    Check If Exists In Database    select id from cir_campaign where project_id=${P1C4Ja.pid} and position=${cposition} and passed=${P1C4Ja.passed} and failed=${P1C4Ja.failed} and errored=${P1C4Ja.errored} and skipped=${P1C4Ja.skipped} and disabled=${P1C4Ja.disabled}
+    Upload tmp directory should be empty
+
+"POST suites" upload junit file request and without limits returns HTTP "201" with suite data and sets project limits
+    [Tags]    EDIT    DB
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
-    Comment    &{data} =    And Create Dictionary    warning=60    success=70
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/${P1C4Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     And Response content should have x Items    ${resp.content}    2
-    And Label item of list should be equal    ${resp.content}    "refid"    3
-    And Label item of list should be equal    ${resp.content}    "refid"    4
-    And Label item of list should be equal    ${resp.content}    "name"    JUnitXmlReporter
-    And Label item of list should be equal    ${resp.content}    "name"    JUnitXmlReporter.constructor
+    And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S3Ja.srefid}
+    And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S4Ja.srefid}
+    And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S3Ja.name}
+    And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S4Ja.name}
     ${cposition} =    Evaluate    ${P1C4Ja.crefid} - 1
     ${s3position} =    Evaluate    ${P1C4S3Ja.srefid} - 1
     ${s4position} =    Evaluate    ${P1C4S4Ja.srefid} - 1
     Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1C4S3Ja.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${s3position} and cir_suite.warning = ${P1.warning} and cir_suite.success = ${P1.success} and cir_suite.passed=${P1C4S3Ja.passed} and cir_suite.failed=${P1C4S3Ja.failed} and cir_suite.errored=${P1C4S3Ja.errored} and cir_suite.skipped=${P1C4S3Ja.skipped} and cir_suite.disabled=${P1C4S3Ja.disabled}
     Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1C4S4Ja.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${s4position} and cir_suite.warning = ${P1.warning} and cir_suite.success = ${P1.success} and cir_suite.passed=${P1C4S4Ja.passed} and cir_suite.failed=${P1C4S4Ja.failed} and cir_suite.errored=${P1C4S4Ja.errored} and cir_suite.skipped=${P1C4S4Ja.skipped} and cir_suite.disabled=${P1C4S4Ja.disabled}
     Check If Exists In Database    select id from cir_campaign where project_id=${P1C4Ja.pid} and position=${cposition} and passed=${P1C4Ja.passed} and failed=${P1C4Ja.failed} and errored=${P1C4Ja.errored} and skipped=${P1C4Ja.skipped} and disabled=${P1C4Ja.disabled}
+    Upload tmp directory should be empty
 
 "POST suites" upload junit file request could change campaign status
     [Tags]    EDIT    DB
-    &{file} =    Create Dictionary    form_field=junitFile    path_file=${CURDIR}/../../files/junit-ok1.xml    mime_type=application/xml
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/${P1C4Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
@@ -120,7 +140,7 @@ Resource          Function/api.txt
 
 "POST suites" upload junit file request should not contain not expose fields
     [Tags]    EDIT
-    &{file} =    Create Dictionary    form_field=junitFile    path_file=${CURDIR}/../../files/junit-ok1.xml    mime_type=application/xml
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/${P1C4Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
@@ -130,30 +150,130 @@ Resource          Function/api.txt
 
 "POST suites" upload junit file request with wrong junit syntax file returns HTTP "400"
     [Tags]    EDIT
-    &{file} =    Create Dictionary    form_field=junitFile    path_file=${CURDIR}/../../files/junit-err-syntax.xml    mime_type=application/xml
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-err-syntax.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/${P1C4Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
     Then Should Be Equal As Strings    ${resp.status_code}    400
     And Dictionary Should Contain Item    ${resp.json()[0]}    level    Error
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    Element 'testXcase': This element is not expected.\n
+    Upload tmp directory should be empty
 
 "POST suites" upload junit file request with wrong token returns HTTP "401" error
-    &{file} =    Create Dictionary    form_field=junitFile    path_file=${CURDIR}/../../files/junit-ok1.xml    mime_type=application/xml
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=XXX
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/${P1C4Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
     Then Should Be Equal As Strings    ${resp.status_code}    401
 
 "POST suites" upload junit file request without token returns HTTP "401" error
-    &{file} =    Create Dictionary    form_field=junitFile    path_file=${CURDIR}/../../files/junit-ok1.xml    mime_type=application/xml
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/${P1C4Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
     Then Should Be Equal As Strings    ${resp.status_code}    401
 
+"POST suites" upload junit file request with invalid type warning limit sets it to 0
+    [Tags]    DB    EDIT
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok2.xml
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=XXX    success=${P1C4S3Jb.success}
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S3Jb.prefid}/campaigns/${P1C4S3Jb.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Response content should have x Items    ${resp.content}    1
+    And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S3Jb.srefid}
+    And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S3Jb.name}
+    And Label item of list should be equal    ${resp.content}    "warning"    0
+    And Label item of list should be equal    ${resp.content}    "success"    ${P1C4S3Jb.success}
+    ${cposition} =    Evaluate    ${P1C4S3Jb.crefid} - 1
+    ${sposition} =    Evaluate    ${P1C4S3Jb.srefid} - 1
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1C4S3Jb.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.warning = 0 and cir_suite.success = ${P1C4S3Jb.success} and cir_suite.passed=${P1C4S3Jb.passed} and cir_suite.failed=${P1C4S3Jb.failed} and cir_suite.errored=${P1C4S3Jb.errored} and cir_suite.skipped=${P1C4S3Jb.skipped} and cir_suite.disabled=${P1C4S3Jb.disabled}
+
+"POST suites" upload junit file request with float type warning limit round it
+    [Tags]    DB    EDIT
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok2.xml
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=79.7    success=${P1C4S3Jb.success}
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S3Jb.prefid}/campaigns/${P1C4S3Jb.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Response content should have x Items    ${resp.content}    1
+    And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S3Jb.srefid}
+    And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S3Jb.name}
+    And Label item of list should be equal    ${resp.content}    "warning"    79
+    And Label item of list should be equal    ${resp.content}    "success"    ${P1C4S3Jb.success}
+    ${cposition} =    Evaluate    ${P1C4S3Jb.crefid} - 1
+    ${sposition} =    Evaluate    ${P1C4S3Jb.srefid} - 1
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1C4S3Jb.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.warning = 79 and cir_suite.success = ${P1C4S3Jb.success} and cir_suite.passed=${P1C4S3Jb.passed} and cir_suite.failed=${P1C4S3Jb.failed} and cir_suite.errored=${P1C4S3Jb.errored} and cir_suite.skipped=${P1C4S3Jb.skipped} and cir_suite.disabled=${P1C4S3Jb.disabled}
+
+"POST suites" upload junit file request with warning limit out of range returns HTTP "400" error
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok2.xml
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=120    success=${P1C4S3Jb.success}
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S3Jb.prefid}/campaigns/${P1C4S3Jb.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
+
+"POST suites" upload junit file request with invalid type success limit sets it to 0
+    [Tags]    DB    EDIT
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok2.xml
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=${P1C4S3Jb.warning}    success=XXX
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S3Jb.prefid}/campaigns/${P1C4S3Jb.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Response content should have x Items    ${resp.content}    1
+    And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S3Jb.srefid}
+    And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S3Jb.name}
+    And Label item of list should be equal    ${resp.content}    "warning"    ${P1C4S3Jb.warning}
+    And Label item of list should be equal    ${resp.content}    "success"    0
+    ${cposition} =    Evaluate    ${P1C4S3Jb.crefid} - 1
+    ${sposition} =    Evaluate    ${P1C4S3Jb.srefid} - 1
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1C4S3Jb.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.warning = ${P1C4S3Jb.warning} and cir_suite.success = 0 and cir_suite.passed=${P1C4S3Jb.passed} and cir_suite.failed=${P1C4S3Jb.failed} and cir_suite.errored=${P1C4S3Jb.errored} and cir_suite.skipped=${P1C4S3Jb.skipped} and cir_suite.disabled=${P1C4S3Jb.disabled}
+
+"POST suites" upload junit file request with float type success limit round it
+    [Tags]    DB    EDIT
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok2.xml
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=${P1C4S3Jb.warning}    success=79.7
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S3Jb.prefid}/campaigns/${P1C4S3Jb.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    And Response content should have x Items    ${resp.content}    1
+    And Label item of list should be equal    ${resp.content}    "refid"    ${P1C4S3Jb.srefid}
+    And Label item of list should be equal    ${resp.content}    "name"    ${P1C4S3Jb.name}
+    And Label item of list should be equal    ${resp.content}    "warning"    ${P1C4S3Jb.warning}
+    And Label item of list should be equal    ${resp.content}    "success"    79
+    ${cposition} =    Evaluate    ${P1C4S3Jb.crefid} - 1
+    ${sposition} =    Evaluate    ${P1C4S3Jb.srefid} - 1
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1C4S3Jb.pid} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.warning = ${P1C4S3Jb.warning} and cir_suite.success = 79 and cir_suite.passed=${P1C4S3Jb.passed} and cir_suite.failed=${P1C4S3Jb.failed} and cir_suite.errored=${P1C4S3Jb.errored} and cir_suite.skipped=${P1C4S3Jb.skipped} and cir_suite.disabled=${P1C4S3Jb.disabled}
+
+"POST suites" upload junit file request with success limit out of range returns HTTP "400" error
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok2.xml
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=${P1C4S3Jb.warning}    success=120
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S3Jb.prefid}/campaigns/${P1C4S3Jb.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
+
+"POST suites" upload junit file request without file returns HTTP "400" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}    Content-Type=multipart/form-data
+    &{data} =    And Create Dictionary    warning=${P1C4S3Jb.warning}    success=${P1C4S3Jb.success}
+    ${resp}=    And Post Request    cir    /projects/${P1C4S3Jb.prefid}/campaigns/${P1C4S3Jb.crefid}/suites/junit    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    junitfile
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    A junit file must be specified.
+
+"POST suites" upload junit file request with wrong file format returns HTTP "400" error
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/LICENSE.pdf
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary    warning=${P1C4S3Jb.warning}    success=${P1C4S3Jb.success}
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S3Jb.prefid}/campaigns/${P1C4S3Jb.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    junitfile
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    Please upload a valid XML file
+
 "POST suites" upload junit file request with unknown project returns "404" error
-    &{file} =    Create Dictionary    form_field=junitFile    path_file=${CURDIR}/../../files/junit-ok1.xml    mime_type=application/xml
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/XXX/campaigns/${P1C4Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
@@ -161,7 +281,7 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
 "POST suites" upload junit file request with unknown campaign returns "404" error
-    &{file} =    Create Dictionary    form_field=junitFile    path_file=${CURDIR}/../../files/junit-ok1.xml    mime_type=application/xml
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/0/suites/junit    ${file}    headers=${headers}    data=${data}
@@ -260,14 +380,12 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    warning
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
 
-"PUT suite limits" request without warning limit sets with project limit value
+"PUT suite limits" request without warning limit doesn't change warning limit value
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
-    ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}    data=${data}    headers=${headers}
     &{data} =    And Create Dictionary    success=${P2C3S1M.success}
     ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    200
-    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P1M.warning}
+    And Dictionary Should Contain Item    ${resp.json()}    warning    ${P2C3S1.warning}
     And Dictionary Should Contain Item    ${resp.json()}    success    ${P2C3S1M.success}
 
 "PUT suite limits" request with invalid type success limit sets it to 0
@@ -302,15 +420,13 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    success
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
 
-"PUT suite limits" request without success limit sets with project limit value
+"PUT suite limits" request without success limit doesn't change success limit value
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}
-    &{data} =    And Create Dictionary    name=${P1M.name}    email=${P1M.email}    warning=${P1M.warning}    success=${P1M.success}
-    ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}    data=${data}    headers=${headers}
     &{data} =    And Create Dictionary    warning=${P2C3S1M.warning}
     ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    200
     And Dictionary Should Contain Item    ${resp.json()}    warning    ${P2C3S1M.warning}
-    And Dictionary Should Contain Item    ${resp.json()}    success    ${P1M.success}
+    And Dictionary Should Contain Item    ${resp.json()}    success    ${P2C3S1.success}
 
 "PUT suite limits" request with unknown project refid returns HTTP "404" error
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}

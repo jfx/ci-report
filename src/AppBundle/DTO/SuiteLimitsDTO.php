@@ -63,15 +63,6 @@ class SuiteLimitsDTO
     protected $success;
 
     /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-        $this->setWarning(Project::DEFAULT_WARNING_LIMIT);
-        $this->setSuccess(Project::DEFAULT_SUCCESS_LIMIT);
-    }
-
-    /**
      * Set warning limit.
      *
      * @param int $warning

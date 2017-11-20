@@ -1,5 +1,6 @@
 *** Settings ***
 Library           Collections
+Library           OperatingSystem
 Library           RequestsLibrary
 Library           RequestsUploadFile.py
 Resource          ../Conf/api.txt
@@ -32,3 +33,7 @@ Item of list should not countains label
     \    ${found} =    Set Variable If    ${found} or ${status}    True    False
     Log    ${key} -> ${found}
     Run Keyword And Expect Error    *    Should Be True    ${found}
+
+Upload tmp directory should be empty
+    Directory Should Exist    ${UPLOAD_TMP_DIR}
+    Directory Should Be Empty    ${UPLOAD_TMP_DIR}
