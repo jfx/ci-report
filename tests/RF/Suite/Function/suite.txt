@@ -33,3 +33,5 @@ I check suite displayed values
     Element Should Contain    p-disabled    ${suite.disabled}
     Element Should Contain    p-duration    ${suite.duration_display}
     Element Should Contain    p-time    ${suite.time}
+    Element Should Contain    p-warning    ${suite.warning}
+    Element Should Contain    p-success    ${suite.success}

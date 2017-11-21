@@ -45,6 +45,8 @@
                 <p id="p-disabled" class="card-text text-muted">Disabled tests: {{ suite.disabled }}</p>
                 <p id="p-duration" class="card-text">Duration: {{ suite.duration }}s</p>
                 <p id="p-time" class="card-text text-muted">Time: {{ suite.datetime|date('d/m/Y H:i:s') }}</p>
+                <p id="p-warning" class="card-text text-muted">Warning limit: {{ suite.warning }} %</p>
+                <p id="p-success" class="card-text text-muted">Success limit: {{ suite.success }} %</p>
             </div>
         </div>
     </div>
