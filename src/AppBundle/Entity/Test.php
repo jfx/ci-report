@@ -155,7 +155,7 @@ class Test
      *
      * @Serializer\Groups({"public", "private"})
      */
-    private $systemout;
+    private $systemout = '';
 
     /**
      * @var string
@@ -164,7 +164,7 @@ class Test
      *
      * @Serializer\Groups({"public", "private"})
      */
-    private $systemerr;
+    private $systemerr = '';
 
     /**
      * @Gedmo\SortablePosition

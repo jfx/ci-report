@@ -214,8 +214,8 @@ EOT;
                 ),
                 'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                 'duration' => 1,
-                'systemOut' => $systemOut,
-                'systemErr' => $systemErr,
+                'systemOut' => '',
+                'systemErr' => '',
                 'suite' => 'p1c4s1-suite',
             ),
             array(
@@ -265,8 +265,12 @@ EOT;
                 $objectList[$k]->setFullClassName($data['fullClassName'][$j]);
                 $objectList[$k]->setStatus($data['status'][$j]);
                 $objectList[$k]->setDuration($data['duration'] + 0.1 * $j);
-                $objectList[$k]->setSystemOut($k.' : '.$data['systemOut']);
-                $objectList[$k]->setSystemErr($k.' : '.$data['systemErr']);
+                if ('' !== $data['systemOut']) {
+                    $objectList[$k]->setSystemout($k.' : '.$data['systemOut']);
+                }
+                if ('' !== $data['systemErr']) {
+                    $objectList[$k]->setSystemerr($k.' : '.$data['systemErr']);
+                }
 
                 $manager->persist($objectList[$k]);
             }

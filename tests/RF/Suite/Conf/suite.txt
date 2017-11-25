@@ -5,3 +5,4 @@ Resource          ../../Campaign/Conf/campaign.txt
 
 *** Variables ***
 ${location_suite}    /suite
+&{P1C4S2T1}       id=1    out=70 : System out message :\n- Out 1\n- Out 2    err=70 : System error message :\n- Error 1,\n- Error 2,\n- Error 3.

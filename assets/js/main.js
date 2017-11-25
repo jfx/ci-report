@@ -1,6 +1,7 @@
 var $ = require('jquery');
 
-window.Popper = require('popper.js');
+import Popper from 'popper.js';
+window.Popper = Popper;
 require('bootstrap');
 window.Chart = require('chart.js');
 

@@ -69,11 +69,15 @@
 /******/ ({
 
 /***/ "./assets/js/main.js":
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_popper_js__ = __webpack_require__("./node_modules/popper.js/dist/esm/popper.js");
 var $ = __webpack_require__("./node_modules/jquery/dist/jquery.js");
 
-window.Popper = __webpack_require__("./node_modules/popper.js/dist/esm/popper.js");
+
+window.Popper = __WEBPACK_IMPORTED_MODULE_0_popper_js__["a" /* default */];
 __webpack_require__("./node_modules/bootstrap/dist/js/bootstrap.js");
 window.Chart = __webpack_require__("./node_modules/chart.js/src/chart.js");
 
@@ -44567,7 +44571,6 @@ return hooks;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* WEBPACK VAR INJECTION */(function(global) {/**!
  * @fileOverview Kickass library to create and place poppers near their reference elements.
  * @version 1.12.7
@@ -47000,7 +47003,7 @@ Popper.Utils = (typeof window !== 'undefined' ? window : global).PopperUtils;
 Popper.placements = placements;
 Popper.Defaults = Defaults;
 
-/* harmony default export */ __webpack_exports__["default"] = (Popper);
+/* harmony default export */ __webpack_exports__["a"] = (Popper);
 //# sourceMappingURL=popper.js.map
 
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__("./node_modules/webpack/buildin/global.js")))
