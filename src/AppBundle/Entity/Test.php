@@ -167,6 +167,15 @@ class Test
     private $systemerr = '';
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="failure_msg", type="text")
+     *
+     * @Serializer\Groups({"public", "private"})
+     */
+    private $failuremsg = '';
+
+    /**
      * @Gedmo\SortablePosition
      *
      * @ORM\Column(name="position", type="integer"))
@@ -528,6 +537,30 @@ class Test
     }
 
     /**
+     * Set failure message.
+     *
+     * @param string $failureMsg The message
+     *
+     * @return Test
+     */
+    public function setFailuremsg(string $failureMsg): self
+    {
+        $this->failuremsg = $failureMsg;
+
+        return $this;
+    }
+
+    /**
+     * Get failure message.
+     *
+     * @return string
+     */
+    public function getFailuremsg(): string
+    {
+        return $this->failuremsg;
+    }
+
+    /**
      * Set order.
      *
      * @param int $position The order.
@@ -606,6 +639,7 @@ class Test
         $this->setDuration($dto->getDuration());
         $this->setSystemout($dto->getSystemout());
         $this->setSystemerr($dto->getSystemerr());
+        $this->setFailuremsg($dto->getFailuremsg());
 
         return $this;
     }

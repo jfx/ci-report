@@ -134,7 +134,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('should default consolidate to true', $tests[0]->getName());
         $this->assertEquals(0, $tests[0]->getDuration());
         $this->assertEquals(Status::ERROR, $tests[0]->getStatus());
-        $this->assertEquals('Error message---Error details', $tests[0]->getPbmessage());
+        $this->assertEquals('Message: Error message'.PHP_EOL.' '.PHP_EOL.'Details: Error details', $tests[0]->getFailuremsg());
         $this->assertEquals('', $tests[0]->getSystemout());
         $this->assertEquals('', $tests[0]->getSystemerr());
 
@@ -143,7 +143,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('should default path to an empty string', $tests[1]->getName());
         $this->assertEquals(0.006, $tests[1]->getDuration());
         $this->assertEquals(Status::FAILED, $tests[1]->getStatus());
-        $this->assertEquals('test failure---Assertion failed', $tests[1]->getPbmessage());
+        $this->assertEquals('Message: test failure'.PHP_EOL.' '.PHP_EOL.'Details: Assertion failed', $tests[1]->getFailuremsg());
         $this->assertEquals('STDOUT dump', $tests[1]->getSystemout());
         $this->assertEquals('STDERR dump', $tests[1]->getSystemerr());
 
@@ -152,14 +152,14 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('should default consolidate to true', $tests[2]->getName());
         $this->assertEquals(0, $tests[2]->getDuration());
         $this->assertEquals(Status::SKIPPED, $tests[2]->getStatus());
-        $this->assertEquals('', $tests[2]->getPbmessage());
+        $this->assertEquals('', $tests[2]->getFailuremsg());
 
         $this->assertEquals('JUnitXmlReporter', $tests[3]->getPackage());
         $this->assertEquals('constructor', $tests[3]->getClassName());
         $this->assertEquals('should default useDotNotation to true', $tests[3]->getName());
         $this->assertEquals(0, $tests[3]->getDuration());
         $this->assertEquals(Status::SUCCESS, $tests[3]->getStatus());
-        $this->assertEquals('', $tests[3]->getPbmessage());
+        $this->assertEquals('', $tests[3]->getFailuremsg());
     }
 
     public function testParseMinimalData()
@@ -187,7 +187,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('name1', $tests[0]->getName());
         $this->assertEquals(0, $tests[0]->getDuration());
         $this->assertEquals(Status::SUCCESS, $tests[0]->getStatus());
-        $this->assertEquals('', $tests[0]->getPbmessage());
+        $this->assertEquals('', $tests[0]->getFailuremsg());
         $this->assertEquals('', $tests[0]->getSystemout());
         $this->assertEquals('', $tests[0]->getSystemerr());
 
@@ -196,7 +196,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('name2', $tests[1]->getName());
         $this->assertEquals(1, $tests[1]->getDuration());
         $this->assertEquals(Status::SUCCESS, $tests[1]->getStatus());
-        $this->assertEquals('', $tests[1]->getPbmessage());
+        $this->assertEquals('', $tests[1]->getFailuremsg());
         $this->assertEquals('', $tests[1]->getSystemout());
         $this->assertEquals('', $tests[1]->getSystemerr());
     }

@@ -86,13 +86,6 @@ class TestDTO
      *
      * @Type("string")
      */
-    private $pbmessage = '';
-
-    /**
-     * @var string
-     *
-     * @Type("string")
-     */
     private $systemout = '';
 
     /**
@@ -101,6 +94,13 @@ class TestDTO
      * @Type("string")
      */
     private $systemerr = '';
+
+    /**
+     * @var string
+     *
+     * @Type("string")
+     */
+    private $failuremsg = '';
 
     /**
      * Set name.
@@ -244,30 +244,6 @@ class TestDTO
     }
 
     /**
-     * Set message when error, fail, skip test.
-     *
-     * @param string $message The message
-     *
-     * @return TestDTO
-     */
-    public function setPbmessage(string $message): self
-    {
-        $this->pbmessage = $message;
-
-        return $this;
-    }
-
-    /**
-     * Get message set for errored, failed, skipped test.
-     *
-     * @return string
-     */
-    public function getPbmessage(): string
-    {
-        return $this->pbmessage;
-    }
-
-    /**
      * Set system out message.
      *
      * @param string $systemout The message
@@ -313,5 +289,29 @@ class TestDTO
     public function getSystemerr(): string
     {
         return $this->systemerr;
+    }
+
+    /**
+     * Set message when error, fail, skip test.
+     *
+     * @param string $message The message
+     *
+     * @return TestDTO
+     */
+    public function setFailuremsg(string $message): self
+    {
+        $this->failuremsg = $message;
+
+        return $this;
+    }
+
+    /**
+     * Get message set for errored, failed, skipped test.
+     *
+     * @return string
+     */
+    public function getFailuremsg(): string
+    {
+        return $this->failuremsg;
     }
 }

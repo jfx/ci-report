@@ -52,6 +52,11 @@ class JunitParserService
     protected $schemaRelativePath = '/../../../junit/xsd/junit-10.xsd';
 
     /**
+     * @var string
+     */
+    const FAILURE_MSG_SEPARATOR = PHP_EOL.' '.PHP_EOL;
+
+    /**
      * Validate the XML document.
      *
      * @param DOMDocument $domDoc XML document to validate
@@ -229,19 +234,19 @@ class JunitParserService
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->error
             );
-            $test->setPbmessage($message);
+            $test->setFailuremsg($message);
         } elseif (isset($xmlTestcase->failure)) {
             $test->setStatus(Status::FAILED);
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->failure
             );
-            $test->setPbmessage($message);
+            $test->setFailuremsg($message);
         } elseif (isset($xmlTestcase->skipped)) {
             $test->setStatus(Status::SKIPPED);
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->skipped
             );
-            $test->setPbmessage($message);
+            $test->setFailuremsg($message);
         } else {
             $test->setStatus(Status::SUCCESS);
         }
@@ -258,25 +263,28 @@ class JunitParserService
      */
     private function formatErrorFailSkipMessage(SimpleXMLElement $elt): string
     {
-        $type = '';
         if (isset($elt['type'])) {
-            $type = (string) $elt['type'];
+            $type = 'Type: '.(string) $elt['type'];
+        } else {
+            $type = '';
         }
-        $message = '';
         if (isset($elt['message'])) {
-            $message = (string) $elt['message'];
+            $message = 'Message: '.(string) $elt['message'];
+        } else {
+            $message = '';
         }
-        $value = '';
-        if (isset($elt)) {
-            $value = (string) $elt;
+        if (isset($elt) && (strlen((string) $elt) > 0)) {
+            $value = 'Details: '.(string) $elt;
+        } else {
+            $value = '';
         }
         if ((strlen($type) > 0) && (strlen($message) > 0)) {
-            $fullmessage = $type.'---'.$message;
+            $fullmessage = $type.self::FAILURE_MSG_SEPARATOR.$message;
         } else {
             $fullmessage = $type.$message;
         }
         if ((strlen($fullmessage) > 0) && (strlen($value) > 0)) {
-            $fullmessage = $fullmessage.'---'.$value;
+            $fullmessage = $fullmessage.self::FAILURE_MSG_SEPARATOR.$value;
         } else {
             $fullmessage = $fullmessage.$value;
         }

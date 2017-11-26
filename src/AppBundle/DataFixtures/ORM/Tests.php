@@ -57,6 +57,13 @@ System error message :
   - Error 2,
   - Error 3.
 EOT;
+        $failureMsg = <<<'EOT'
+Type: Type of message
+ 
+Message: Message
+    
+Details: Details of message ...
+EOT;
         $dataArray = array(
             array(
                 'count' => '12',
@@ -78,6 +85,7 @@ EOT;
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
+                'failureMsg' => $failureMsg,
                 'suite' => 'p1c1s1-suite',
             ),
             array(
@@ -101,6 +109,7 @@ EOT;
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
+                'failureMsg' => $failureMsg,
                 'suite' => 'p1c1s2-suite',
             ),
             array(
@@ -124,6 +133,7 @@ EOT;
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
+                'failureMsg' => $failureMsg,
                 'suite' => 'p1c2s1-suite',
             ),
             array(
@@ -147,6 +157,7 @@ EOT;
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
+                'failureMsg' => $failureMsg,
                 'suite' => 'p1c2s2-suite',
             ),
             array(
@@ -170,6 +181,7 @@ EOT;
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
+                'failureMsg' => $failureMsg,
                 'suite' => 'p1c3s1-suite',
             ),
             array(
@@ -193,6 +205,7 @@ EOT;
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
+                'failureMsg' => $failureMsg,
                 'suite' => 'p1c3s2-suite',
             ),
             array(
@@ -216,6 +229,7 @@ EOT;
                 'duration' => 1,
                 'systemOut' => '',
                 'systemErr' => '',
+                'failureMsg' => '',
                 'suite' => 'p1c4s1-suite',
             ),
             array(
@@ -239,6 +253,7 @@ EOT;
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
+                'failureMsg' => $failureMsg,
                 'suite' => 'p1c4s2-suite',
             ),
             $this->fillInTestArray(79, 21, 0, 0, 'p2c1s1-suite'),
@@ -270,6 +285,9 @@ EOT;
                 }
                 if ('' !== $data['systemErr']) {
                     $objectList[$k]->setSystemerr($k.' : '.$data['systemErr']);
+                }
+                if ('' !== $data['failureMsg']) {
+                    $objectList[$k]->setFailuremsg($data['failureMsg']);
                 }
 
                 $manager->persist($objectList[$k]);
@@ -323,6 +341,7 @@ EOT;
         $fillInArray['duration'] = 1;
         $fillInArray['systemOut'] = 'systemOutMessage';
         $fillInArray['systemErr'] = 'systemErrMessage';
+        $fillInArray['failureMsg'] = 'failureMessage';
 
         return $fillInArray;
     }

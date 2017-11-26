@@ -118,6 +118,38 @@ A row test with a system err message should display a "System Err" button
     And Wait Until Element Is Not Visible    modal-body-err-1
     Then Element Should Not Be Visible    modal-body-err-1
 
+A row test without a failure message should not display a "Failure msg" button
+    When I go to suite page    &{P1C4S1}
+    Then Page Should Not Contain Element    b-modal-open-fail-1
+
+A row test with a failure message should display a "Failure msg" button
+    When I go to suite page    &{P1C4S2}
+    Then Element Should Be Visible    b-modal-open-fail-1
+
+"Failure msg" button should display a modal window with failure message content
+    Given I go to suite page    &{P1C4S2}
+    When Click Element    b-modal-open-fail-1
+    And Wait Until Element Is Visible    modal-body-fail-1
+    Then Element Should Contain    modal-body-fail-1    ${P1C4S2T1.fail}
+
+"Failure msg" modal window could be closed by clicking "Close" button
+    Given I go to suite page    &{P1C4S2}
+    And Click Element    b-modal-open-fail-1
+    And Wait Until Element Is Visible    modal-body-fail-1
+    Sleep    ${SHORT_SLEEP}
+    When Click Element    b-modal-close-fail-1
+    And Wait Until Element Is Not Visible    modal-body-fail-1
+    Then Element Should Not Be Visible    modal-body-fail-1
+
+"Failure msg" modal window could be closed by clicking on upper right cross
+    Given I go to suite page    &{P1C4S2}
+    And Click Element    b-modal-open-fail-1
+    And Wait Until Element Is Visible    modal-body-fail-1
+    Sleep    ${SHORT_SLEEP}
+    When Click Element    sp-modal-cross-fail-1
+    And Wait Until Element Is Not Visible    modal-body-fail-1
+    Then Element Should Not Be Visible    modal-body-fail-1
+
 A suite without test should display "No test"
     When I go to suite page    &{P8C1S1}
     Then Page Should Contain    No test
