@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Service;
 
-use AppBundle\Entity\Status;
+use AppBundle\Entity\Test;
 use AppBundle\Service\JunitParserService;
 use DateInterval;
 use DateTime;
@@ -133,7 +133,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('constructor', $tests[0]->getClassName());
         $this->assertEquals('should default consolidate to true', $tests[0]->getName());
         $this->assertEquals(0, $tests[0]->getDuration());
-        $this->assertEquals(Status::ERROR, $tests[0]->getStatus());
+        $this->assertEquals(Test::ERRORED, $tests[0]->getStatus());
         $this->assertEquals('Message: Error message'.PHP_EOL.' '.PHP_EOL.'Details: Error details', $tests[0]->getFailuremsg());
         $this->assertEquals('', $tests[0]->getSystemout());
         $this->assertEquals('', $tests[0]->getSystemerr());
@@ -142,7 +142,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('constructor', $tests[1]->getClassName());
         $this->assertEquals('should default path to an empty string', $tests[1]->getName());
         $this->assertEquals(0.006, $tests[1]->getDuration());
-        $this->assertEquals(Status::FAILED, $tests[1]->getStatus());
+        $this->assertEquals(Test::FAILED, $tests[1]->getStatus());
         $this->assertEquals('Message: test failure'.PHP_EOL.' '.PHP_EOL.'Details: Assertion failed', $tests[1]->getFailuremsg());
         $this->assertEquals('STDOUT dump', $tests[1]->getSystemout());
         $this->assertEquals('STDERR dump', $tests[1]->getSystemerr());
@@ -151,14 +151,14 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('constructor', $tests[2]->getClassName());
         $this->assertEquals('should default consolidate to true', $tests[2]->getName());
         $this->assertEquals(0, $tests[2]->getDuration());
-        $this->assertEquals(Status::SKIPPED, $tests[2]->getStatus());
+        $this->assertEquals(Test::SKIPPED, $tests[2]->getStatus());
         $this->assertEquals('', $tests[2]->getFailuremsg());
 
         $this->assertEquals('JUnitXmlReporter', $tests[3]->getPackage());
         $this->assertEquals('constructor', $tests[3]->getClassName());
         $this->assertEquals('should default useDotNotation to true', $tests[3]->getName());
         $this->assertEquals(0, $tests[3]->getDuration());
-        $this->assertEquals(Status::SUCCESS, $tests[3]->getStatus());
+        $this->assertEquals(Test::PASSED, $tests[3]->getStatus());
         $this->assertEquals('', $tests[3]->getFailuremsg());
     }
 
@@ -186,7 +186,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('constructor', $tests[0]->getClassName());
         $this->assertEquals('name1', $tests[0]->getName());
         $this->assertEquals(0, $tests[0]->getDuration());
-        $this->assertEquals(Status::SUCCESS, $tests[0]->getStatus());
+        $this->assertEquals(Test::PASSED, $tests[0]->getStatus());
         $this->assertEquals('', $tests[0]->getFailuremsg());
         $this->assertEquals('', $tests[0]->getSystemout());
         $this->assertEquals('', $tests[0]->getSystemerr());
@@ -195,7 +195,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('constructor', $tests[1]->getClassName());
         $this->assertEquals('name2', $tests[1]->getName());
         $this->assertEquals(1, $tests[1]->getDuration());
-        $this->assertEquals(Status::SUCCESS, $tests[1]->getStatus());
+        $this->assertEquals(Test::PASSED, $tests[1]->getStatus());
         $this->assertEquals('', $tests[1]->getFailuremsg());
         $this->assertEquals('', $tests[1]->getSystemout());
         $this->assertEquals('', $tests[1]->getSystemerr());
@@ -211,7 +211,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('Chromium 58.0.3029 (Ubuntu 0.0.0)', $suitesArray[0]->getSuite()->getName());
         $this->assertCount(56, $suitesArray[0]->getTests());
         foreach ($suitesArray[0]->getTests() as $test) {
-            $this->assertEquals(Status::SUCCESS, $test->getStatus());
+            $this->assertEquals(Test::PASSED, $test->getStatus());
         }
     }
 
@@ -225,7 +225,7 @@ class JunitParserServiceTest extends TestCase
         $this->assertEquals('tam4 App', $suitesArray[0]->getSuite()->getName());
         $tests0 = $suitesArray[0]->getTests();
         $this->assertCount(1, $tests0);
-        $this->assertEquals(Status::SUCCESS, $tests0[0]->getStatus());
+        $this->assertEquals(Test::PASSED, $tests0[0]->getStatus());
     }
 
     public function testParseJunitRFPassed()
@@ -239,7 +239,7 @@ class JunitParserServiceTest extends TestCase
         $tests = $suitesArray[0]->getTests();
         $this->assertCount(24, $tests);
         foreach ($tests as $test) {
-            $this->assertEquals(Status::SUCCESS, $test->getStatus());
+            $this->assertEquals(Test::PASSED, $test->getStatus());
         }
     }
 
@@ -254,7 +254,7 @@ class JunitParserServiceTest extends TestCase
         $tests = $suitesArray[0]->getTests();
         $this->assertCount(24, $tests);
         foreach ($tests as $test) {
-            $this->assertEquals(Status::FAILED, $test->getStatus());
+            $this->assertEquals(Test::FAILED, $test->getStatus());
         }
     }
 

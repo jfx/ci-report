@@ -81,7 +81,7 @@ EOT;
                     'io.ci-report.package.className4',
                     'io.ci-report.package.className5',
                 ),
-                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -105,7 +105,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -129,7 +129,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 8, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(Test::PASSED, Test::ERRORED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -153,7 +153,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -177,7 +177,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(Test::PASSED, Test::FAILED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -201,7 +201,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -225,7 +225,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED),
                 'duration' => 1,
                 'systemOut' => '',
                 'systemErr' => '',
@@ -249,7 +249,7 @@ EOT;
                     'io.ci-report.package.className5',
                     'io.ci-report.package.className6',
                 ),
-                'status' => array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                'status' => array(Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED, Test::PASSED),
                 'duration' => 1,
                 'systemOut' => $systemOut,
                 'systemErr' => $systemErr,
@@ -325,16 +325,16 @@ EOT;
 
         $arrayStatus = array();
         for ($i = 0; $i < $passed; ++$i) {
-            $arrayStatus[] = 1;
+            $arrayStatus[] = Test::PASSED;
         }
         for ($i = 0; $i < $failed; ++$i) {
-            $arrayStatus[] = 4;
+            $arrayStatus[] = Test::FAILED;
         }
         for ($i = 0; $i < $errored; ++$i) {
-            $arrayStatus[] = 8;
+            $arrayStatus[] = Test::ERRORED;
         }
         for ($i = 0; $i < $skipped; ++$i) {
-            $arrayStatus[] = 16;
+            $arrayStatus[] = Test::SKIPPED;
         }
         $fillInArray['status'] = $arrayStatus;
 

@@ -48,6 +48,11 @@ class Test
     const DEFAULT_CLASSNAME = 'DEFAULT_CLASSNAME';
     const DEFAULT_PACKAGE = '_ROOT_';
 
+    const PASSED = 'Passed';
+    const FAILED = 'Failed';
+    const ERRORED = 'Errored';
+    const SKIPPED = 'Skipped';
+
     /**
      * @var int
      *
@@ -410,23 +415,23 @@ class Test
     /**
      * Set status of test.
      *
-     * @param int $status Status (const of Status class)
+     * @param string $status Status (const of Test class)
      *
      * @return Test
      */
-    public function setStatus(int $status): self
+    public function setStatus(string $status): self
     {
         switch ($status) {
-            case Status::SUCCESS:
+            case self::PASSED:
                 $this->setPassed();
                 break;
-            case Status::FAILED:
+            case self::FAILED:
                 $this->setFailed();
                 break;
-            case Status::ERROR:
+            case self::ERRORED:
                 $this->setErrored();
                 break;
-            case Status::SKIPPED:
+            case self::SKIPPED:
                 $this->setSkipped();
                 break;
         }
@@ -435,33 +440,23 @@ class Test
     }
 
     /**
-     * Return  status (const of Status class).
-     *
-     * @return int
-     */
-    public function getStatus(): int
-    {
-        if ($this->passed > 0) {
-            return Status::SUCCESS;
-        }
-        if ($this->failed > 0) {
-            return Status::FAILED;
-        }
-        if ($this->skipped > 0) {
-            return Status::SKIPPED;
-        }
-
-        return Status::ERROR;
-    }
-
-    /**
-     * Get label of status.
+     * Return  status (const of Test class).
      *
      * @return string
      */
-    public function getLabelstatus(): string
+    public function getStatus(): string
     {
-        return Status::getLabel($this->getStatus());
+        if ($this->passed > 0) {
+            return self::PASSED;
+        }
+        if ($this->failed > 0) {
+            return self::FAILED;
+        }
+        if ($this->skipped > 0) {
+            return self::SKIPPED;
+        }
+
+        return self::ERRORED;
     }
 
     /**

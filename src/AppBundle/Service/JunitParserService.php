@@ -24,7 +24,6 @@ namespace AppBundle\Service;
 
 use AppBundle\DTO\SuiteDTO;
 use AppBundle\DTO\TestDTO;
-use AppBundle\Entity\Status;
 use AppBundle\Entity\Suite;
 use AppBundle\Entity\Test;
 use AppBundle\Util\SuiteTests;
@@ -230,25 +229,25 @@ class JunitParserService
 
         // If error
         if (isset($xmlTestcase->error)) {
-            $test->setStatus(Status::ERROR);
+            $test->setStatus(Test::ERRORED);
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->error
             );
             $test->setFailuremsg($message);
         } elseif (isset($xmlTestcase->failure)) {
-            $test->setStatus(Status::FAILED);
+            $test->setStatus(Test::FAILED);
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->failure
             );
             $test->setFailuremsg($message);
         } elseif (isset($xmlTestcase->skipped)) {
-            $test->setStatus(Status::SKIPPED);
+            $test->setStatus(Test::SKIPPED);
             $message = $this->formatErrorFailSkipMessage(
                 $xmlTestcase->skipped
             );
             $test->setFailuremsg($message);
         } else {
-            $test->setStatus(Status::SUCCESS);
+            $test->setStatus(Test::PASSED);
         }
 
         return $test;

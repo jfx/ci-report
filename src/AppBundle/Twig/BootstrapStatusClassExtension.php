@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace AppBundle\Twig;
 
 use AppBundle\Entity\Status;
+use AppBundle\Entity\Test;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
@@ -42,9 +43,11 @@ class BootstrapStatusClassExtension extends Twig_Extension
     const BOOTSTRAP_SUCCESS = 'success';
     const BOOTSTRAP_WARNING = 'warning';
     const BOOTSTRAP_DANGER = 'danger';
+    const BOOTSTRAP_UNKNOWN = 'secondary';
     const FA_SUCCESS = 'fa-check-circle';
     const FA_WARNING = 'fa-exclamation-circle';
     const FA_DANGER = 'fa-times-circle';
+    const FA_UNKNOWN = 'fa-question-circle';
 
     /**
      * Returns a list of functions to add to the existing list.
@@ -62,17 +65,20 @@ class BootstrapStatusClassExtension extends Twig_Extension
     /**
      * Return Bootstrap style class of status.
      *
-     * @param int $status Status id (const of Status class)
+     * @param int|string $status Status id (const of Status class)
      *
      * @return string
      */
-    public function getStatusColorClass(int $status): string
+    public function getStatusColorClass($status): string
     {
         switch ($status) {
+            case Test::ERRORED:
+            case Test::FAILED:
             case Status::FAILED:
             case Status::ERROR:
                 $color = self::BOOTSTRAP_DANGER;
                 break;
+            case Test::SKIPPED:
             case Status::WARNING:
             case Status::SKIPPED:
                 $color = self::BOOTSTRAP_WARNING;
@@ -87,17 +93,20 @@ class BootstrapStatusClassExtension extends Twig_Extension
     /**
      * Return Font Awesome icon of status.
      *
-     * @param int $status Status id (const of Status class)
+     * @param int|string $status Status id (const of Status class)
      *
      * @return string
      */
     public function getStatusIconClass($status): string
     {
         switch ($status) {
+            case Test::ERRORED:
+            case Test::FAILED:
             case Status::FAILED:
             case Status::ERROR:
                 $icon = self::FA_DANGER;
                 break;
+            case Test::SKIPPED:
             case Status::WARNING:
             case Status::SKIPPED:
                 $icon = self::FA_WARNING;

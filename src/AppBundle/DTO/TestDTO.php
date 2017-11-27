@@ -66,8 +66,7 @@ class TestDTO
     /**
      * @var int
      *
-     * @Assert\Type("integer")
-     * @Assert\GreaterThanOrEqual(0)
+     * @Assert\Type("string")
      */
     private $status;
 
@@ -198,11 +197,11 @@ class TestDTO
     /**
      * Set test status.
      *
-     * @param int $status Status::SUCCESS|Status::FAILED|Status::ERROR|Status::SKIPPED
+     * @param string $status Test::PASSED|Test::FAILED|Test::ERRORED|Test::SKIPPED
      *
      * @return TestDTO
      */
-    public function setStatus(int $status): self
+    public function setStatus(string $status): self
     {
         $this->status = $status;
 
@@ -212,9 +211,9 @@ class TestDTO
     /**
      * Return test status.
      *
-     * @return int
+     * @return string
      */
-    public function getStatus(): int
+    public function getStatus(): string
     {
         return $this->status;
     }
