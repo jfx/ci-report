@@ -9,23 +9,29 @@ Last campaign for a project should be displayed
     When I go to project dahsboard    ${P1.prefid}
     Then Element Should Contain    css=p.card-text    \#${P1C4.crefid}
 
-Last campaign for project with more or equal than 95% should be successfull
+Last campaign with more or equal than 95% should be successfull
     When I go to project dahsboard    ${P2C3.prefid}
     Then Element Should Contain    xpath=//h4[@class="card-title text-success"]    95 %
     And Page Should Contain Element    xpath=//i[@class="fa fa-check-circle fa-3x"]
     And Element Should Contain    xpath=//a[@class="btn btn-outline-success"]    Details
 
-Last campaign for project between 80% and 95% should be with a warning status
+Last campaign between 80% and 95% should have a warning status
     When I go to project dahsboard    ${P3C3.prefid}
     Then Element Should Contain    xpath=//h4[@class="card-title text-warning"]    80 %
     And Page Should Contain Element    xpath=//i[@class="fa fa-exclamation-circle fa-3x"]
     And Element Should Contain    xpath=//a[@class="btn btn-outline-warning"]    Details
 
-Last campaign for project under 80% should be with failed
+Last campaign under 80% should have a failed status
     When I go to project dahsboard    ${P4C3.prefid}
     Then Element Should Contain    xpath=//h4[@class="card-title text-danger"]    79 %
     And Page Should Contain Element    xpath=//i[@class="fa fa-times-circle fa-3x"]
     And Element Should Contain    xpath=//a[@class="btn btn-outline-danger"]    Details
+
+Last campaign with a suite with no test should have a unknown status
+    When I go to project dahsboard    ${P8C1S1.prefid}
+    Then Page Should Contain Element    xpath=//h4[@class="card-title text-secondary"]
+    And Page Should Contain Element    xpath=//i[@class="fa fa-question-circle fa-3x"]
+    And Element Should Contain    xpath=//a[@class="btn btn-outline-secondary"]    Details
 
 Last campaign none zeros values for project should be displayed
     When I go to project dahsboard    ${P1C4.prefid}

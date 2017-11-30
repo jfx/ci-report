@@ -52,6 +52,10 @@ A row suite under 80% should have red background color
     When I go to campaign page    &{P4C3}
     Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P4C3S1.srefid}" and @class="table-danger"]
 
+A row suite with no test should have grey background color
+    When I go to campaign page    &{P8C1S1}
+    Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P8C1S1.srefid}" and @class="table-secondary"]
+
 A campaign without suite should display "No suite"
     When I go to campaign page    &{P7C1}
     Then Page Should Contain    No suite

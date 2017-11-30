@@ -136,7 +136,7 @@ Resource          Function/api.txt
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/${P1C4Ja.crefid}/suites/junit    ${file}    headers=${headers}    data=${data}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     ${cposition} =    Evaluate    ${P1C4Ja.crefid} - 1
-    Check If Exists In Database    select cir_campaign.id from cir_campaign where project_id = ${P1C4Ja.pid} and cir_campaign.position = ${cposition} and status = 4
+    Check If Exists In Database    select cir_campaign.id from cir_campaign where project_id = ${P1C4Ja.pid} and cir_campaign.position = ${cposition} and status = 8
 
 "POST suites" upload junit file request should not contain not expose fields
     [Tags]    EDIT
@@ -316,7 +316,7 @@ Resource          Function/api.txt
     ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    200
     ${cposition} =    Evaluate    ${P2C3S1M.crefid} - 1
-    Check If Exists In Database    select cir_campaign.id from cir_campaign where project_id = ${P2C3S1M.pid} and cir_campaign.position = ${cposition} and status = 2
+    Check If Exists In Database    select cir_campaign.id from cir_campaign where project_id = ${P2C3S1M.pid} and cir_campaign.position = ${cposition} and status = 4
 
 "PUT suite limits" request could change campaign status from passed to failed
     [Tags]    EDIT    DB
@@ -325,7 +325,7 @@ Resource          Function/api.txt
     ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    200
     ${cposition} =    Evaluate    ${P2C3S1M.crefid} - 1
-    Check If Exists In Database    select cir_campaign.id from cir_campaign where project_id = ${P2C3S1M.pid} and cir_campaign.position = ${cposition} and status = 4
+    Check If Exists In Database    select cir_campaign.id from cir_campaign where project_id = ${P2C3S1M.pid} and cir_campaign.position = ${cposition} and status = 8
 
 "PUT suite limits" request should not contain not expose fields
     [Tags]    EDIT
@@ -482,15 +482,15 @@ Resource          Function/api.txt
     ${resp} =    When Delete Request    cir    /projects/${P1C3S1D.prefid}/campaigns/${P1C3S1D.crefid}/suites/${P1C3S1D.srefid}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    204
     ${cposition} =    Evaluate    ${P1C3S1D.crefid} - 1
-    Check If Exists In Database    select id from cir_campaign where project_id =${P1C3S1D.pid} and position = ${cposition} and status = 1 and passed = 13 and failed = 0 and errored = 0 and skipped = 0 and disabled = 0
+    Check If Exists In Database    select id from cir_campaign where project_id =${P1C3S1D.pid} and position = ${cposition} and status = 2 and passed = 13 and failed = 0 and errored = 0 and skipped = 0 and disabled = 0
 
-"DELETE suites" request with deleting unique suite changes camapign status to warning and updates tests count
+"DELETE suites" request with deleting unique suite changes camapign status to unknown and updates tests count
     [Tags]    EDIT    DB
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P2.token}
     ${resp} =    When Delete Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    204
     ${cposition} =    Evaluate    ${P2C3S1M.crefid} - 1
-    Check If Exists In Database    select id from cir_campaign where project_id =${P2C3S1M.pid} and position = ${cposition} and status = 2 and passed = 0 and failed = 0 and errored = 0 and skipped = 0 and disabled = 0
+    Check If Exists In Database    select id from cir_campaign where project_id =${P2C3S1M.pid} and position = ${cposition} and status = 1 and passed = 0 and failed = 0 and errored = 0 and skipped = 0 and disabled = 0
 
 "DELETE suites" request with wrong token returns HTTP "401" error
     &{headers} =    When Create Dictionary    X-CIR-TKN=XXX

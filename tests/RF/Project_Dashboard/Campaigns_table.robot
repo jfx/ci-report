@@ -52,6 +52,10 @@ A row campaign under 80% should have red background color
     When I go to project dahsboard    ${P4C3.prefid}
     Then Page Should Contain Element    xpath=//tr[@id="tr-campaign-${P4C3.crefid}" and @class="table-danger"]
 
+A row campaign with a unknown status should have grey background color
+    When I go to project dahsboard    ${P8C1S1.prefid}
+    Then Page Should Contain Element    xpath=//tr[@id="tr-campaign-${P8C1S1.crefid}" and @class="table-secondary"]
+
 A project without campaign should display "No campaign"
     When I go to project dahsboard    ${P6.prefid}
     Then Page Should Contain    No campaign

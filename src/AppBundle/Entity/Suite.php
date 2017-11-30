@@ -581,7 +581,7 @@ class Suite
                 return Status::SUCCESS;
             }
 
-            return Status::WARNING;
+            return Status::UNKNOWN;
         }
         if ($this->getPercentage() < $this->getWarning()) {
             return Status::FAILED;

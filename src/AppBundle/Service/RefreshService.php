@@ -91,9 +91,9 @@ class RefreshService
             ->setSkipped($skipped)
             ->setDisabled($disabled);
 
-        // If no suite Status = Warning
+        // If no suite Status = Unknown
         if (0 === $status) {
-            $campaign->setStatus(Status::WARNING);
+            $campaign->setStatus(Status::UNKNOWN);
         } else {
             $campaign->setStatus($status);
         }

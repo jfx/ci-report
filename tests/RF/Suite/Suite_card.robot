@@ -15,15 +15,20 @@ Suite with more or equal than 95% should be successfull
     Then Element Should Contain    xpath=//h4[@class="card-title text-success"]    95 %
     And Page Should Contain Element    xpath=//i[@class="fa fa-check-circle fa-3x"]
 
-Suite between 80% and 95% should be with a warning status
+Suite between 80% and 95% should have a warning status
     When I go to suite page    &{P3C3S1}
     Then Element Should Contain    xpath=//h4[@class="card-title text-warning"]    80 %
     And Page Should Contain Element    xpath=//i[@class="fa fa-exclamation-circle fa-3x"]
 
-Suite under 80% should be with failed
+Suite under 80% should have a failed status
     When I go to suite page    &{P4C3S1}
     Then Element Should Contain    xpath=//h4[@class="card-title text-danger"]    79 %
     And Page Should Contain Element    xpath=//i[@class="fa fa-times-circle fa-3x"]
+
+Suite with no test should have an unknown status
+    When I go to suite page    &{P8C1S1}
+    Then Page Should Contain Element    xpath=//h4[@class="card-title text-secondary"]
+    And Page Should Contain Element    xpath=//i[@class="fa fa-question-circle fa-3x"]
 
 Suite with errored tests should display values
     When I go to suite page    &{P4C3S1}

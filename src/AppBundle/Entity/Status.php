@@ -35,17 +35,16 @@ namespace AppBundle\Entity;
  */
 class Status
 {
-    const SUCCESS = 1;
-    const WARNING = 2;
-    const FAILED = 4;
-    const ERROR = 8;
-    const SKIPPED = 16;
+    const UNKNOWN = 1;
+    const SUCCESS = 2;
+    const WARNING = 4;
+    const FAILED = 8;
+
     const LABEL = array(
-        1 => 'Passed',
-        2 => 'Warning',
-        4 => 'Failed',
-        8 => 'Errored',
-        16 => 'Skipped',
+        1 => 'Unknown',
+        2 => 'Success',
+        4 => 'Warning',
+        8 => 'Failed',
     );
 
     /**

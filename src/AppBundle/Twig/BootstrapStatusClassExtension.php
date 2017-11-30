@@ -75,13 +75,14 @@ class BootstrapStatusClassExtension extends Twig_Extension
             case Test::ERRORED:
             case Test::FAILED:
             case Status::FAILED:
-            case Status::ERROR:
                 $color = self::BOOTSTRAP_DANGER;
                 break;
             case Test::SKIPPED:
             case Status::WARNING:
-            case Status::SKIPPED:
                 $color = self::BOOTSTRAP_WARNING;
+                break;
+            case Status::UNKNOWN:
+                $color = self::BOOTSTRAP_UNKNOWN;
                 break;
             default:
                 $color = self::BOOTSTRAP_SUCCESS;
@@ -103,13 +104,14 @@ class BootstrapStatusClassExtension extends Twig_Extension
             case Test::ERRORED:
             case Test::FAILED:
             case Status::FAILED:
-            case Status::ERROR:
                 $icon = self::FA_DANGER;
                 break;
             case Test::SKIPPED:
             case Status::WARNING:
-            case Status::SKIPPED:
                 $icon = self::FA_WARNING;
+                break;
+            case Status::UNKNOWN:
+                $icon = self::FA_UNKNOWN;
                 break;
             default:
                 $icon = self::FA_SUCCESS;

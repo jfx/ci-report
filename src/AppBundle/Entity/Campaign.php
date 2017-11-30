@@ -126,7 +126,7 @@ class Campaign
     private $disabled = 0;
 
     /**
-     * Status of campaign defined by lowest status of all suites. If no suite, status is warning.
+     * Status of campaign defined by lowest status of all suites. If no suite, status is unknown.
      *
      * @var int
      *
@@ -137,7 +137,7 @@ class Campaign
      *
      * @Serializer\Groups({"public", "private"})
      */
-    private $status = 16;
+    private $status = 8;
 
     /**
      * Start Date time of the campaign in ISO 8601 format (2017-07-01T12:30:01+02:00).
