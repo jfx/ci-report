@@ -22,10 +22,20 @@
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand" href="#"><i class="fa fa-pie-chart"></i> ci-report</a>
+            <a class="navbar-brand" href="{{ path('homepage') }}"><i class="fa fa-pie-chart"></i> ci-report</a>
             <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link" href="#"><i class="fa fa-cog"></i></a>
+                <a id="a-dropdown" class="nav-item dropdown-toggle text-white" href="#" ref="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-cog"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a id="a-dropdown-home" class="dropdown-item" href="{{ path('homepage') }}"><i class="fa fa-home"></i>&nbsp;&nbsp;Home</a>
+                    <div class="dropdown-divider"></div>
+                    <a id="a-dropdown-project" class="dropdown-item" href="#"><i class="fa fa-plus-circle"></i>&nbsp;&nbsp;Add a project</a>
+                    <div class="dropdown-divider"></div>
+                    <a id="a-dropdown-doc" class="dropdown-item" href="#" target="_blank"><i class="fa fa-book"></i>&nbsp;&nbsp;Documentation</a>
+                    <a id="a-dropdown-api" class="dropdown-item" href="{{ path('nelmio_api_doc_index') }}" target="_blank"><i class="fa fa-file-code-o"></i>&nbsp;&nbsp;API Documentation</a>
+                </div>
             </div>
             </div>
         </nav>

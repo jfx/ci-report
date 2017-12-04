@@ -44,7 +44,7 @@ class Status
         1 => 'Unknown',
         2 => 'Success',
         4 => 'Warning',
-        8 => 'Failed',
+        8 => 'Failure',
     );
 
     /**

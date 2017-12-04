@@ -2,7 +2,8 @@
 Library           Selenium2Library
 Resource          ../Conf/home.txt
 Resource          ../../Common/Function/common.txt
+Resource          ../../Common/Function/check.txt
 
 *** Keywords ***
-I go to Dashboard
+I go to Home
     Go to    ${WEB_URL}${location_home}

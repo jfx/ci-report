@@ -1,2 +1,5 @@
+*** Settings ***
+Resource          ../../Common/Conf/data.txt
+
 *** Variables ***
 ${location_home}    /

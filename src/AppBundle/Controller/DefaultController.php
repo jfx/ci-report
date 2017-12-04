@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Campaign;
+use AppBundle\Entity\Status;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,9 +49,16 @@ class DefaultController extends Controller
      */
     public function indexAction(): Response
     {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', array(
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
-        ));
+        $campaigns = $this->getDoctrine()
+            ->getRepository(Campaign::class)
+            ->findLastRawCampaignForEveryProjects();
+
+        return $this->render(
+            'default/index.html.twig',
+            array(
+                'campaigns' => $campaigns,
+                'status' => new Status(),
+            )
+        );
     }
 }

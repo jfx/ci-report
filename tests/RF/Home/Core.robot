@@ -5,6 +5,6 @@ Test Teardown     Teardown
 Resource          Function/home.txt
 
 *** Test Cases ***
-Title
-    When I go to Dashboard
-    Then Title Should Be    ci-report
+Footer should be visible
+    When I go to Home
+    Then Page Should Contain    ci-report v

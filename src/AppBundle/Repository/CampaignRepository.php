@@ -150,4 +150,29 @@ class CampaignRepository extends SortableRepository
 
         return $result;
     }
+
+    /**
+     * Get last campaign for every projects.
+     *
+     * @return array
+     */
+    public function findLastRawCampaignForEveryProjects(): array
+    {
+        $sql = '
+            SELECT c1.id AS cid, project_id AS pid, refid AS prefid, name, position+1 AS crefid,
+            status, passed, passed + failed + errored + skipped AS available
+            FROM cir_campaign c1, cir_project p
+            WHERE position=(SELECT MAX(c2.position)
+                FROM cir_campaign c2
+                WHERE c1.project_id = c2.project_id
+            )
+            AND c1.project_id = p.id
+            ORDER BY name ASC
+        ';
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }
