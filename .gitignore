@@ -14,6 +14,7 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/web/build/
 /node_modules/
 /nbproject/private/
 /.php_cs.cache

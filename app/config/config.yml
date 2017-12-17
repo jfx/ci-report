@@ -53,11 +53,7 @@ twig:
 doctrine:
     dbal:
         driver: pdo_mysql
-        host: '%database_host%'
-        port: '%database_port%'
-        dbname: '%database_name%'
-        user: '%database_user%'
-        password: '%database_password%'
+        url: '%database_url%'
         charset: UTF8
         server_version: 5.7
         # if using pdo_sqlite as your database driver:
@@ -95,10 +91,7 @@ fos_rest:
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+    url: '%mailer_url%'
     spool: { type: memory }
 
 nelmio_api_doc:

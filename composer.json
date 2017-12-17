@@ -23,11 +23,11 @@
     "require": {
         "php": ">=7.1",
         "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/doctrine-fixtures-bundle": "^2.3",
         "doctrine/orm": "^2.5",
         "egulias/email-validator": "~2.1",
         "friendsofsymfony/rest-bundle": "^2.2",
         "gedmo/doctrine-extensions": "^2.4",
-        "incenteev/composer-parameter-handler": "^2.0",
         "jms/serializer-bundle": "^2.0",
         "nelmio/api-doc-bundle": "^2.13",
         "sensio/distribution-bundle": "^5.0.19",
@@ -39,7 +39,6 @@
         "twig/twig": "^1.0||^2.0"
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^2.3",
         "escapestudios/symfony2-coding-standard": "3.x-dev",
         "friendsofphp/php-cs-fixer": "^2.4",
         "phpmd/phpmd": "@stable",
@@ -50,7 +49,7 @@
     },
     "scripts": {
         "symfony-scripts": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "bin/buildParameters.sh",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
@@ -74,9 +73,6 @@
         "symfony-web-dir": "web",
         "symfony-tests-dir": "tests",
         "symfony-assets-install": "relative",
-        "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
-        },
         "branch-alias": null
     }
 }
