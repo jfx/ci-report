@@ -34,8 +34,6 @@ install:
 
 script:
 - phpunit
-
-after_failure:
 - cat var/logs/test.log
 
 notifications:
