@@ -2,7 +2,9 @@ parameters:
     env(DATABASE_URL): "mysql://root@127.0.0.1:3306/symfony"
     database_url: "%env(DATABASE_URL)%" 
     env(MAILER_URL): "smtp://user:pass@host:port"
-    mailer_url: "%env(MAILER_URL)%" 
+    mailer_url: "%env(MAILER_URL)%"
+    env(LOG_PATH): '%kernel.logs_dir%/%kernel.environment%.log'
+    log_path: "%env(LOG_PATH)%"
 
     # A secret key that's used to generate certain security-related tokens
     secret: 446cf775596cd793ce8a24adec
