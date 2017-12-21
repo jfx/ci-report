@@ -17,4 +17,4 @@ Click to open dropdown menu
 
 Footer should be visible
     When I go to campaign page    &{P1C4}
-    Then Page Should Contain    ci-report v
+    Then Page Should Contain    ci-report -

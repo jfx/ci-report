@@ -8,9 +8,6 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    app.version: '0.7.0'
-    app.build: 'bbb'
-    app.host: '%web_host%'
     app.upload_dir: '%kernel.project_dir%/var/tmp'
 
 framework:
@@ -44,10 +41,8 @@ twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
     globals:
-        version: '%app.version%'
         build: '%app.build%'
-        cir_env: '%app.cir_env%'
-        web_host: '%app.host%'
+        web_host: '%web_host%'
 
 # Doctrine Configuration
 doctrine:

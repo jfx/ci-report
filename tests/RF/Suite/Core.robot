@@ -17,4 +17,4 @@ Click to open dropdown menu
 
 Footer should be visible
     When I go to suite page    &{P1C4S1}
-    Then Page Should Contain    ci-report v
+    Then Page Should Contain    ci-report -
