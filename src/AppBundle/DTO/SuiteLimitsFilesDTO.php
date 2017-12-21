@@ -52,7 +52,7 @@ class SuiteLimitsFilesDTO extends SuiteLimitsDTO
      * )
      * @Assert\File(
      *     maxSize = "1024k",
-     *     mimeTypes = {"application/xml"},
+     *     mimeTypes = {"application/xml", "text/xml"},
      *     mimeTypesMessage = "Please upload a valid XML file"
      * )
      */
