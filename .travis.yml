@@ -1,34 +1,43 @@
 sudo: false
-language: php
-php:
-  - 7.2
 
-services:
-- mysql
+jobs:
+  include:
+    - stage: "Unit tests & Staging 1 deploy"
+      language: php
+      php: 7.2
+      services:
+        - mysql
+      cache:
+        yarn: true
+        directories:
+          - "$HOME/.composer/cache/files"
+      env:
+        - SYMFONY_VERSION="3.3.*" DB=mysql
+      before-install:
+        - composer self-update
+      install:
+        - composer install
+        - yarn install
+        - yarn build
+        - bin/setBuildId.sh ${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
+        - php bin/console doctrine:database:create --no-interaction --env=test
+        - php bin/console doctrine:schema:create --no-interaction --env=test
+        - php bin/console doctrine:fixtures:load --no-interaction --env=test
+      script:
+        - vendor/bin/phpunit
+        - cat var/logs/test.log
+      deploy:
+        provider: heroku
+        api_key: $HEROKU_AUTH_TOKEN
+        app: $HEROKU_APP_STAG1
+        skip_cleanup: true
+        run:
+          - "bin/loadTestDB.sh"
+        on:
+          all_branches: true
 
-cache:
-  yarn: true
-  directories:
-  - "$HOME/.composer/cache/files"
-
-env:
-- SYMFONY_VERSION="3.3.*" DB=mysql
-
-before-install:
-- composer self-update
-
-install:
-- composer install
-- yarn install
-- yarn build
-- bin/setBuildId.sh ${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
-- php bin/console doctrine:database:create --no-interaction --env=test
-- php bin/console doctrine:schema:create --no-interaction --env=test
-- php bin/console doctrine:fixtures:load --no-interaction --env=test
-
-script:
-- vendor/bin/phpunit
-- cat var/logs/test.log
+    - stage: "Staging 1 : E2E tests"
+      script: skip
 
 notifications:
   slack:
