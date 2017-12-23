@@ -2,7 +2,7 @@ sudo: false
 
 jobs:
   include:
-    - stage: "Unit tests & Staging 1 deploy"
+    - stage: "Unit tests & staging 1 deploy"
       language: php
       php: 7.2
       services:
@@ -25,7 +25,7 @@ jobs:
         - php bin/console doctrine:fixtures:load --no-interaction --env=test
       script:
         - vendor/bin/phpunit
-        - cat var/logs/test.log
+        - cat var/logs/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException'
       deploy:
         provider: heroku
         api_key: $HEROKU_AUTH_TOKEN
@@ -36,7 +36,7 @@ jobs:
         on:
           all_branches: true
 
-    - stage: "Staging 1 : E2E tests"
+    - stage: "Staging 1 : e2e tests"
       script: skip
 
 notifications:
