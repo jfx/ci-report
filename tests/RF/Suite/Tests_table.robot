@@ -1,5 +1,4 @@
 *** Settings ***
-Suite Setup       Load DB
 Test Setup        Setup
 Test Teardown     Teardown
 Resource          ../Suite/Function/suite.txt

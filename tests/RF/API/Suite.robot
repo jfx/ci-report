@@ -1,5 +1,4 @@
 *** Settings ***
-Suite Setup       Load DB
 Test Setup        Setup
 Test Teardown     Teardown
 Resource          Function/api.txt
@@ -381,6 +380,7 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
 
 "PUT suite limits" request without warning limit doesn't change warning limit value
+    [Tags]    EDIT
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}
     &{data} =    And Create Dictionary    success=${P2C3S1M.success}
     ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}
@@ -421,6 +421,7 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    This value should be 100 or less.
 
 "PUT suite limits" request without success limit doesn't change success limit value
+    [Tags]    EDIT
     &{headers} =    When Create Dictionary    Content-Type=application/json    X-CIR-TKN=${P2.token}
     &{data} =    And Create Dictionary    warning=${P2C3S1M.warning}
     ${resp} =    And Put Request    cir    /projects/${P2C3S1M.prefid}/campaigns/${P2C3S1M.crefid}/suites/${P2C3S1M.srefid}/limits    data=${data}    headers=${headers}

@@ -12,7 +12,7 @@ Resource          ../Conf/mail.txt
 
 *** Keywords ***
 I open browser
-    Run Keyword If    ${GRID}    Open Browser    ${WEB_URL}    ${BROWSER}    remote_url=${HUB}
+    Run Keyword If    ${GRID}    Open Browser    ${WEB_URL}    ${BROWSER}    remote_url=${GRID_URL}    desired_capabilities=platform:${DC_OS},version:${DC_VERSION},name:${BUILD_ID} - ${SUITE NAME}/${TEST NAME}
     Run Keyword Unless    ${GRID}    Open Browser    ${WEB_URL}    ${BROWSER}
     Maximize Browser Window
     Run Keyword If    '${ENV}' == 'DEV'    Wait Until Page Contains Element    xpath=//a[@title='Close Toolbar']
