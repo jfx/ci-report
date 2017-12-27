@@ -19,6 +19,10 @@
 /nbproject/private/
 /.php_cs.cache
 tests/RF/Common/Conf/mail.txt
-tests/RF/*.log
-/yarn-error.log
 *.pyc
+tests/RF/*.log
+*.log
+log.html
+report.html
+output.xml
+/pabot_results/
