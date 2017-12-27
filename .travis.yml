@@ -1,8 +1,5 @@
 sudo: false
 
-env:
-  - BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
-        
 jobs:
   include:
     - stage: "Unit tests & staging 1 deploy"
@@ -15,7 +12,7 @@ jobs:
         directories:
           - "$HOME/.composer/cache/files"
       env:
-        - SYMFONY_VERSION="3.3.*" DB=mysql BUILD_ID=${BUILD_ID}
+        - SYMFONY_VERSION="3.3.*" DB=mysql BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
       before-install:
         - echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
         - composer self-update
@@ -46,6 +43,8 @@ jobs:
     - stage: "Staging 1 : e2e tests"
       language: python
       python: 2.7
+      env:
+        - BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
       install:
         - pip install -r tests/RF/requirements.txt
         - mv tests/RF/Common/Conf/mail.txt.dist tests/RF/Common/Conf/mail.txt
