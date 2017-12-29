@@ -4,24 +4,15 @@
     <td>{{ test.duration }}s</td>
     <td>
     {% if test.systemout %}
-        {% set modalVar = { 'modalId': 'out-' ~ test.refid, 'title': 'System Out: ' ~ test.name, 'content': test.systemout } %}
-        <button id="b-modal-open-out-{{ test.refid }}" type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modal-{{ modalVar.modalId }}">
-          System Out
-        </button>
+        {% set modalVar = { 'modalId': 'out-' ~ test.refid, 'buttonColor': 'info', 'buttonLabel': 'System Out', 'title': 'System Out: ' ~ test.name, 'content': test.systemout } %}
         {% include 'suite/modal.html.twig' with modalVar %}
     {% endif %}                     
     {% if test.systemerr %}
-        {% set modalVar = { 'modalId': 'err-' ~ test.refid, 'title': 'System Err: ' ~ test.name, 'content': test.systemerr } %}
-        <button id="b-modal-open-err-{{ test.refid }}" type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modal-{{ modalVar.modalId }}">
-          System Err
-        </button>                            
+        {% set modalVar = { 'modalId': 'err-' ~ test.refid, 'buttonColor': 'danger', 'buttonLabel': 'System Err', 'title': 'System Err: ' ~ test.name, 'content': test.systemerr } %}
         {% include 'suite/modal.html.twig' with modalVar %}
     {% endif %}
     {% if test.failuremsg %}
-        {% set modalVar = { 'modalId': 'fail-' ~ test.refid, 'title': 'Failure Message: ' ~ test.name, 'content': test.failuremsg } %}
-        <button id="b-modal-open-fail-{{ test.refid }}" type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modal-{{ modalVar.modalId }}">
-          Failure msg
-        </button>
+        {% set modalVar = { 'modalId': 'fail-' ~ test.refid, 'buttonColor': 'danger', 'buttonLabel': 'Failure msg', 'title': 'Failure Message: ' ~ test.name, 'content': test.failuremsg } %}
         {% include 'suite/modal.html.twig' with modalVar %}
     {% endif %}
     </td>
