@@ -1,0 +1,19 @@
+<tr id="tr-test-{{ test.refid }}" class="table-{{ statusColorClass(test.status) }}">
+    <td>{{ test.name }}</td>
+    <td><span id="s-test-{{ test.refid }}" class="text-{{ statusColorClass(test.status) }}">{{ test.status }}</span></td>
+    <td>{{ test.duration }}s</td>
+    <td>
+    {% if test.systemout %}
+        {% set modalVar = { 'modalId': 'out-' ~ test.refid, 'buttonColor': 'info', 'buttonLabel': 'System Out', 'title': 'System Out: ' ~ test.name, 'content': test.systemout } %}
+        {% include 'suite/modal.html.twig' with modalVar %}
+    {% endif %}                     
+    {% if test.systemerr %}
+        {% set modalVar = { 'modalId': 'err-' ~ test.refid, 'buttonColor': 'danger', 'buttonLabel': 'System Err', 'title': 'System Err: ' ~ test.name, 'content': test.systemerr } %}
+        {% include 'suite/modal.html.twig' with modalVar %}
+    {% endif %}
+    {% if test.failuremsg %}
+        {% set modalVar = { 'modalId': 'fail-' ~ test.refid, 'buttonColor': 'danger', 'buttonLabel': 'Failure msg', 'title': 'Failure Message: ' ~ test.name, 'content': test.failuremsg } %}
+        {% include 'suite/modal.html.twig' with modalVar %}
+    {% endif %}
+    </td>
+</tr>

@@ -82,34 +82,7 @@
             </thead>
             <tbody>
                 {% for test in tests %}
-                <tr id="tr-test-{{ test.refid }}" class="table-{{ statusColorClass(test.status) }}">
-                    <td>{{ test.name }}</td>
-                    <td><span id="s-test-{{ test.refid }}" class="text-{{ statusColorClass(test.status) }}">{{ test.status }}</span></td>
-                    <td>{{ test.duration }}s</td>
-                    <td>
-                    {% if test.systemout %}
-                        {% set modalVar = { 'modalId': 'out-' ~ test.refid, 'title': 'System Out: ' ~ test.name, 'content': test.systemout } %}
-                        <button id="b-modal-open-out-{{ test.refid }}" type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modal-{{ modalVar.modalId }}">
-                          System Out
-                        </button>
-                        {% include 'suite/modal.html.twig' with modalVar %}
-                    {% endif %}                     
-                    {% if test.systemerr %}
-                        {% set modalVar = { 'modalId': 'err-' ~ test.refid, 'title': 'System Err: ' ~ test.name, 'content': test.systemerr } %}
-                        <button id="b-modal-open-err-{{ test.refid }}" type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modal-{{ modalVar.modalId }}">
-                          System Err
-                        </button>                            
-                        {% include 'suite/modal.html.twig' with modalVar %}
-                    {% endif %}
-                    {% if test.failuremsg %}
-                        {% set modalVar = { 'modalId': 'fail-' ~ test.refid, 'title': 'Failure Message: ' ~ test.name, 'content': test.failuremsg } %}
-                        <button id="b-modal-open-fail-{{ test.refid }}" type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modal-{{ modalVar.modalId }}">
-                          Failure msg
-                        </button>
-                        {% include 'suite/modal.html.twig' with modalVar %}
-                    {% endif %}
-                    </td>
-                </tr>
+                    {{  include('suite/test-row.html.twig', { 'test': test }) }}
                 {% else %}
                     <tr><td colspan="7">No test</td></tr>
                 {% endfor %}
