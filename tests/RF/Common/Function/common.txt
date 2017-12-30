@@ -22,17 +22,17 @@ I create an API session named "cir"
     Create Session    cir    ${API_URL}
 
 Load DB
-    Run Keyword If    ${DB_REMOTE}    Load remote DB
-    Run Keyword Unless    ${DB_REMOTE}    Load local DB
+    Run Keyword If    '${DB_DUMP_FILE}' == '${EMPTY}'    Load fixtures DB
+    Run Keyword Unless    '${DB_DUMP_FILE}' == '${EMPTY}'    Load dump DB
 
-Load local DB
-    Log    -- Load Local DB --
-    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadTestDB.sh
+Load fixtures DB
+    Log    -- Load fixtures DB --
+    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadDBFixtures.sh
     Should Be Equal As Integers    ${rc}    0
 
-Load remote DB
-    Log    -- Load Remote DB --
-    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadRemoteDB.sh
+Load dump DB
+    Log    -- Load dump DB --
+    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadDumpDB.sh
     Should Be Equal As Integers    ${rc}    0
 
 Setup

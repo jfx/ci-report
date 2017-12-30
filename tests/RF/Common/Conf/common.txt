@@ -4,7 +4,7 @@ ${WEB_HOST}       http://localhost:8000
 ${WEB_URL}        ${WEB_HOST}
 ${API_URL}        ${WEB_HOST}/api
 ${ENV}            DEV
-${DB_REMOTE}      False
+${DB_DUMP_FILE}    ${EMPTY}
 &{DB}             host=127.0.0.1    port=3306    name=ci_reportdb    user=ci_reportuser    password=
 ${REMOTE}         False
 ${GRID}           False
