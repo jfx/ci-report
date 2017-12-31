@@ -48,8 +48,10 @@ jobs:
       install:
         - pip install -r tests/RF/requirements.txt
         - mv tests/RF/Common/Conf/mail.txt.dist tests/RF/Common/Conf/mail.txt
+        - bin/dumpDB.sh -d ${DATABASE_URL} dump-stag1.sql
       script:
         - pabot --processes 5 -e EDIT -v BUILD_ID:${BUILD_ID} -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_USER:${GRID_USER} -v GRID_TOKEN:${GRID_TOKEN} tests/RF
+        - robot -i EDIT -v DB_URL:${DATABASE_URL} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_USER:${GRID_USER} -v GRID_TOKEN:${GRID_TOKEN} tests/RF
 
 notifications:
   slack:
