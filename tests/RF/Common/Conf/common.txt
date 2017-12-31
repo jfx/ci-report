@@ -4,8 +4,8 @@ ${WEB_HOST}       http://localhost:8000
 ${WEB_URL}        ${WEB_HOST}
 ${API_URL}        ${WEB_HOST}/api
 ${ENV}            DEV
-${DB_REMOTE}      False
-&{DB}             host=127.0.0.1    port=3306    name=ci_reportdb    user=ci_reportuser    password=
+${DB_URL}         mysql://username:password@127.0.0.1:3306/database
+${DB_DUMP_FILE}    ${EMPTY}
 ${REMOTE}         False
 ${GRID}           False
 ${GRID_USER}      user

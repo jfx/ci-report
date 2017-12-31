@@ -21,25 +21,35 @@ I open browser
 I create an API session named "cir"
     Create Session    cir    ${API_URL}
 
-Load DB
-    Run Keyword If    ${DB_REMOTE}    Load remote DB
-    Run Keyword Unless    ${DB_REMOTE}    Load local DB
+I create a connexion to database
+    ${matches} =    Get Regexp Matches    ${DB_URL}    :\/\/(.*):(.*)@(.*):(.*)/(.*)    1    2    3
+    ...    4    5
+    ${db_url} =    Get From List    ${matches}    0
+    ${username} =    Get From List    ${db_url}    0
+    ${password} =    Get From List    ${db_url}    1
+    ${host} =    Get From List    ${db_url}    2
+    ${port} =    Get From List    ${db_url}    3
+    ${database} =    Get From List    ${db_url}    4
+    Connect To Database    dbapiModuleName=MySQLdb    dbHost=${host}    dbPort=${port}    dbName=${database}    dbUsername=${username}    dbPassword=${password}
 
-Load local DB
-    Log    -- Load Local DB --
-    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadTestDB.sh
+Load DB
+    Run Keyword If    '${DB_DUMP_FILE}' == '${EMPTY}'    Load fixtures DB
+    Run Keyword Unless    '${DB_DUMP_FILE}' == '${EMPTY}'    Load dump DB
+
+Load fixtures DB
+    Log    -- Load fixtures DB --
+    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadDBFixtures.sh
     Should Be Equal As Integers    ${rc}    0
 
-Load remote DB
-    Log    -- Load Remote DB --
-    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadRemoteDB.sh
+Load dump DB
+    Log    -- Load dump DB --
+    ${rc} =    Run And Return Rc    ${BIN_DIR}/dumpDB.sh -i ${DB_URL} \ ${DB_DUMP_FILE}
     Should Be Equal As Integers    ${rc}    0
 
 Setup
     Log    -- Setup --
     : FOR    ${tag}    IN    @{TEST TAGS}
-    \    Run Keyword If    '${tag}' == 'DB'    Connect To Database    dbapiModuleName=MySQLdb    dbHost=${DB.host}    dbPort=${DB.port}
-    \    ...    dbName=${DB.name}    dbUsername=${DB.user}    dbPassword=${DB.password}
+    \    Run Keyword If    '${tag}' == 'DB'    I create a connexion to database
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'GUI'    I open browser
     : FOR    ${tag}    IN    @{TEST TAGS}
@@ -56,9 +66,9 @@ Teardown
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'GUI'    Close All Browsers
     : FOR    ${tag}    IN    @{TEST TAGS}
-    \    Run Keyword If    '${tag}' == 'DB'    Disconnect from Database
-    : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'EDIT'    Load DB
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'DB'    Disconnect from Database
 
 the breadcrumb should contain
     [Arguments]    @{list}
