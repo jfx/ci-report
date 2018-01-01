@@ -43,10 +43,6 @@ jobs:
     - stage: "Staging 1 : e2e tests"
       language: python
       python: 2.7
-      addons:
-        apt:
-          packages:
-            - python-mysqldb
       env:
         - BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
       install:

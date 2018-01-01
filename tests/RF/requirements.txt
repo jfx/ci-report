@@ -3,6 +3,7 @@ robotframework-selenium2library==1.8.0
 selenium==3.5.0
 requests
 robotframework-requests
+mysql-python
 robotframework-databaselibrary
 robotframework-imaplibrary
 robotframework-pabot
