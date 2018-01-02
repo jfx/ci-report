@@ -14,7 +14,7 @@ jobs:
       env:
         - SYMFONY_VERSION="3.3.*" DB=mysql BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
       before-install:
-        - echo 'date.timezone = "Europe/Paris"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+        - echo 'date.timezone = "UTC"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
         - composer self-update
       install:
         - composer install

@@ -34,7 +34,7 @@ I check table cell value
 
 Time should be between 1 minute before and now
     [Arguments]    ${time}
-    ${now} =    Get Current Date
+    ${now} =    Get Current Date    UTC
     ${limit} =    Subtract Time From Date    ${now}    1m
     Should Be True    '${limit}' < '${time}'
     Should Be True    '${time}' < '${now}'
