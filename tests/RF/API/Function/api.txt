@@ -35,5 +35,5 @@ Item of list should not countains label
     Run Keyword And Expect Error    *    Should Be True    ${found}
 
 Upload tmp directory should be empty
-    Directory Should Exist    ${UPLOAD_TMP_DIR}
-    Directory Should Be Empty    ${UPLOAD_TMP_DIR}
+    Run Keyword Unless    ${REMOTE}    Directory Should Exist    ${UPLOAD_TMP_DIR}
+    Run Keyword Unless    ${REMOTE}    Directory Should Be Empty    ${UPLOAD_TMP_DIR}
