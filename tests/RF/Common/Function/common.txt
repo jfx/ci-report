@@ -19,7 +19,7 @@ I open browser
     Run Keyword If    '${ENV}' == 'DEV'    Click element    xpath=//a[@title='Close Toolbar']
 
 I create an API session named "cir"
-    Create Session    cir    ${API_URL}
+    Create Session    cir    ${API_URL}    disable_warnings=1
 
 I create a connexion to database
     ${matches} =    Get Regexp Matches    ${DB_URL}    :\/\/(.*):(.*)@(.*):(.*)/(.*)    1    2    3

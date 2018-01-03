@@ -1,5 +1,4 @@
 *** Variables ***
-${IMAP_SERVER}      ${EMPTY}
+${IMAP_SERVER}      imap.gmail.com
 ${MAIL_USER}        ${EMPTY}
 ${MAIL_PASSWORD}    ${EMPTY}
-

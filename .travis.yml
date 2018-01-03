@@ -51,8 +51,8 @@ jobs:
         - mv tests/RF/Common/Conf/mail.txt.dist tests/RF/Common/Conf/mail.txt
         - bin/dumpDB.sh -d ${DATABASE_URL_STAG1} dump-stag1.sql
       script:
-        - pabot --processes 5 -e EDIT -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_USER:${GRID_USER} -v GRID_TOKEN:${GRID_TOKEN} tests/RF
-        - robot -i EDIT -v DB_URL:${DATABASE_URL_STAG1} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_USER:${GRID_USER} -v GRID_TOKEN:${GRID_TOKEN} tests/RF
+        - pabot --processes 5 -e EDIT -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_USER:${GRID_USER} -v GRID_TOKEN:${GRID_TOKEN} -v MAIL_USER:${RF_MAIL_USER} -v MAIL_PASSWORD:${RF_MAIL_PASSWORD} tests/RF
+        - robot -i EDIT -v DB_URL:${DATABASE_URL_STAG1} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_USER:${GRID_USER} -v GRID_TOKEN:${GRID_TOKEN} -v MAIL_USER:${RF_MAIL_USER} -v MAIL_PASSWORD:${RF_MAIL_PASSWORD} tests/RF
 
 notifications:
   slack:
