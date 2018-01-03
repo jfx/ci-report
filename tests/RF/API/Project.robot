@@ -112,7 +112,7 @@ Resource          Function/api.txt
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     @{queryResults} =    Query    select created from cir_project where name="${P0.name}" and email="${P0.email}" and warning=${P0.warning} and success=${P0.success}
-    And Time should be between 1 minute before and now    ${queryResults[0][0]}
+    And Time should be between 3 minutes before and now    ${queryResults[0][0]}
 
 "POST projects" request send an email with greetings and link to documentation
     [Tags]    EDIT    MAIL    GUI
