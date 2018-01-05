@@ -19,4 +19,3 @@ ${SHORT_SLEEP}    2s
 ${TIMEOUT}        20s
 ${BIN_DIR}        ${CURDIR}/../../../../bin
 ${UPLOAD_TMP_DIR}    ${CURDIR}/../../../../var/tmp
-${EMAIL_TEST}     ci-report.test@example.com

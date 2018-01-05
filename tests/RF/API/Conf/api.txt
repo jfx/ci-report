@@ -3,8 +3,8 @@ Resource          ../../Common/Conf/data.txt
 Resource          ../../Project_Dashboard/Conf/dashboard.txt
 
 *** Variables ***
-&{P0}             refid=project-created    name=Project Created    warning=45    success=55    email=${EMAIL_TEST}
-&{P1M}            refid=${P1.prefid}    name=${P1.name}-mod    warning=45    success=55    email=${EMAIL_TEST}
+&{P0}             refid=project-created    name=Project Created    warning=45    success=55    email=${MAIL_USER}
+&{P1M}            refid=${P1.prefid}    name=${P1.name}-mod    warning=45    success=55    email=${MAIL_USER}
 &{P1C0}           pid=1    prefid=project-one    position=4    crefid=5    passed=0    failed=0    errored=0
 ...               skipped=0    disabled=0    start=01/07/2017 12:30:01    end=04/07/2017 12:30:01    start_sql=2017-07-01 12:30:01    end_sql=2017-07-04 12:30:01    start_iso=2017-07-01T12:30:01+00:00
 ...               end_iso=2017-07-04T12:30:01+00:00

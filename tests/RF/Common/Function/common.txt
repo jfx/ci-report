@@ -83,7 +83,7 @@ I click on breadcrumb level
     Click Link    id=br_lvl${level}
 
 I get content of last email
-    ${latest}=    Wait for Mail    sender=${MAIL_USER}    recipient=${MAIL_USER}    status=UNSEEN    timeout=150
+    ${latest}=    Wait for Mail    sender=${MAIL_SENDER}    recipient=${MAIL_USER}    status=UNSEEN    timeout=150
     ${content}=    Get Email body    ${latest}
     [Return]    ${content}
 

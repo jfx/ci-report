@@ -37,6 +37,8 @@ services:
         public: true
     AppBundle\Service\ProjectService:
         public: true
+        arguments:
+            $mailSender: '%app.mail_sender%'
     AppBundle\Service\RefreshService:
         public: true
 
