@@ -35,6 +35,7 @@ I check table cell value
 Time should be between 5 minutes before and now
     [Arguments]    ${time}
     ${now} =    Get Current Date    UTC
-    ${limit} =    Subtract Time From Date    ${now}    5m
-    Should Be True    '${limit}' < '${time}'
-    Should Be True    '${time}' < '${now}'
+    ${limit_up} =    Add Time To Date    ${now}    5m
+    ${limit_down} =    Subtract Time From Date    ${now}    5m
+    Should Be True    '${limit_down}' < '${time}'
+    Should Be True    '${time}' < '${limit_up}'
