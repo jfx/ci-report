@@ -32,9 +32,9 @@ I check table cell value
     ${check} =    Get Table Cell    ${table}    ${row}    ${column}
     Should Be Equal    ${check}    ${expected}
 
-Time should be between 3 minutes before and now
+Time should be between 5 minutes before and now
     [Arguments]    ${time}
     ${now} =    Get Current Date    UTC
-    ${limit} =    Subtract Time From Date    ${now}    3m
+    ${limit} =    Subtract Time From Date    ${now}    5m
     Should Be True    '${limit}' < '${time}'
     Should Be True    '${time}' < '${now}'

@@ -112,10 +112,11 @@ Resource          Function/api.txt
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     @{queryResults} =    Query    select created from cir_project where name="${P0.name}" and email="${P0.email}" and warning=${P0.warning} and success=${P0.success}
-    And Time should be between 3 minutes before and now    ${queryResults[0][0]}
+    And Time should be between 5 minutes before and now    ${queryResults[0][0]}
 
 "POST projects" request send an email with greetings and link to documentation
     [Tags]    EDIT    MAIL    GUI
+    Close All Browsers
     &{headers} =    When Create Dictionary    Content-Type=application/json
     &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
@@ -123,17 +124,20 @@ Resource          Function/api.txt
     ${content}=    When I get content of last email
     Then Should Contain    ${content}    Welcome to ci-report!
     ${link} =    When I get href from html link id    ${content}    a-doc
+    I open browser
     And Goto    ${link}
     Then Page Should Contain    ci-report API documentation
 
 "POST projects" request send an email with link to project dashboard and API token
     [Tags]    EDIT    DB    MAIL    GUI
+    Close All Browsers
     &{headers} =    When Create Dictionary    Content-Type=application/json
     &{data} =    And Create Dictionary    name=${P0.name}    email=${P0.email}    warning=${P0.warning}    success=${P0.success}
     ${resp} =    And Post Request    cir    /projects    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     ${content}=    When I get content of last email
     ${link} =    And I get href from html link id    ${content}    a-project
+    I open browser
     And Goto    ${link}
     Then Page Should Contain    Project Created
     ${line}=    When Get Lines Containing String    ${content}    token
