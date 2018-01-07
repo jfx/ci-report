@@ -8,10 +8,7 @@ ${DB_URL}         mysql://username:password@127.0.0.1:3306/database
 ${DB_DUMP_FILE}    ${EMPTY}
 ${REMOTE}         False
 ${GRID}           False
-${GRID_USER}      user
-${GRID_TOKEN}     token
-${GRID_ENDPOINT}    ondemand.saucelabs.com:80
-${GRID_URL}       http://${GRID_USER}:${GRID_TOKEN}@${GRID_ENDPOINT}/wd/hub
+${GRID_URL}       http://user:token@ondemand.saucelabs.com:80/wd/hub
 ${BROWSER}        gc
 ${DC_VERSION}     63
 ${DC_OS}          Windows 10
