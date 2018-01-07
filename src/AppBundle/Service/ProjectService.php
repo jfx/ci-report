@@ -113,7 +113,7 @@ class ProjectService
      */
     public function sendRegistrationEmail(Project $project): void
     {
-        $title = 'ci-report: "'.$project->getName().'" registered';
+        $title = 'ci-report: '.$project->getName().' registered';
 
         $message = (new Swift_Message($title))
             ->setFrom($this->mailSender)
