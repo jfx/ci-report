@@ -36,6 +36,7 @@ jobs:
         app: $HEROKU_APP_STAG1
         skip_cleanup: true
         run:
+          - "rm web/app_dev.php"
           - "bin/console cache:clear --env=prod"
           - "bin/loadTestDB.sh"
         on:
