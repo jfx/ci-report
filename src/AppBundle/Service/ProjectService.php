@@ -62,18 +62,25 @@ class ProjectService
     private $utilService;
 
     /**
+     * @var string
+     */
+    private $mailSender;
+
+    /**
      * Constructor.
      *
-     * @param ManagerRegistry $doctrine Doctrine registry manager
-     * @param Swift_Mailer    $mailer   Mailer service
-     * @param Environment     $twig     Twig service
+     * @param ManagerRegistry $doctrine   Doctrine registry manager
+     * @param Swift_Mailer    $mailer     Mailer service
+     * @param Environment     $twig       Twig service
+     * @param string          $mailSender Mail sender
      */
-    public function __construct(ManagerRegistry $doctrine, Swift_Mailer $mailer, Environment $twig)
+    public function __construct(ManagerRegistry $doctrine, Swift_Mailer $mailer, Environment $twig, string $mailSender)
     {
         $this->doctrine = $doctrine;
         $this->mailer = $mailer;
         $this->twig = $twig;
         $this->utilService = new UtilService();
+        $this->mailSender = $mailSender;
     }
 
     /**
@@ -106,10 +113,10 @@ class ProjectService
      */
     public function sendRegistrationEmail(Project $project): void
     {
-        $title = 'ci-report: "'.$project->getName().'" registered';
+        $title = 'ci-report: '.$project->getName().' registered';
 
         $message = (new Swift_Message($title))
-            ->setFrom('noreply@ci-report.io')
+            ->setFrom($this->mailSender)
             ->setTo($project->getEmail())
             ->setBody(
                 $this->twig->render(

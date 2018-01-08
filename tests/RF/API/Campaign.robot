@@ -138,7 +138,7 @@ Resource          Function/api.txt
     ${resp} =    And Post Request    cir    /projects/${P1C0.prefid}/campaigns    data=${data}    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    201
     @{queryResults} =    Query    select start from cir_campaign where project_id=${P1C0.pid} and position=${P1C0.position}
-    And Time should be between 1 minute before and now    ${queryResults[0][0]}
+    And Time should be between 5 minutes before and now    ${queryResults[0][0]}
 
 "POST campaigns" request should not contain not expose fields
     [Tags]    EDIT
