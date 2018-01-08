@@ -19,7 +19,7 @@ I open browser
     Run Keyword If    '${ENV}' == 'DEV'    Click element    xpath=//a[@title='Close Toolbar']
 
 I create an API session named "cir"
-    Create Session    cir    ${API_URL}
+    Create Session    cir    ${API_URL}    disable_warnings=1
 
 I create a connexion to database
     ${matches} =    Get Regexp Matches    ${DB_URL}    :\/\/(.*):(.*)@(.*):(.*)/(.*)    1    2    3
@@ -83,7 +83,8 @@ I click on breadcrumb level
     Click Link    id=br_lvl${level}
 
 I get content of last email
-    ${latest}=    Wait for Mail    sender=${MAIL_USER}    recipient=${MAIL_USER}    status=UNSEEN    timeout=150
+    [Arguments]    ${subject}
+    ${latest}=    Wait for Mail    sender=${MAIL_SENDER}    recipient=${MAIL_USER}    subject=${subject}    status=UNSEEN    timeout=300
     ${content}=    Get Email body    ${latest}
     [Return]    ${content}
 

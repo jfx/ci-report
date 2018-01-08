@@ -32,9 +32,10 @@ I check table cell value
     ${check} =    Get Table Cell    ${table}    ${row}    ${column}
     Should Be Equal    ${check}    ${expected}
 
-Time should be between 1 minute before and now
+Time should be between 5 minutes before and now
     [Arguments]    ${time}
-    ${now} =    Get Current Date
-    ${limit} =    Subtract Time From Date    ${now}    1m
-    Should Be True    '${limit}' < '${time}'
-    Should Be True    '${time}' < '${now}'
+    ${now} =    Get Current Date    UTC
+    ${limit_up} =    Add Time To Date    ${now}    5m
+    ${limit_down} =    Subtract Time From Date    ${now}    5m
+    Should Be True    '${limit_down}' < '${time}'
+    Should Be True    '${time}' < '${limit_up}'

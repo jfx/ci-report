@@ -78,7 +78,7 @@ CREATE TABLE `cir_project` (
 
 LOCK TABLES `cir_project` WRITE;
 /*!40000 ALTER TABLE `cir_project` DISABLE KEYS */;
-INSERT INTO `cir_project` VALUES (1,'Project One','project-one','1f4ffb19e4b9-02278af07b7d-4e370a76f001',80,95,'email1@example.com','2017-12-30 22:48:45'),(2,'Project Two','project-two','1f4ffb19e4b9-02278af07b7d-4e370a76f002',80,95,'email2@example.com','2017-12-30 22:48:45'),(3,'Project Three','project-three','1f4ffb19e4b9-02278af07b7d-4e370a76f003',80,95,'email3@example.com','2017-12-30 22:48:45'),(4,'Project Four','project-four','1f4ffb19e4b9-02278af07b7d-4e370a76f004',80,95,'email4@example.com','2017-12-30 22:48:45'),(5,'Project Five','project-five','1f4ffb19e4b9-02278af07b7d-4e370a76f005',80,95,'email5@example.com','2017-12-30 22:48:45'),(6,'Project Six','project-six','1f4ffb19e4b9-02278af07b7d-4e370a76f006',80,95,'email6@example.com','2017-12-30 22:48:45'),(7,'Project Seven','project-seven','1f4ffb19e4b9-02278af07b7d-4e370a76f007',80,95,'email7@example.com','2017-12-30 22:48:45'),(8,'Project Eight','project-eight','1f4ffb19e4b9-02278af07b7d-4e370a76f008',80,95,'email8@example.com','2017-12-30 22:48:45');
+INSERT INTO `cir_project` VALUES (1,'Project One','project-one','1f4ffb19e4b9-02278af07b7d-4e370a76f001',80,95,'email1@example.com','2017-12-31 13:52:22'),(2,'Project Two','project-two','1f4ffb19e4b9-02278af07b7d-4e370a76f002',80,95,'email2@example.com','2017-12-31 13:52:22'),(3,'Project Three','project-three','1f4ffb19e4b9-02278af07b7d-4e370a76f003',80,95,'email3@example.com','2017-12-31 13:52:22'),(4,'Project Four','project-four','1f4ffb19e4b9-02278af07b7d-4e370a76f004',80,95,'email4@example.com','2017-12-31 13:52:22'),(5,'Project Five','project-five','1f4ffb19e4b9-02278af07b7d-4e370a76f005',80,95,'email5@example.com','2017-12-31 13:52:22'),(6,'Project Six','project-six','1f4ffb19e4b9-02278af07b7d-4e370a76f006',80,95,'email6@example.com','2017-12-31 13:52:22'),(7,'Project Seven','project-seven','1f4ffb19e4b9-02278af07b7d-4e370a76f007',80,95,'email7@example.com','2017-12-31 13:52:22'),(8,'Project Eight','project-eight','1f4ffb19e4b9-02278af07b7d-4e370a76f008',80,95,'email8@example.com','2017-12-31 13:52:22');
 /*!40000 ALTER TABLE `cir_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -166,4 +166,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-12-31 13:38:36
+-- Dump completed on 2018-01-01 23:02:12

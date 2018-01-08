@@ -37,8 +37,5 @@ monolog:
         #    type: chromephp
         #    level: info
 
-swiftmailer:
-    delivery_addresses: ['%devtest_delivery_addresses%']
-
 parameters:
     app.cir_env: 'DEV'
