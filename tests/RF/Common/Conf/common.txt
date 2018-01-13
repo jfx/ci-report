@@ -7,7 +7,7 @@ ${ENV}            DEV
 ${DB_URL}         mysql://username:password@127.0.0.1:3306/database
 ${DB_DUMP_FILE}    ${EMPTY}
 ${REMOTE}         False
-${HEADLESS}       True
+${HEADLESS}       False
 ${GRID}           False
 ${GRID_URL}       http://user:token@ondemand.saucelabs.com:80/wd/hub
 ${BROWSER}        gc
