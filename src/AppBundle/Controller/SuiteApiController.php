@@ -63,7 +63,9 @@ class SuiteApiController extends AbstractApiController
      *
      * @return array
      *
-     * @Rest\Get("/projects/{prefid}/campaigns/{crefid}/suites")
+     * @Rest\Get("/projects/{prefid}/campaigns/{crefid}/suites",
+     *    requirements={"crefid" = "\d+"}
+     * )
      * @Rest\View(serializerGroups={"public"})
      *
      * @ParamConverter("campaign", class="AppBundle:Campaign", options={
@@ -181,7 +183,9 @@ class SuiteApiController extends AbstractApiController
      *
      * @return array|View
      *
-     * @Rest\Post("/projects/{prefid}/campaigns/{crefid}/suites/junit")
+     * @Rest\Post("/projects/{prefid}/campaigns/{crefid}/suites/junit",
+     *    requirements={"crefid" = "\d+"}
+     * )
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"public"})
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
