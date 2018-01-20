@@ -28,7 +28,11 @@ services:
         resource: '../../src/AppBundle/Controller'
         public: true
         tags: ['controller.service_arguments']
-        
+
+    AppBundle\Service\DocumentStorageService:
+        public: true
+        arguments:
+            $storageDir: '%app.storage_dir%'
     AppBundle\Service\FileUploaderService:
         public: true
         arguments:

@@ -17,3 +17,4 @@ ${SHORT_SLEEP}    2s
 ${TIMEOUT}        20s
 ${BIN_DIR}        ${CURDIR}/../../../../bin
 ${UPLOAD_TMP_DIR}    ${CURDIR}/../../../../var/tmp
+${STORAGE_DIR}    ${CURDIR}/../../../../var/documents
