@@ -72,7 +72,7 @@ class ZipFile
      *
      * @param string $name Name
      *
-     * @return Suite
+     * @return ZipFile
      */
     public function setFileName(string $name): self
     {

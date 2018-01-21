@@ -63,7 +63,7 @@ class DocumentStorageService
      * @param Campaign     $campaign Campaign
      * @param UploadedFile $file     File to move
      *
-     * @return string
+     * @return ZipFile
      */
     public function storeZip(Project $project, Campaign $campaign, UploadedFile $file): ZipFile
     {

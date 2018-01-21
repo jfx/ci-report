@@ -44,7 +44,7 @@ class ZipFileDTO
      *
      * @var File
      *
-     * @Type("File")
+     * @Type("UploadedFile")
      *
      * @Assert\NotBlank(
      *     message = "A zip file must be specified."

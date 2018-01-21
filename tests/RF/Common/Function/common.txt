@@ -40,6 +40,16 @@ I create a connexion to database
     ${database} =    Get From List    ${db_url}    4
     Connect To Database    dbapiModuleName=MySQLdb    dbHost=${host}    dbPort=${port}    dbName=${database}    dbUsername=${username}    dbPassword=${password}
 
+I setup storage
+    Log    -- Setup storage --
+    Copy File    ${CURDIR}/../../../files/zipfile-ok.zip    ${STORAGE_DIR}/${P1.id}/${P1C1.id}/d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+    Copy File    ${CURDIR}/../../../files/zipfile-ok.zip    ${STORAGE_DIR}/${P1.id}/${P1C4.id}/1f7a7a472abf3dd9643fd615f6da379c4acb3e3a
+
+I clean storage
+    Log    -- Clean storage --
+    Remove Directory    ${STORAGE_DIR}    true
+    Create Directory    ${STORAGE_DIR}
+
 Load DB
     Run Keyword If    '${DB_DUMP_FILE}' == '${EMPTY}'    Load fixtures DB
     Run Keyword Unless    '${DB_DUMP_FILE}' == '${EMPTY}'    Load dump DB
@@ -64,6 +74,8 @@ Setup
     \    Run Keyword If    '${tag}' == 'API'    I create an API session named "cir"
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'MAIL'    Open Mailbox    host=${IMAP_SERVER}    user=${MAIL_USER}    password=${MAIL_PASSWORD}
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'STORAGE' and ${REMOTE} == False    I setup storage
 
 Teardown
     Log    -- Teardown --
@@ -77,6 +89,8 @@ Teardown
     \    Run Keyword If    '${tag}' == 'EDIT'    Load DB
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'DB'    Disconnect from Database
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'STORAGE' and ${REMOTE} == False    I clean storage
 
 the breadcrumb should contain
     [Arguments]    @{list}
