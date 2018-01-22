@@ -48,6 +48,23 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()}    code    400
     And Dictionary Should Contain Item    ${resp.json()}    message    A zip file already exists
 
+"POST zip document" request with wrong type file returns HTTP "400" error
+    &{file} =    Create Dictionary    form_field=zipfile    path_file=${CURDIR}/../../files/zipfile-err.zip
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}/doc/zip    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    zipfile
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    Please upload a valid zip file
+
+"POST zip document" request without zip file returns HTTP "400" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary
+    ${resp}=    And Post Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}/doc/zip    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    400
+    And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    zipfile
+    And Dictionary Should Contain Item    ${resp.json()[0]}    message    A zip file must be specified.
+
 "POST zip document" request with wrong token returns HTTP "401" error
     &{file} =    Create Dictionary    form_field=zipfile    path_file=${CURDIR}/../../files/zipfile-ok.zip
     &{headers} =    When Create Dictionary    X-CIR-TKN=XXX

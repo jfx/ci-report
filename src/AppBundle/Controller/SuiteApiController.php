@@ -257,7 +257,7 @@ class SuiteApiController extends AbstractApiController
             $suiteLimitsFilesDTO->getJunitfile()
         );
 
-        $doc = new DOMDocument();
+        $doc = new DOMDocument('1.0', 'UTF-8');
         $doc->load($fileUploaderService->getFullPath($fileNameUId));
         $errors = $junitParserService->validate($doc);
         if (count($errors) > 0) {

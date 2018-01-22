@@ -64,7 +64,7 @@ class TestDTO
     private $package = '';
 
     /**
-     * @var int
+     * @var string
      *
      * @Assert\Type("string")
      */
