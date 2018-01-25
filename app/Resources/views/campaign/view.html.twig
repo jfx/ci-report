@@ -99,7 +99,10 @@
                     <td>{{ suite.datetime|date('d/m/Y H:i:s') }}</td>
                     <td>
                     {% if suite.documentUid is not null %}
-                        <a id="a-dropdown-project" class="dropdown-item" href="{{ path('suite-doc', {'prefid': project.refid, 'crefid': campaign.refid, 'srefid': suite.refid}) }}">
+                        <a id="a-download-{{ suite.refid }}" 
+                           data-toggle="popover" data-trigger="hover" data-placement="left" data-html="true"
+                            title="Documents" data-content="Zip file to download."
+                           href="{{ path('suite-doc', {'prefid': project.refid, 'crefid': campaign.refid, 'srefid': suite.refid}) }}">
                             <i class="fa fa-file-archive-o"></i>
                         </a>
                     {% endif %}

@@ -25,6 +25,7 @@ I open chrome headless browser
     Call Method    ${options}    add_argument    disable-gpu
     Create Webdriver    Chrome    chrome_options=${options}
     Goto    ${WEB_URL}
+    Set Window Size    1366    768
 
 I create an API session named "cir"
     Create Session    cir    ${API_URL}    disable_warnings=1
