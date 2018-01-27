@@ -13,10 +13,19 @@ Resource          ../Conf/mail.txt
 *** Keywords ***
 I open browser
     Run Keyword If    ${GRID}    Open Browser    ${WEB_URL}    ${BROWSER}    remote_url=${GRID_URL}    desired_capabilities=platform:${DC_OS},version:${DC_VERSION},name:${BUILD_ID} - ${SUITE NAME}/${TEST NAME}
-    Run Keyword Unless    ${GRID}    Open Browser    ${WEB_URL}    ${BROWSER}
+    Run Keyword If    ${HEADLESS}    I open chrome headless browser
+    Run Keyword Unless    ${GRID} or ${HEADLESS}    Open Browser    ${WEB_URL}    ${BROWSER}
     Maximize Browser Window
     Run Keyword If    '${ENV}' == 'DEV'    Wait Until Page Contains Element    xpath=//a[@title='Close Toolbar']
     Run Keyword If    '${ENV}' == 'DEV'    Click element    xpath=//a[@title='Close Toolbar']
+
+I open chrome headless browser
+    ${options} =    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
+    Call Method    ${options}    add_argument    headless
+    Call Method    ${options}    add_argument    disable-gpu
+    Create Webdriver    Chrome    chrome_options=${options}
+    Goto    ${WEB_URL}
+    Set Window Size    1366    768
 
 I create an API session named "cir"
     Create Session    cir    ${API_URL}    disable_warnings=1
@@ -31,6 +40,16 @@ I create a connexion to database
     ${port} =    Get From List    ${db_url}    3
     ${database} =    Get From List    ${db_url}    4
     Connect To Database    dbapiModuleName=MySQLdb    dbHost=${host}    dbPort=${port}    dbName=${database}    dbUsername=${username}    dbPassword=${password}
+
+I setup storage
+    Log    -- Setup storage --
+    Copy File    ${CURDIR}/../../../files/zipfile-ok.zip    ${STORAGE_DIR}/${P1.id}/${P1C1.id}/d8329fc1cc938780ffdd9f94e0d364e0ea74f579
+    Copy File    ${CURDIR}/../../../files/zipfile-ok.zip    ${STORAGE_DIR}/${P1.id}/${P1C4.id}/1f7a7a472abf3dd9643fd615f6da379c4acb3e3a
+
+I clean storage
+    Log    -- Clean storage --
+    Remove Directory    ${STORAGE_DIR}    true
+    Create Directory    ${STORAGE_DIR}
 
 Load DB
     Run Keyword If    '${DB_DUMP_FILE}' == '${EMPTY}'    Load fixtures DB
@@ -56,6 +75,8 @@ Setup
     \    Run Keyword If    '${tag}' == 'API'    I create an API session named "cir"
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'MAIL'    Open Mailbox    host=${IMAP_SERVER}    user=${MAIL_USER}    password=${MAIL_PASSWORD}
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'STORAGE' and ${REMOTE} == False    I setup storage
 
 Teardown
     Log    -- Teardown --
@@ -69,6 +90,8 @@ Teardown
     \    Run Keyword If    '${tag}' == 'EDIT'    Load DB
     : FOR    ${tag}    IN    @{TEST TAGS}
     \    Run Keyword If    '${tag}' == 'DB'    Disconnect from Database
+    : FOR    ${tag}    IN    @{TEST TAGS}
+    \    Run Keyword If    '${tag}' == 'STORAGE' and ${REMOTE} == False    I clean storage
 
 the breadcrumb should contain
     [Arguments]    @{list}

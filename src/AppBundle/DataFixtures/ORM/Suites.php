@@ -69,6 +69,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'project' => 'projectone-project',
                 'campaign' => 'p1c1-campaign',
                 'suiteRef' => 'p1c1s1',
+                'documentuid' => 'd8329fc1cc938780ffdd9f94e0d364e0ea74f579',
             ),
             array(
                 'name' => 'Name of suite 2 for campaign 1 Project 1',
@@ -147,6 +148,7 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
                 'project' => 'projectone-project',
                 'campaign' => 'p1c4-campaign',
                 'suiteRef' => 'p1c4s1',
+                'documentuid' => '1f7a7a472abf3dd9643fd615f6da379c4acb3e3a',
             ),
             array(
                 'name' => 'Name of suite 2 for campaign 4 Project 1',
@@ -358,6 +360,9 @@ class Suites extends AbstractFixture implements OrderedFixtureInterface
             $objectList[$i]->setDisabled($data['disabled']);
             $objectList[$i]->setDuration($data['duration']);
             $objectList[$i]->setDateTime($data['datetime']);
+            if (isset($data['documentuid'])) {
+                $objectList[$i]->setDocumentUid($data['documentuid']);
+            }
 
             $manager->persist($objectList[$i]);
             $ref = $data['suiteRef'].'-suite';

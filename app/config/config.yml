@@ -9,6 +9,7 @@ imports:
 parameters:
     locale: en
     app.upload_dir: '%kernel.project_dir%/var/tmp'
+    app.storage_dir: '%kernel.project_dir%/var/documents'
 
 framework:
     #esi: ~

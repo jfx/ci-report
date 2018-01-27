@@ -1,15 +1,17 @@
 *** Variables ***
+&{zipfile}        count=6    size=196086    sha1=fcf05d1a0428852861ff162f4d42634c173e3818
+&{P1}             id=1    prefid=project-one    name=Project One    warning=80    success=95    email=email1@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f001
 &{P1}             id=1    prefid=project-one    name=Project One    warning=80    success=95    email=email1@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f001
 &{P2}             id=2    prefid=project-two    name=Project Two    warning=80    success=95    email=email2@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f002
 &{P6}             id=6    prefid=project-six    name=Project Six    warning=80    success=95    email=email6@example.com    token=1f4ffb19e4b9-02278af07b7d-4e370a76f006
-&{P1C1}           prefid=project-one    crefid=1    passed=25    failed=0    errored=0    skipped=0    disabled=0
-...               start=01/07/2017 12:30:01    end=04/07/2017 12:30:01    start_iso=2017-07-01T12:30:01+00:00    end_iso=2017-07-04T12:30:01+00:00
+&{P1C1}           id=1    prefid=project-one    crefid=1    passed=25    failed=0    errored=0    skipped=0
+...               disabled=0    start=01/07/2017 12:30:01    end=04/07/2017 12:30:01    start_iso=2017-07-01T12:30:01+00:00    end_iso=2017-07-04T12:30:01+00:00
 &{P1C2}           prefid=project-one    crefid=2    passed=25    failed=0    errored=1    skipped=0    disabled=0
 ...               start=02/07/2017 12:30:01    end=-    start_iso=2017-07-02T12:30:01+00:00    end_iso=
 &{P1C3}           prefid=project-one    crefid=3    passed=25    failed=1    errored=0    skipped=0    disabled=0
 ...               start=03/07/2017 12:30:01    end=-    start_iso=2017-07-03T12:30:01+00:00    end_iso=
-&{P1C4}           prefid=project-one    crefid=4    passed=26    failed=0    errored=0    skipped=0    disabled=0
-...               start=04/07/2017 12:30:01    end=-    start_iso=2017-07-04T12:30:01+00:00    end_iso=
+&{P1C4}           id=4    prefid=project-one    crefid=4    passed=26    failed=0    errored=0    skipped=0
+...               disabled=0    start=04/07/2017 12:30:01    end=-    start_iso=2017-07-04T12:30:01+00:00    end_iso=
 &{P2C3}           prefid=project-two    crefid=3    passed=95    failed=4    errored=0    skipped=1    disabled=0
 ...               start=03/07/2017 12:30:01    end=04/07/2017 12:30:01
 &{P3C3}           prefid=project-three    crefid=3    passed=80    failed=20    errored=0    skipped=0    disabled=0
