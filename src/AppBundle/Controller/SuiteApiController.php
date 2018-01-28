@@ -324,6 +324,7 @@ class SuiteApiController extends AbstractApiController
      * )
      * @Rest\View(serializerGroups={"public"})
      *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("suiteDB", class="AppBundle:Suite", options={
      *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
      *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
@@ -383,9 +384,8 @@ class SuiteApiController extends AbstractApiController
      *     }
      * )
      */
-    public function putSuiteLimitsAction(Suite $suiteDB, SuiteLimitsDTO $suiteLimitsDTO, Request $request)
+    public function putSuiteLimitsAction(Project $project, Suite $suiteDB, SuiteLimitsDTO $suiteLimitsDTO, Request $request)
     {
-        $project = $suiteDB->getCampaign()->getProject();
         if ($this->isInvalidToken($request, $project->getToken())) {
             return $this->getInvalidTokenView();
         }
@@ -433,6 +433,7 @@ class SuiteApiController extends AbstractApiController
      * )
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("suite", class="AppBundle:Suite", options={
      *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
      *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
@@ -480,9 +481,8 @@ class SuiteApiController extends AbstractApiController
      *     }
      * )
      */
-    public function deleteSuiteAction(Suite $suite, Request $request)
+    public function deleteSuiteAction(Project $project, Suite $suite, Request $request)
     {
-        $project = $suite->getCampaign()->getProject();
         if ($this->isInvalidToken($request, $project->getToken())) {
             return $this->getInvalidTokenView();
         }
