@@ -279,6 +279,7 @@ class CampaignApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
      * </code></pre>.
      *
+     * @param Project     $project     Project
      * @param Campaign    $campaignDB  Campaign to update
      * @param CampaignDTO $campaignDTO Object containing input data
      * @param Request     $request     The request
@@ -374,6 +375,7 @@ class CampaignApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
      * </code></pre>.
      *
+     * @param Project  $project  Project
      * @param Campaign $campaign Campaign to delete
      * @param Request  $request  The request
      *

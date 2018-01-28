@@ -312,6 +312,7 @@ class SuiteApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/limits -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"warning":80, "success":95}'
      * </code></pre>.
      *
+     * @param Project        $project        Project
      * @param Suite          $suiteDB        Suite to update
      * @param SuiteLimitsDTO $suiteLimitsDTO Object containing input data
      * @param Request        $request        The request
@@ -422,6 +423,7 @@ class SuiteApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
      * </code></pre>.
      *
+     * @param Project $project Project
      * @param Suite   $suite   Suite to delete
      * @param Request $request The request
      *
