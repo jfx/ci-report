@@ -120,7 +120,7 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
 "DELETE zip document" request remove zip document
-    [Tags]    EDIT    DB    STORAGE
+    [Tags]    EDIT    DB    STORAGE    LOCAL
     ${cposition} =    Evaluate    ${P1C4S1.crefid} - 1
     ${sposition} =    Evaluate    ${P1C4S1.srefid} - 1
     Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid is not null
@@ -143,7 +143,7 @@ Resource          Function/api.txt
     Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid is null
 
 "DELETE zip document" request without document in suite does nothing
-    [Tags]    EDIT    DB
+    [Tags]    DB
     ${cposition} =    Evaluate    ${P1C4S2.crefid} - 1
     ${sposition} =    Evaluate    ${P1C4S2.srefid} - 1
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
