@@ -511,7 +511,7 @@ class Suite
      *
      * @return Suite
      */
-    public function setDocumentUid(string $uid): self
+    public function setDocumentUid(?string $uid): self
     {
         $this->documentUid = $uid;
 

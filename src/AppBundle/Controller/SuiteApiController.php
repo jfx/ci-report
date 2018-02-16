@@ -444,7 +444,7 @@ class SuiteApiController extends AbstractApiController
      *
      * @Doc\ApiDoc(
      *     section="Suites",
-     *     description="Delete a campaign.",
+     *     description="Delete a suite.",
      *     headers={
      *         {
      *             "name"="X-CIR-TKN",

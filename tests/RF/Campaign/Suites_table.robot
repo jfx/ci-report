@@ -63,6 +63,22 @@ A row suite without attached document should not have a link to download it
     When I go to campaign page    &{P1C4}
     Then Element Should Not Be Visible    a-download-${P1C4S2.srefid}
 
+Attach and remove document of a suite
+    [Tags]    API    EDIT
+    When I go to campaign page    &{P1C4}
+    Then Element Should Not Be Visible    a-download-${P1C4S2.srefid}
+    &{file} =    Create Dictionary    form_field=zipfile    path_file=${CURDIR}/../../files/zipfile-ok.zip
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}/doc/zip    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    201
+    When I go to campaign page    &{P1C4}
+    Then Element Should Be Visible    a-download-${P1C4S2.srefid}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    204
+    When I go to campaign page    &{P1C4}
+    Then Element Should Not Be Visible    a-download-${P1C4S2.srefid}
+
 A row suite with no test should have grey background color
     When I go to campaign page    &{P8C1S1}
     Then Page Should Contain Element    xpath=//tr[@id="tr-suite-${P8C1S1.srefid}" and @class="table-secondary"]
