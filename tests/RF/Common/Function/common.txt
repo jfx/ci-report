@@ -43,8 +43,8 @@ I create a connexion to database
 
 I setup storage
     Log    -- Setup storage --
-    Copy File    ${CURDIR}/../../../files/zipfile-ok.zip    ${STORAGE_DIR}/${P1.id}/${P1C1.id}/d8329fc1cc938780ffdd9f94e0d364e0ea74f579
-    Copy File    ${CURDIR}/../../../files/zipfile-ok.zip    ${STORAGE_DIR}/${P1.id}/${P1C4.id}/1f7a7a472abf3dd9643fd615f6da379c4acb3e3a
+    Copy File    ${CURDIR}/../../../files/zipfile-ok.zip    ${STORAGE_DIR}/${P1.id}/${P1C1.id}/${P1C1S1.docuid}
+    Copy File    ${CURDIR}/../../../files/zipfile-ok.zip    ${STORAGE_DIR}/${P1.id}/${P1C4.id}/${P1C4S1.docuid}
 
 I clean storage
     Log    -- Clean storage --

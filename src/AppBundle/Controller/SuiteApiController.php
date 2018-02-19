@@ -312,6 +312,7 @@ class SuiteApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/limits -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"warning":80, "success":95}'
      * </code></pre>.
      *
+     * @param Project        $project        Project
      * @param Suite          $suiteDB        Suite to update
      * @param SuiteLimitsDTO $suiteLimitsDTO Object containing input data
      * @param Request        $request        The request
@@ -324,6 +325,7 @@ class SuiteApiController extends AbstractApiController
      * )
      * @Rest\View(serializerGroups={"public"})
      *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("suiteDB", class="AppBundle:Suite", options={
      *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
      *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
@@ -383,9 +385,8 @@ class SuiteApiController extends AbstractApiController
      *     }
      * )
      */
-    public function putSuiteLimitsAction(Suite $suiteDB, SuiteLimitsDTO $suiteLimitsDTO, Request $request)
+    public function putSuiteLimitsAction(Project $project, Suite $suiteDB, SuiteLimitsDTO $suiteLimitsDTO, Request $request)
     {
-        $project = $suiteDB->getCampaign()->getProject();
         if ($this->isInvalidToken($request, $project->getToken())) {
             return $this->getInvalidTokenView();
         }
@@ -422,6 +423,7 @@ class SuiteApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
      * </code></pre>.
      *
+     * @param Project $project Project
      * @param Suite   $suite   Suite to delete
      * @param Request $request The request
      *
@@ -433,6 +435,7 @@ class SuiteApiController extends AbstractApiController
      * )
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("suite", class="AppBundle:Suite", options={
      *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
      *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
@@ -441,7 +444,7 @@ class SuiteApiController extends AbstractApiController
      *
      * @Doc\ApiDoc(
      *     section="Suites",
-     *     description="Delete a campaign.",
+     *     description="Delete a suite.",
      *     headers={
      *         {
      *             "name"="X-CIR-TKN",
@@ -480,9 +483,8 @@ class SuiteApiController extends AbstractApiController
      *     }
      * )
      */
-    public function deleteSuiteAction(Suite $suite, Request $request)
+    public function deleteSuiteAction(Project $project, Suite $suite, Request $request)
     {
-        $project = $suite->getCampaign()->getProject();
         if ($this->isInvalidToken($request, $project->getToken())) {
             return $this->getInvalidTokenView();
         }

@@ -30,14 +30,14 @@ Resource          Function/api.txt
 "POST zip document" request saves a zip file on campaign id directory
     [Tags]    EDIT    DB    STORAGE    LOCAL
     &{file} =    Create Dictionary    form_field=zipfile    path_file=${CURDIR}/../../files/zipfile-ok.zip
-    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P2.token}
     &{data} =    And Create Dictionary
-    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}/doc/zip    ${file}    headers=${headers}    data=${data}
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P2C3S1.prefid}/campaigns/${P2C3S1.crefid}/suites/${P2C3S1.srefid}/doc/zip    ${file}    headers=${headers}    data=${data}
     Then Should Be Equal As Strings    ${resp.status_code}    201
-    ${cposition} =    Evaluate    ${P1C4S2.crefid} - 1
-    ${sposition} =    Evaluate    ${P1C4S2.srefid} - 1
-    @{hash} =    Query    select cir_suite.doc_uid from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid IS NOT NULL
-    File Should Exist    ${STORAGE_DIR}/${P1.id}/${P1C4.id}/${hash[0][0]}
+    ${cposition} =    Evaluate    ${P2C3S1.crefid} - 1
+    ${sposition} =    Evaluate    ${P2C3S1.srefid} - 1
+    @{hash} =    Query    select cir_suite.doc_uid from cir_suite, cir_campaign where project_id =${P2.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid IS NOT NULL
+    File Should Exist    ${STORAGE_DIR}/${P2.id}/${P2C3.id}/${hash[0][0]}
 
 "POST zip document" request with suite with already attached document returns HTTP "400" error
     &{file} =    Create Dictionary    form_field=zipfile    path_file=${CURDIR}/../../files/zipfile-ok.zip
@@ -116,5 +116,77 @@ Resource          Function/api.txt
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/X/doc/zip    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE zip document" request remove zip document
+    [Tags]    EDIT    DB    STORAGE    LOCAL
+    ${cposition} =    Evaluate    ${P1C4S1.crefid} - 1
+    ${sposition} =    Evaluate    ${P1C4S1.srefid} - 1
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid is not null
+    File Should Exist    ${STORAGE_DIR}/${P1.id}/${P1C4.id}/${P1C4S1.docuid}
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    204
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid is null
+    File Should Not Exist    ${STORAGE_DIR}/${P1.id}/${P1C4.id}/${P1C4S1.docuid}
+
+"DELETE zip document" request without file remove UID in DB
+    [Tags]    EDIT    DB    STORAGE
+    ${cposition} =    Evaluate    ${P1C4S1.crefid} - 1
+    ${sposition} =    Evaluate    ${P1C4S1.srefid} - 1
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid is not null
+    I clean storage
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    204
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid is null
+
+"DELETE zip document" request without document in suite does nothing
+    [Tags]    DB
+    ${cposition} =    Evaluate    ${P1C4S2.crefid} - 1
+    ${sposition} =    Evaluate    ${P1C4S2.srefid} - 1
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S2.prefid}/campaigns/${P1C4S2.crefid}/suites/${P1C4S2.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    204
+    Check If Exists In Database    select cir_suite.id from cir_suite, cir_campaign where project_id =${P1.id} and cir_campaign.position = ${cposition} and cir_campaign.id = campaign_id and cir_suite.position = ${sposition} and cir_suite.doc_uid is null
+
+"DELETE zip document" request with wrong token returns HTTP "401" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=XXX
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    401
+
+"DELETE zip document" request without token returns HTTP "401" error
+    &{headers} =    When Create Dictionary
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    401
+
+"DELETE zip document" request with unknown project refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/XXX/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE zip document" request with unknown campaign refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S1.prefid}/campaigns/0/suites/${P1C4S1.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE zip document" request with unknown suite refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/0/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE zip document" request with not numeric campaign refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S1.prefid}/campaigns/X/suites/${P1C4S1.srefid}/doc/zip    headers=${headers}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"DELETE zip document" request with not numeric suite refid returns HTTP "404" error
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    ${resp} =    When Delete Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/X/doc/zip    headers=${headers}
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404

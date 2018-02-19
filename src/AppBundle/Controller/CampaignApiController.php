@@ -279,6 +279,7 @@ class CampaignApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
      * </code></pre>.
      *
+     * @param Project     $project     Project
      * @param Campaign    $campaignDB  Campaign to update
      * @param CampaignDTO $campaignDTO Object containing input data
      * @param Request     $request     The request
@@ -291,6 +292,7 @@ class CampaignApiController extends AbstractApiController
      * )
      * @Rest\View(serializerGroups={"public"})
      *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("campaignDB", class="AppBundle:Campaign", options={
      *    "repository_method" = "findCampaignByProjectRefidAndRefid",
      *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
@@ -345,9 +347,8 @@ class CampaignApiController extends AbstractApiController
      *     }
      * )
      */
-    public function putCampaignAction(Campaign $campaignDB, CampaignDTO $campaignDTO, Request $request)
+    public function putCampaignAction(Project $project, Campaign $campaignDB, CampaignDTO $campaignDTO, Request $request)
     {
-        $project = $campaignDB->getProject();
         if ($this->isInvalidToken($request, $project->getToken())) {
             return $this->getInvalidTokenView();
         }
@@ -374,6 +375,7 @@ class CampaignApiController extends AbstractApiController
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
      * </code></pre>.
      *
+     * @param Project  $project  Project
      * @param Campaign $campaign Campaign to delete
      * @param Request  $request  The request
      *
@@ -385,6 +387,7 @@ class CampaignApiController extends AbstractApiController
      * )
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("campaign", class="AppBundle:Campaign", options={
      *    "repository_method" = "findCampaignByProjectRefidAndRefid",
      *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
@@ -426,9 +429,8 @@ class CampaignApiController extends AbstractApiController
      *     }
      * )
      */
-    public function deleteCampaignAction(Campaign $campaign, Request $request)
+    public function deleteCampaignAction(Project $project, Campaign $campaign, Request $request)
     {
-        $project = $campaign->getProject();
         if ($this->isInvalidToken($request, $project->getToken())) {
             return $this->getInvalidTokenView();
         }

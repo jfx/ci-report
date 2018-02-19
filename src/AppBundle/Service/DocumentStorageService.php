@@ -84,7 +84,11 @@ class DocumentStorageService
      */
     public function remove(Project $project, Campaign $campaign, string $fileName)
     {
-        unlink($this->getFullPath($project, $campaign, $fileName));
+        $path = $this->getFullPath($project, $campaign, $fileName);
+
+        if (file_exists($path)) {
+            unlink($path);
+        }
     }
 
     /**

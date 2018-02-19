@@ -158,4 +158,94 @@ class DocumentApiController extends AbstractApiController
 
         return $zipFile;
     }
+
+    /**
+     * Delete a zip archive from a suite. Example: </br>
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/doc/zip -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
+     * </code></pre>.
+     *
+     * @param Project  $project  Project
+     * @param Campaign $campaign Campaign
+     * @param Suite    $suite    Suite to delete
+     * @param Request  $request  The request
+     *
+     * @return void|View
+     *
+     * @Rest\Delete(
+     *    "/projects/{prefid}/campaigns/{crefid}/suites/{srefid}/doc/zip",
+     *    requirements={"crefid" = "\d+", "srefid" = "\d+"}
+     * )
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
+     *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
+     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
+     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
+     *    "map_method_signature" = true
+     * })
+     * @ParamConverter("suite", class="AppBundle:Suite", options={
+     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
+     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
+     *    "map_method_signature" = true
+     * })
+     *
+     * @Doc\ApiDoc(
+     *     section="Documents",
+     *     description="Delete a zip archive from a suite.",
+     *     headers={
+     *         {
+     *             "name"="X-CIR-TKN",
+     *             "required"=true,
+     *             "description"="Private token"
+     *         }
+     *     },
+     *     requirements={
+     *         {
+     *             "name"="prefid",
+     *             "dataType"="string",
+     *             "requirement"="string",
+     *             "description"="Unique short name of project defined on project creation."
+     *         },
+     *         {
+     *             "name"="crefid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the campaign."
+     *         },
+     *         {
+     *             "name"="srefid",
+     *             "dataType"="int",
+     *             "requirement"="int",
+     *             "description"="Reference id of the suite."
+     *         }
+     *     },
+     *     statusCodes={
+     *         204="Returned when successful",
+     *         401="Returned when X-CIR-TKN private token value is invalid",
+     *         404="Returned when suite not found"
+     *     },
+     *     tags={
+     *         "token" = "#2c3e50"
+     *     }
+     * )
+     */
+    public function deleteZipDocumentAction(Project $project, Campaign $campaign, Suite $suite, Request $request)
+    {
+        if ($this->isInvalidToken($request, $project->getToken())) {
+            return $this->getInvalidTokenView();
+        }
+        $documentUid = $suite->getDocumentUid();
+
+        if (null !== $documentUid) {
+            $suite->setDocumentUid(null);
+            $this->getDoctrine()->getManager()->flush();
+
+            $docStoreService = $this->get(DocumentStorageService::class);
+            $docStoreService->remove(
+                $project,
+                $campaign,
+                $documentUid
+            );
+        }
+    }
 }

@@ -42,7 +42,7 @@ class ZipFileDTO
     /**
      * Zip file.
      *
-     * @var File
+     * @var UploadedFile
      *
      * @Type("UploadedFile")
      *
