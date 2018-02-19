@@ -26,6 +26,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Entity\Suite;
 use AppBundle\Entity\Test;
 use AppBundle\Service\DocumentStorageService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -62,16 +63,8 @@ class SuiteController extends Controller
      * )
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
-     * @ParamConverter("suite", class="AppBundle:Suite", options={
-     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
+     * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      */
     public function indexAction(Project $project, Campaign $campaign, Suite $suite): Response
     {
@@ -115,16 +108,8 @@ class SuiteController extends Controller
      * )
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
-     * @ParamConverter("suite", class="AppBundle:Suite", options={
-     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
+     * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      */
     public function docAction(Project $project, Campaign $campaign, Suite $suite): BinaryFileResponse
     {

@@ -35,6 +35,7 @@ use DOMDocument;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -68,11 +69,7 @@ class SuiteApiController extends AbstractApiController
      * )
      * @Rest\View(serializerGroups={"public"})
      *
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
      * @Doc\ApiDoc(
      *     section="Suites",
@@ -126,11 +123,7 @@ class SuiteApiController extends AbstractApiController
      * )
      * @Rest\View(serializerGroups={"public"})
      *
-     * @ParamConverter("suite", class="AppBundle:Suite", options={
-     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
      * @Doc\ApiDoc(
      *     section="Suites",
@@ -189,11 +182,7 @@ class SuiteApiController extends AbstractApiController
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"public"})
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
      * @Doc\ApiDoc(
      *     section="Suites",
@@ -326,11 +315,7 @@ class SuiteApiController extends AbstractApiController
      * @Rest\View(serializerGroups={"public"})
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("suiteDB", class="AppBundle:Suite", options={
-     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("suiteDB", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      * @ParamConverter("suiteLimitsDTO", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
@@ -436,11 +421,7 @@ class SuiteApiController extends AbstractApiController
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("suite", class="AppBundle:Suite", options={
-     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
      * @Doc\ApiDoc(
      *     section="Suites",

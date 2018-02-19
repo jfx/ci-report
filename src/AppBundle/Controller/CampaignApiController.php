@@ -28,6 +28,7 @@ use AppBundle\Entity\Project;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -107,11 +108,7 @@ class CampaignApiController extends AbstractApiController
      * )
      * @Rest\View(serializerGroups={"public"})
      *
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
      * @Doc\ApiDoc(
      *     section="Campaigns",
@@ -158,11 +155,7 @@ class CampaignApiController extends AbstractApiController
      * @Rest\Get("/projects/{prefid}/campaigns/last")
      * @Rest\View(serializerGroups={"public"})
      *
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findLastCampaignByProjectRefid",
-     *    "mapping": {"prefid": "prefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findLastCampaignByProjectRefid(prefid)")
      *
      * @Doc\ApiDoc(
      *     section="Campaigns",
@@ -293,11 +286,7 @@ class CampaignApiController extends AbstractApiController
      * @Rest\View(serializerGroups={"public"})
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaignDB", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaignDB", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @ParamConverter("campaignDTO", converter="fos_rest.request_body")
      *
      * @Doc\ApiDoc(
@@ -388,11 +377,7 @@ class CampaignApiController extends AbstractApiController
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
      * @Doc\ApiDoc(
      *     section="Campaigns",
