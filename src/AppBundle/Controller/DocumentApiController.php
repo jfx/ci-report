@@ -30,7 +30,7 @@ use AppBundle\Entity\ZipFile;
 use AppBundle\Service\DocumentStorageService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation as Doc;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,7 +73,7 @@ class DocumentApiController extends AbstractApiController
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Documents",
      *     description="Attach a zip archive to a suite.",
      *     headers={
@@ -174,7 +174,7 @@ class DocumentApiController extends AbstractApiController
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Documents",
      *     description="Delete a zip archive from a suite.",
      *     headers={

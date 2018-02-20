@@ -27,7 +27,7 @@ use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation as Doc;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,7 +62,7 @@ class CampaignApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Campaigns",
      *     description="Get the list of all campaigns for a project.",
      *     requirements={
@@ -110,7 +110,7 @@ class CampaignApiController extends AbstractApiController
      *
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Campaigns",
      *     description="Get campaign data.",
      *     requirements={
@@ -157,7 +157,7 @@ class CampaignApiController extends AbstractApiController
      *
      * @Entity("campaign", expr="repository.findLastCampaignByProjectRefid(prefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Campaigns",
      *     description="Get last added campaign data.",
      *     requirements={
@@ -201,7 +201,7 @@ class CampaignApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("campaignDTO", converter="fos_rest.request_body")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Campaigns",
      *     description="Create a campaign.",
      *     headers={
@@ -289,7 +289,7 @@ class CampaignApiController extends AbstractApiController
      * @Entity("campaignDB", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @ParamConverter("campaignDTO", converter="fos_rest.request_body")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Campaigns",
      *     description="Update a campaign.",
      *     headers={
@@ -379,7 +379,7 @@ class CampaignApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Campaigns",
      *     description="Delete a campaign.",
      *     headers={

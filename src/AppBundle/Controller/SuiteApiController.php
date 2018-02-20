@@ -34,7 +34,7 @@ use AppBundle\Service\RefreshService;
 use DOMDocument;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation as Doc;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +71,7 @@ class SuiteApiController extends AbstractApiController
      *
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Suites",
      *     description="Get the list of all suites for a campaign.",
      *     requirements={
@@ -125,7 +125,7 @@ class SuiteApiController extends AbstractApiController
      *
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Suites",
      *     description="Get suite data.",
      *     requirements={
@@ -184,7 +184,7 @@ class SuiteApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Suites",
      *     description="Create suites by uploading a junit file.",
      *     headers={
@@ -318,7 +318,7 @@ class SuiteApiController extends AbstractApiController
      * @Entity("suiteDB", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      * @ParamConverter("suiteLimitsDTO", converter="fos_rest.request_body")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Suites",
      *     description="Update suite warning and success limits.",
      *     headers={
@@ -423,7 +423,7 @@ class SuiteApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Suites",
      *     description="Delete a suite.",
      *     headers={

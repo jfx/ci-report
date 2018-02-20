@@ -27,7 +27,7 @@ use AppBundle\Entity\Project;
 use AppBundle\Service\ProjectService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation as Doc;
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,7 +58,7 @@ class ProjectApiController extends AbstractApiController
      * @Rest\Get("/projects")
      * @Rest\View(serializerGroups={"public"})
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Projects",
      *     description="Get the list of all projects.",
      *     output={
@@ -94,7 +94,7 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Projects",
      *     description="Get public project data.",
      *     requirements={
@@ -136,7 +136,7 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Projects",
      *     description="Get private project data.",
      *     headers={
@@ -193,7 +193,7 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", converter="fos_rest.request_body", options={ "validator"={"groups"={"input", "unique"}} } )
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Projects",
      *     description="Create a project. Private data are sent by mail.",
      *     headers={
@@ -249,7 +249,7 @@ class ProjectApiController extends AbstractApiController
      * @ParamConverter("projectDB", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("projectDTO", converter="fos_rest.request_body")
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Projects",
      *     description="Update a project.",
      *     headers={
@@ -328,7 +328,7 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @Doc\ApiDoc(
+     * @ApiDoc(
      *     section="Projects",
      *     description="Delete a project.",
      *     headers={
