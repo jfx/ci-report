@@ -31,6 +31,7 @@ use AppBundle\Service\DocumentStorageService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation as Doc;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -69,16 +70,8 @@ class DocumentApiController extends AbstractApiController
      * @Rest\View(statusCode=Response::HTTP_CREATED, serializerGroups={"public"})
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
-     * @ParamConverter("suite", class="AppBundle:Suite", options={
-     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
+     * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
      * @Doc\ApiDoc(
      *     section="Documents",
@@ -178,16 +171,8 @@ class DocumentApiController extends AbstractApiController
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT)
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
-     * @ParamConverter("suite", class="AppBundle:Suite", options={
-     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
+     * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
      * @Doc\ApiDoc(
      *     section="Documents",
