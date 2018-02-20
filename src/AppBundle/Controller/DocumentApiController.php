@@ -30,7 +30,9 @@ use AppBundle\Entity\ZipFile;
 use AppBundle\Service\DocumentStorageService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,52 +75,34 @@ class DocumentApiController extends AbstractApiController
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @ApiDoc(
-     *     section="Documents",
-     *     description="Attach a zip archive to a suite.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     input= { "class"=ZipFileDTO::class },
-     *     output= {
-     *         "class"=ZipFile::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         201="Returned when created",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project, campaign or suite not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Documents"},
+     *     summary="Attach a zip archive to a suite.",
+     *     @SWG\Parameter(
+     *         name="zipfile",
+     *         in="formData",
+     *         description="Zip file.",
+     *         required=false,
+     *         type="custom handler result for (UploadedFile)"
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when created"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project, campaign or suite not found"
+     *     )
      * )
+     *
      */
     public function postZipDocumentAction(Project $project, Campaign $campaign, Suite $suite, Request $request)
     {
@@ -174,45 +158,23 @@ class DocumentApiController extends AbstractApiController
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @ApiDoc(
-     *     section="Documents",
-     *     description="Delete a zip archive from a suite.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     statusCodes={
-     *         204="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when suite not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Documents"},
+     *     summary="Delete a zip archive from a suite.",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when suite not found"
+     *     )
      * )
+     *
      */
     public function deleteZipDocumentAction(Project $project, Campaign $campaign, Suite $suite, Request $request)
     {

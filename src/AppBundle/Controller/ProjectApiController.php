@@ -27,7 +27,9 @@ use AppBundle\Entity\Project;
 use AppBundle\Service\ProjectService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,18 +60,16 @@ class ProjectApiController extends AbstractApiController
      * @Rest\Get("/projects")
      * @Rest\View(serializerGroups={"public"})
      *
-     * @ApiDoc(
-     *     section="Projects",
-     *     description="Get the list of all projects.",
-     *     output={
-     *         "class"=Project::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful array of public data of projects"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Get the list of all projects.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful array of public data of projects",
+     *         @Model(type="AppBundle\Entity\Project")
+     *     )
      * )
+     *
      */
     public function getProjectsAction(): array
     {
@@ -94,27 +94,20 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @ApiDoc(
-     *     section="Projects",
-     *     description="Get public project data.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     output= {
-     *         "class"=Project::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         404="Returned when project not found"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Get public project data.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type="AppBundle\Entity\Project")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found"
+     *     )
      * )
+     *
      */
     public function getProjectAction(Project $project): Project
     {
@@ -136,38 +129,24 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @ApiDoc(
-     *     section="Projects",
-     *     description="Get private project data.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     output= {
-     *         "class"=Project::class,
-     *         "groups"={"private"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Get private project data.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type="AppBundle\Entity\Project")
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found"
+     *     )
      * )
+     *
      */
     public function getProjectPrivateAction(Project $project, Request $request)
     {
@@ -193,27 +172,47 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", converter="fos_rest.request_body", options={ "validator"={"groups"={"input", "unique"}} } )
      *
-     * @ApiDoc(
-     *     section="Projects",
-     *     description="Create a project. Private data are sent by mail.",
-     *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         }
-     *     },
-     *     input= { "class"=ProjectDTO::class },
-     *     output= {
-     *         "class"=Project::class,
-     *         "groups"={"private"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         201="Returned when created",
-     *         400="Returned when a violation is raised by validation"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Create a project. Private data are sent by mail.",
+     *     @SWG\Parameter(
+     *         name="name",
+     *         in="formData",
+     *         description="Name of the project.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="warning",
+     *         in="formData",
+     *         description="Tests warning limit. Integer between 0 and 100 %.",
+     *         required=false,
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="success",
+     *         in="formData",
+     *         description="Tests success limit. Integer between 0 and 100 %.",
+     *         required=false,
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="formData",
+     *         description="Email.",
+     *         required=false,
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when created"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation"
+     *     )
      * )
+     *
      */
     public function postProjectAction(Project $project, ConstraintViolationList $violations)
     {
@@ -249,45 +248,60 @@ class ProjectApiController extends AbstractApiController
      * @ParamConverter("projectDB", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("projectDTO", converter="fos_rest.request_body")
      *
-     * @ApiDoc(
-     *     section="Projects",
-     *     description="Update a project.",
-     *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         },
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     input= { "class"=ProjectDTO::class },
-     *     output= {
-     *         "class"=Project::class,
-     *         "groups"={"private"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Update a project.",
+     *     @SWG\Parameter(
+     *         name="name",
+     *         in="body",
+     *         description="Name of the project.",
+     *         required=false,
+     *         type="string",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="warning",
+     *         in="body",
+     *         description="Tests warning limit. Integer between 0 and 100 %.",
+     *         required=false,
+     *         type="integer",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="success",
+     *         in="body",
+     *         description="Tests success limit. Integer between 0 and 100 %.",
+     *         required=false,
+     *         type="integer",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="email",
+     *         in="body",
+     *         description="Email.",
+     *         required=false,
+     *         type="string",
+     *         schema=""
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type="AppBundle\Entity\Project")
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found"
+     *     )
      * )
+     *
      */
     public function putProjectAction(Project $projectDB, ProjectDTO $projectDTO, Request $request)
     {
@@ -328,33 +342,23 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @ApiDoc(
-     *     section="Projects",
-     *     description="Delete a project.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     statusCodes={
-     *         204="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Delete a project.",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found"
+     *     )
      * )
+     *
      */
     public function deleteProjectAction(Project $project, Request $request)
     {

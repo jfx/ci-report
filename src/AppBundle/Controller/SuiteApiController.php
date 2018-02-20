@@ -34,7 +34,9 @@ use AppBundle\Service\RefreshService;
 use DOMDocument;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,33 +73,20 @@ class SuiteApiController extends AbstractApiController
      *
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @ApiDoc(
-     *     section="Suites",
-     *     description="Get the list of all suites for a campaign.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         }
-     *     },
-     *     output={
-     *         "class"=Suite::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful array of public data of campaigns",
-     *         404="Returned when project not found"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Get the list of all suites for a campaign.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful array of public data of campaigns",
+     *         @Model(type="AppBundle\Entity\Suite")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found"
+     *     )
      * )
+     *
      */
     public function getSuitesAction(Campaign $campaign): array
     {
@@ -125,39 +114,20 @@ class SuiteApiController extends AbstractApiController
      *
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @ApiDoc(
-     *     section="Suites",
-     *     description="Get suite data.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     output= {
-     *         "class"=Suite::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         404="Returned when project or campaign not found"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Get suite data.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type="AppBundle\Entity\Suite")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project or campaign not found"
+     *     )
      * )
+     *
      */
     public function getSuiteAction(Suite $suite): Suite
     {
@@ -184,46 +154,48 @@ class SuiteApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @ApiDoc(
-     *     section="Suites",
-     *     description="Create suites by uploading a junit file.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         }
-     *     },
-     *     input= { "class"=SuiteLimitsFilesDTO::class },
-     *     output= {
-     *         "class"=Suite::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         201="Returned when created",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project or campaign not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Create suites by uploading a junit file.",
+     *     @SWG\Parameter(
+     *         name="junitfile",
+     *         in="formData",
+     *         description="XML junit file.",
+     *         required=false,
+     *         type="custom handler result for (File)"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="warning",
+     *         in="formData",
+     *         description="Tests warning limit. Integer between 0 and 100 %. Limit defined on project by default.",
+     *         required=false,
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="success",
+     *         in="formData",
+     *         description="Tests success limit. Integer between 0 and 100 %. Limit defined on project by default.",
+     *         required=false,
+     *         type="integer"
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when created"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project or campaign not found"
+     *     )
      * )
+     *
      */
     public function postSuiteAction(Project $project, Campaign $campaign, Request $request)
     {
@@ -318,57 +290,44 @@ class SuiteApiController extends AbstractApiController
      * @Entity("suiteDB", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      * @ParamConverter("suiteLimitsDTO", converter="fos_rest.request_body")
      *
-     * @ApiDoc(
-     *     section="Suites",
-     *     description="Update suite warning and success limits.",
-     *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         },
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     input= { "class"=SuiteLimitsDTO::class },
-     *     output= {
-     *         "class"=Suite::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when suite not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Update suite warning and success limits.",
+     *     @SWG\Parameter(
+     *         name="warning",
+     *         in="body",
+     *         description="Tests warning limit. Integer between 0 and 100 %. Limit defined on project by default.",
+     *         required=false,
+     *         type="integer",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="success",
+     *         in="body",
+     *         description="Tests success limit. Integer between 0 and 100 %. Limit defined on project by default.",
+     *         required=false,
+     *         type="integer",
+     *         schema=""
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type="AppBundle\Entity\Suite")
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when suite not found"
+     *     )
      * )
+     *
      */
     public function putSuiteLimitsAction(Project $project, Suite $suiteDB, SuiteLimitsDTO $suiteLimitsDTO, Request $request)
     {
@@ -423,46 +382,27 @@ class SuiteApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @ApiDoc(
-     *     section="Suites",
-     *     description="Delete a suite.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     statusCodes={
-     *         204="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when suite not found",
-     *         405="Returned when suite refid is not set in URL"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Delete a suite.",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when suite not found"
+     *     ),
+     *     @SWG\Response(
+     *         response="405",
+     *         description="Returned when suite refid is not set in URL"
+     *     )
      * )
+     *
      */
     public function deleteSuiteAction(Project $project, Suite $suite, Request $request)
     {

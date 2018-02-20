@@ -27,7 +27,9 @@ use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -62,27 +64,20 @@ class CampaignApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @ApiDoc(
-     *     section="Campaigns",
-     *     description="Get the list of all campaigns for a project.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     output={
-     *         "class"=Campaign::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful array of public data of campaigns",
-     *         404="Returned when project not found"
-     *     }
+     * @Operation(
+     *     tags={"Campaigns"},
+     *     summary="Get the list of all campaigns for a project.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful array of public data of campaigns",
+     *         @Model(type="AppBundle\Entity\Campaign")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found"
+     *     )
      * )
+     *
      */
     public function getCampaignsAction(Project $project): array
     {
@@ -110,33 +105,20 @@ class CampaignApiController extends AbstractApiController
      *
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @ApiDoc(
-     *     section="Campaigns",
-     *     description="Get campaign data.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         }
-     *     },
-     *     output= {
-     *         "class"=Campaign::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         404="Returned when project or campaign not found"
-     *     }
+     * @Operation(
+     *     tags={"Campaigns"},
+     *     summary="Get campaign data.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type="AppBundle\Entity\Campaign")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project or campaign not found"
+     *     )
      * )
+     *
      */
     public function getCampaignAction(Campaign $campaign): Campaign
     {
@@ -157,27 +139,20 @@ class CampaignApiController extends AbstractApiController
      *
      * @Entity("campaign", expr="repository.findLastCampaignByProjectRefid(prefid)")
      *
-     * @ApiDoc(
-     *     section="Campaigns",
-     *     description="Get last added campaign data.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     output= {
-     *         "class"=Campaign::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         404="Returned when no campaign exists for project"
-     *     }
+     * @Operation(
+     *     tags={"Campaigns"},
+     *     summary="Get last added campaign data.",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type="AppBundle\Entity\Campaign")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when no campaign exists for project"
+     *     )
      * )
+     *
      */
     public function getLastCampaignAction(Campaign $campaign): Campaign
     {
@@ -201,45 +176,41 @@ class CampaignApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("campaignDTO", converter="fos_rest.request_body")
      *
-     * @ApiDoc(
-     *     section="Campaigns",
-     *     description="Create a campaign.",
-     *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         },
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     input= { "class"=CampaignDTO::class },
-     *     output= {
-     *         "class"=Campaign::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         201="Returned when created",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Campaigns"},
+     *     summary="Create a campaign.",
+     *     @SWG\Parameter(
+     *         name="start",
+     *         in="formData",
+     *         description="Start Date time of the campaign in format (2017-07-01 12:30:01). Now by default.",
+     *         required=false,
+     *         type="DateTime"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="end",
+     *         in="formData",
+     *         description="End Date time of the campaign in format (2017-07-01 12:30:01). Null by default.",
+     *         required=false,
+     *         type="DateTime"
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when created"
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found"
+     *     )
      * )
+     *
      */
     public function postCampaignAction(Project $project, CampaignDTO $campaignDTO, Request $request)
     {
@@ -289,52 +260,48 @@ class CampaignApiController extends AbstractApiController
      * @Entity("campaignDB", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @ParamConverter("campaignDTO", converter="fos_rest.request_body")
      *
-     * @ApiDoc(
-     *     section="Campaigns",
-     *     description="Update a campaign.",
-     *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         },
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         }
-     *     },
-     *     input= { "class"=CampaignDTO::class },
-     *     output= {
-     *         "class"=Campaign::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when campaign not found",
-     *         405="Returned when campaign refid is not set in URL"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Campaigns"},
+     *     summary="Update a campaign.",
+     *     @SWG\Parameter(
+     *         name="start",
+     *         in="body",
+     *         description="Start Date time of the campaign in format (2017-07-01 12:30:01). Now by default.",
+     *         required=false,
+     *         type="DateTime",
+     *         schema=""
+     *     ),
+     *     @SWG\Parameter(
+     *         name="end",
+     *         in="body",
+     *         description="End Date time of the campaign in format (2017-07-01 12:30:01). Null by default.",
+     *         required=false,
+     *         type="DateTime",
+     *         schema=""
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type="AppBundle\Entity\Campaign")
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when campaign not found"
+     *     ),
+     *     @SWG\Response(
+     *         response="405",
+     *         description="Returned when campaign refid is not set in URL"
+     *     )
      * )
+     *
      */
     public function putCampaignAction(Project $project, Campaign $campaignDB, CampaignDTO $campaignDTO, Request $request)
     {
@@ -379,40 +346,27 @@ class CampaignApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @ApiDoc(
-     *     section="Campaigns",
-     *     description="Delete a campaign.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         }
-     *     },
-     *     statusCodes={
-     *         204="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when campaign not found",
-     *         405="Returned when campaign refid is not set in URL"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Campaigns"},
+     *     summary="Delete a campaign.",
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when campaign not found"
+     *     ),
+     *     @SWG\Response(
+     *         response="405",
+     *         description="Returned when campaign refid is not set in URL"
+     *     )
      * )
+     *
      */
     public function deleteCampaignAction(Project $project, Campaign $campaign, Request $request)
     {
