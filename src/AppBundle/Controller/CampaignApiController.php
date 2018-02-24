@@ -51,9 +51,7 @@ use Symfony\Component\HttpFoundation\Response;
 class CampaignApiController extends AbstractApiController
 {
     /**
-     * Get list of campaigns for a project. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns -X GET
-     * </code></pre>.
+     * Get list of campaigns for a project.
      *
      * @param Project $project Project
      *
@@ -67,14 +65,25 @@ class CampaignApiController extends AbstractApiController
      * @Operation(
      *     tags={"Campaigns"},
      *     summary="Get the list of all campaigns for a project.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful array of public data of campaigns",
-     *         @Model(type="AppBundle\Entity\Campaign")
+     *         @SWG\Schema(
+     *            type="array",
+     *            @Model(type=Campaign::class, groups={"public"})
+     *         )
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when project not found"
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -89,9 +98,7 @@ class CampaignApiController extends AbstractApiController
     }
 
     /**
-     * Get campaign data. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -X GET
-     * </code></pre>.
+     * Get campaign data.
      *
      * @param Campaign $campaign Campaign
      *
@@ -108,14 +115,28 @@ class CampaignApiController extends AbstractApiController
      * @Operation(
      *     tags={"Campaigns"},
      *     summary="Get campaign data.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
-     *         @Model(type="AppBundle\Entity\Campaign")
+     *         @Model(type=Campaign::class, groups={"public"})
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when project or campaign not found"
+     *         description="Returned when project or campaign not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -126,9 +147,7 @@ class CampaignApiController extends AbstractApiController
     }
 
     /**
-     * Get last added campaign data. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/last -X GET
-     * </code></pre>.
+     * Get last added campaign data.
      *
      * @param Campaign $campaign Campaign
      *
@@ -142,14 +161,22 @@ class CampaignApiController extends AbstractApiController
      * @Operation(
      *     tags={"Campaigns"},
      *     summary="Get last added campaign data.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/last -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
-     *         @Model(type="AppBundle\Entity\Campaign")
+     *         @Model(type=Campaign::class, groups={"public"})
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when no campaign exists for project"
+     *         description="Returned when no campaign exists for project",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -160,9 +187,7 @@ class CampaignApiController extends AbstractApiController
     }
 
     /**
-     * Create a campaign. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST --data '{"warning":80, "success":95, "start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
-     * </code></pre>.
+     * Create a campaign.
      *
      * @param Project     $project     Project
      * @param CampaignDTO $campaignDTO Campaign to create
@@ -179,35 +204,41 @@ class CampaignApiController extends AbstractApiController
      * @Operation(
      *     tags={"Campaigns"},
      *     summary="Create a campaign.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns -H &quot;Content-Type: application/json&quot; -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X POST --data '{&quot;start&quot;:&quot;2017-07-01 12:30:01&quot;, &quot;end&quot;:&quot;2017-07-03 12:30:01&quot;}'</code></pre>",
      *     @SWG\Parameter(
-     *         name="start",
-     *         in="formData",
-     *         description="Start Date time of the campaign in format (2017-07-01 12:30:01). Now by default.",
-     *         required=false,
-     *         type="DateTime"
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
      *     ),
      *     @SWG\Parameter(
-     *         name="end",
-     *         in="formData",
-     *         description="End Date time of the campaign in format (2017-07-01 12:30:01). Null by default.",
+     *         name="data",
+     *         in="body",
      *         required=false,
-     *         type="DateTime"
+     *         @SWG\Schema(ref="#/definitions/CampaignDataModel")
      *     ),
      *     @SWG\Response(
      *         response="201",
-     *         description="Returned when created"
+     *         description="Returned when created",
+     *         @Model(type=Campaign::class, groups={"public"})
      *     ),
      *     @SWG\Response(
      *         response="400",
-     *         description="Returned when a violation is raised by validation"
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *         )
      *     ),
      *     @SWG\Response(
      *         response="401",
-     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when project not found"
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -239,9 +270,7 @@ class CampaignApiController extends AbstractApiController
     }
 
     /**
-     * Update a campaign. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"start":"2017-07-01 12:30:01", "end":"2017-07-03 12:30:01"}'
-     * </code></pre>.
+     * Update a campaign.
      *
      * @param Project     $project     Project
      * @param Campaign    $campaignDB  Campaign to update
@@ -263,42 +292,47 @@ class CampaignApiController extends AbstractApiController
      * @Operation(
      *     tags={"Campaigns"},
      *     summary="Update a campaign.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H &quot;Content-Type: application/json&quot; -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X PUT --data '{&quot;start&quot;:&quot;2017-07-01 12:30:01&quot;, &quot;end&quot;:&quot;2017-07-03 12:30:01&quot;}'</code></pre>",
      *     @SWG\Parameter(
-     *         name="start",
-     *         in="body",
-     *         description="Start Date time of the campaign in format (2017-07-01 12:30:01). Now by default.",
-     *         required=false,
-     *         type="DateTime",
-     *         schema=""
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
      *     ),
      *     @SWG\Parameter(
-     *         name="end",
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="data",
      *         in="body",
-     *         description="End Date time of the campaign in format (2017-07-01 12:30:01). Null by default.",
-     *         required=false,
-     *         type="DateTime",
-     *         schema=""
+     *         required=true,
+     *         @SWG\Schema(ref="#/definitions/CampaignDataModel")
      *     ),
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
-     *         @Model(type="AppBundle\Entity\Campaign")
+     *         @Model(type=Campaign::class, groups={"public"})
      *     ),
      *     @SWG\Response(
      *         response="400",
-     *         description="Returned when a violation is raised by validation"
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *         )
      *     ),
      *     @SWG\Response(
      *         response="401",
-     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when campaign not found"
-     *     ),
-     *     @SWG\Response(
-     *         response="405",
-     *         description="Returned when campaign refid is not set in URL"
+     *         description="Returned when campaign not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -327,9 +361,7 @@ class CampaignApiController extends AbstractApiController
     }
 
     /**
-     * Delete a campaign. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
-     * </code></pre>.
+     * Delete a campaign.
      *
      * @param Project  $project  Project
      * @param Campaign $campaign Campaign to delete
@@ -349,21 +381,37 @@ class CampaignApiController extends AbstractApiController
      * @Operation(
      *     tags={"Campaigns"},
      *     summary="Delete a campaign.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1 -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X DELETE</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful"
      *     ),
      *     @SWG\Response(
      *         response="401",
-     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when campaign not found"
+     *         description="Returned when campaign not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     ),
      *     @SWG\Response(
      *         response="405",
-     *         description="Returned when campaign refid is not set in URL"
+     *         description="Returned when campaign refid is not set in URL",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *

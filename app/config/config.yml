@@ -125,6 +125,16 @@ nelmio_api_doc:
                     - warning
                     - success
                     - email
+            CampaignDataModel:
+                title: "Campaign data input"
+                type: "object"
+                properties:
+                    start:
+                        type: "string"
+                        description: "Start Date time of the campaign in format (2017-07-01 12:30:01). Now by default."
+                    end:
+                        type: "string"
+                        description: "End Date time of the campaign in format (2017-07-01 12:30:01). Null by default."
             ErrorModel:
                 title: "Error"
                 type: "object"
