@@ -51,9 +51,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class ProjectApiController extends AbstractApiController
 {
     /**
-     * Get list of projects. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects -X GET
-     * </code></pre>.
+     * Get list of projects.
      *
      * @return array
      *
@@ -63,10 +61,19 @@ class ProjectApiController extends AbstractApiController
      * @Operation(
      *     tags={"Projects"},
      *     summary="Get the list of all projects.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects -X GET</code></pre>",
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful array of public data of projects",
-     *         @Model(type="AppBundle\Entity\Project")
+     *         @SWG\Schema(
+     *            type="array",
+     *            @Model(type=Project::class, groups={"public"})
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         description="Unexpected error",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -79,11 +86,9 @@ class ProjectApiController extends AbstractApiController
 
         return $projects;
     }
-
+    
     /**
-     * Get public project data. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -X GET
-     * </code></pre>.
+     * Get public project data.
      *
      * @param Project $project Project
      *
@@ -97,14 +102,22 @@ class ProjectApiController extends AbstractApiController
      * @Operation(
      *     tags={"Projects"},
      *     summary="Get public project data.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
-     *         @Model(type="AppBundle\Entity\Project")
+     *         @Model(type=Project::class, groups={"public"})
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when project not found"
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -113,12 +126,10 @@ class ProjectApiController extends AbstractApiController
     {
         return $project;
     }
-
+    
     /**
-     * Get private project data. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/private -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X GET
-     * </code></pre>.
-     *
+     * Get private project data.
+     * 
      * @param Project $project Project
      * @param Request $request The request
      *
@@ -132,18 +143,34 @@ class ProjectApiController extends AbstractApiController
      * @Operation(
      *     tags={"Projects"},
      *     summary="Get private project data.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/private -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="X-CIR-TKN",
+     *         in="header",
+     *         required=true,
+     *         description="Private token",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
-     *         @Model(type="AppBundle\Entity\Project")
+     *         @Model(type=Project::class, groups={"private"})
      *     ),
      *     @SWG\Response(
      *         response="401",
-     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when project not found"
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -156,11 +183,9 @@ class ProjectApiController extends AbstractApiController
 
         return $project;
     }
-
+    
     /**
-     * Create a project. Private token is sent by email. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects -H "Content-Type: application/json" -X POST --data '{"name":"Project To Add", "warning":80, "success":95, "email":"test@example.com"}'
-     * </code></pre>.
+     * Create a project. Private token is sent by email.
      *
      * @param Project                 $project    Project to create
      * @param ConstraintViolationList $violations List of violations
@@ -175,41 +200,25 @@ class ProjectApiController extends AbstractApiController
      * @Operation(
      *     tags={"Projects"},
      *     summary="Create a project. Private data are sent by mail.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects -H &quot;Content-Type: application/json&quot; -X POST --data '{&quot;name&quot;:&quot;Project To Add&quot;, &quot;warning&quot;:80, &quot;success&quot;:95, &quot;email&quot;:&quot;test@example.com&quot;}'</code></pre>",
      *     @SWG\Parameter(
-     *         name="name",
-     *         in="formData",
-     *         description="Name of the project.",
-     *         required=false,
-     *         type="string"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="warning",
-     *         in="formData",
-     *         description="Tests warning limit. Integer between 0 and 100 %.",
-     *         required=false,
-     *         type="integer"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="success",
-     *         in="formData",
-     *         description="Tests success limit. Integer between 0 and 100 %.",
-     *         required=false,
-     *         type="integer"
-     *     ),
-     *     @SWG\Parameter(
-     *         name="email",
-     *         in="formData",
-     *         description="Email.",
-     *         required=false,
-     *         type="string"
+     *         name="data",
+     *         in="body",
+     *         required=true,
+     *         @SWG\Schema(ref="#/definitions/ProjectDataModel")
      *     ),
      *     @SWG\Response(
      *         response="201",
-     *         description="Returned when created"
+     *         description="Returned when created",
+     *         @Model(type=Project::class, groups={"private"})
      *     ),
      *     @SWG\Response(
      *         response="400",
-     *         description="Returned when a violation is raised by validation"
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *         )
      *     )
      * )
      *
@@ -230,11 +239,9 @@ class ProjectApiController extends AbstractApiController
 
         return $project;
     }
-
+    
     /**
-     * Update a project. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"name":"Project To Update", "warning":85, "success":90, "email":"test-changed@example.com"}'
-     * </code></pre>.
+     * Update a project.
      *
      * @param Project $projectDB  Project to update
      * @param Project $projectDTO Project containing values to update
@@ -251,54 +258,48 @@ class ProjectApiController extends AbstractApiController
      * @Operation(
      *     tags={"Projects"},
      *     summary="Update a project.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one -H &quot;Content-Type: application/json&quot; -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X PUT --data '{&quot;name&quot;:&quot;Project To Update&quot;, &quot;warning&quot;:85, &quot;success&quot;:90, &quot;email&quot;:&quot;test-changed@example.com&quot;}'</code></pre>",
      *     @SWG\Parameter(
-     *         name="name",
-     *         in="body",
-     *         description="Name of the project.",
-     *         required=false,
-     *         type="string",
-     *         schema=""
+     *         name="X-CIR-TKN",
+     *         in="header",
+     *         required=true,
+     *         description="Private token",
+     *         type="string"
      *     ),
      *     @SWG\Parameter(
-     *         name="warning",
-     *         in="body",
-     *         description="Tests warning limit. Integer between 0 and 100 %.",
-     *         required=false,
-     *         type="integer",
-     *         schema=""
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
      *     ),
      *     @SWG\Parameter(
-     *         name="success",
+     *         name="data",
      *         in="body",
-     *         description="Tests success limit. Integer between 0 and 100 %.",
-     *         required=false,
-     *         type="integer",
-     *         schema=""
-     *     ),
-     *     @SWG\Parameter(
-     *         name="email",
-     *         in="body",
-     *         description="Email.",
-     *         required=false,
-     *         type="string",
-     *         schema=""
+     *         required=true,
+     *         @SWG\Schema(ref="#/definitions/ProjectDataModel")
      *     ),
      *     @SWG\Response(
      *         response="200",
      *         description="Returned when successful",
-     *         @Model(type="AppBundle\Entity\Project")
+     *         @Model(type=Project::class, groups={"private"})
      *     ),
      *     @SWG\Response(
      *         response="400",
-     *         description="Returned when a violation is raised by validation"
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *         )
      *     ),
      *     @SWG\Response(
      *         response="401",
-     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when project not found"
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *
@@ -326,11 +327,9 @@ class ProjectApiController extends AbstractApiController
 
         return $projectDB;
     }
-
+    
     /**
-     * Delete a project. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
-     * </code></pre>.
+     * Delete a project.
      *
      * @param Project $project Project
      * @param Request $request The request
@@ -345,17 +344,33 @@ class ProjectApiController extends AbstractApiController
      * @Operation(
      *     tags={"Projects"},
      *     summary="Delete a project.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X DELETE</code></pre>",
+     *     @SWG\Parameter(
+     *         name="X-CIR-TKN",
+     *         in="header",
+     *         required=true,
+     *         description="Private token",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
      *     @SWG\Response(
      *         response="204",
      *         description="Returned when successful"
      *     ),
      *     @SWG\Response(
      *         response="401",
-     *         description="Returned when X-CIR-TKN private token value is invalid"
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     ),
      *     @SWG\Response(
      *         response="404",
-     *         description="Returned when project not found"
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
      *

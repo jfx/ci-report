@@ -92,6 +92,53 @@ swiftmailer:
     spool: { type: memory }
 
 nelmio_api_doc:
-    name: ci-report API documentation
-    sandbox:
-        enabled:  false
+    documentation:
+        info:
+            title: ci-report API documentation
+            version: 1.0.0
+            description: "This is the documentation of API of ci-report."
+        parameters:
+            prefid:
+                in: path
+                name: prefid
+                description: "Unique short name of project defined on project creation."
+                type: string              
+        definitions:
+            ProjectDataModel:
+                title: "Project data input"
+                type: "object"
+                properties:
+                    name:
+                        type: "string"
+                        description: "Name of the project."
+                    warning:
+                        type: "integer"
+                        description: "Tests warning limit. Integer between 0 and 100 %."
+                    success:
+                        type: "integer"
+                        description: "Tests success limit. Integer between 0 and 100 %."
+                    email:
+                        type: "string"
+                        description: "Email."
+                required:
+                    - name
+                    - warning
+                    - success
+                    - email
+            ErrorModel:
+                title: "Error"
+                type: "object"
+                properties:
+                    code:
+                        type: "integer"
+                        description: "Error code"
+                    message:
+                        type: "string"
+                        description: "Error message"
+                required:
+                    - code
+                    - message
+    areas:
+        path_patterns: # an array of regexps
+            - ^/api(?!/doc$)
+                    
