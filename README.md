@@ -9,4 +9,4 @@ ci-report
 [master:](https://github.com/jfx/ci-report "Branch master") [![Build Status](https://travis-ci.org/jfx/ci-report.svg?branch=master)](https://travis-ci.org/jfx/ci-report)
 [develop:](https://github.com/jfx/ci-report/tree/develop "Branch develop") [![Build Status](https://travis-ci.org/jfx/ci-report.svg?branch=develop)](https://travis-ci.org/jfx/ci-report/branches)
 
-A web application to display tests reports from CI tools like Travis or Gitlab-ci.
+A web application to display tests reports for CI tools like Travis or Gitlab-ci.

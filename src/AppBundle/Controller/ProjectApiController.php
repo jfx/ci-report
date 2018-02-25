@@ -27,7 +27,9 @@ use AppBundle\Entity\Project;
 use AppBundle\Service\ProjectService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation as Doc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,26 +51,30 @@ use Symfony\Component\Validator\ConstraintViolationList;
 class ProjectApiController extends AbstractApiController
 {
     /**
-     * Get list of projects. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects -X GET
-     * </code></pre>.
+     * Get list of projects.
      *
      * @return array
      *
      * @Rest\Get("/projects")
      * @Rest\View(serializerGroups={"public"})
      *
-     * @Doc\ApiDoc(
-     *     section="Projects",
-     *     description="Get the list of all projects.",
-     *     output={
-     *         "class"=Project::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful array of public data of projects"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Get the list of all projects.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects -X GET</code></pre>",
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful array of public data of projects",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @Model(type=Project::class, groups={"public"})
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response="default",
+     *         description="Unexpected error",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function getProjectsAction(): array
@@ -81,9 +87,7 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Get public project data. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -X GET
-     * </code></pre>.
+     * Get public project data.
      *
      * @param Project $project Project
      *
@@ -94,26 +98,26 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @Doc\ApiDoc(
-     *     section="Projects",
-     *     description="Get public project data.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     output= {
-     *         "class"=Project::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         404="Returned when project not found"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Get public project data.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type=Project::class, groups={"public"})
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function getProjectAction(Project $project): Project
@@ -122,9 +126,7 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Get private project data. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/private -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X GET
-     * </code></pre>.
+     * Get private project data.
      *
      * @param Project $project Project
      * @param Request $request The request
@@ -136,37 +138,38 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @Doc\ApiDoc(
-     *     section="Projects",
-     *     description="Get private project data.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     output= {
-     *         "class"=Project::class,
-     *         "groups"={"private"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Get private project data.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/private -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="X-CIR-TKN",
+     *         in="header",
+     *         required=true,
+     *         description="Private token",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type=Project::class, groups={"private"})
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function getProjectPrivateAction(Project $project, Request $request)
@@ -179,9 +182,7 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Create a project. Private token is sent by email. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects -H "Content-Type: application/json" -X POST --data '{"name":"Project To Add", "warning":80, "success":95, "email":"test@example.com"}'
-     * </code></pre>.
+     * Create a project. Private token is sent by email.
      *
      * @param Project                 $project    Project to create
      * @param ConstraintViolationList $violations List of violations
@@ -193,26 +194,29 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", converter="fos_rest.request_body", options={ "validator"={"groups"={"input", "unique"}} } )
      *
-     * @Doc\ApiDoc(
-     *     section="Projects",
-     *     description="Create a project. Private data are sent by mail.",
-     *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         }
-     *     },
-     *     input= { "class"=ProjectDTO::class },
-     *     output= {
-     *         "class"=Project::class,
-     *         "groups"={"private"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         201="Returned when created",
-     *         400="Returned when a violation is raised by validation"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Create a project. Private data are sent by mail.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects -H &quot;Content-Type: application/json&quot; -X POST --data '{&quot;name&quot;:&quot;Project To Add&quot;, &quot;warning&quot;:80, &quot;success&quot;:95, &quot;email&quot;:&quot;test@example.com&quot;}'</code></pre>",
+     *     @SWG\Parameter(
+     *         name="data",
+     *         in="body",
+     *         required=true,
+     *         @SWG\Schema(ref="#/definitions/ProjectDataModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when created",
+     *         @Model(type=Project::class, groups={"private"})
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
+     *         )
+     *     )
      * )
      */
     public function postProjectAction(Project $project, ConstraintViolationList $violations)
@@ -233,9 +237,7 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Update a project. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"name":"Project To Update", "warning":85, "success":90, "email":"test-changed@example.com"}'
-     * </code></pre>.
+     * Update a project.
      *
      * @param Project $projectDB  Project to update
      * @param Project $projectDTO Project containing values to update
@@ -249,44 +251,52 @@ class ProjectApiController extends AbstractApiController
      * @ParamConverter("projectDB", options={"mapping": {"prefid": "refid"}})
      * @ParamConverter("projectDTO", converter="fos_rest.request_body")
      *
-     * @Doc\ApiDoc(
-     *     section="Projects",
-     *     description="Update a project.",
-     *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         },
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     input= { "class"=ProjectDTO::class },
-     *     output= {
-     *         "class"=Project::class,
-     *         "groups"={"private"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Update a project.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one -H &quot;Content-Type: application/json&quot; -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X PUT --data '{&quot;name&quot;:&quot;Project To Update&quot;, &quot;warning&quot;:85, &quot;success&quot;:90, &quot;email&quot;:&quot;test-changed@example.com&quot;}'</code></pre>",
+     *     @SWG\Parameter(
+     *         name="X-CIR-TKN",
+     *         in="header",
+     *         required=true,
+     *         description="Private token",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="data",
+     *         in="body",
+     *         required=true,
+     *         @SWG\Schema(ref="#/definitions/ProjectDataModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type=Project::class, groups={"private"})
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function putProjectAction(Project $projectDB, ProjectDTO $projectDTO, Request $request)
@@ -314,9 +324,7 @@ class ProjectApiController extends AbstractApiController
     }
 
     /**
-     * Delete a project. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
-     * </code></pre>.
+     * Delete a project.
      *
      * @param Project $project Project
      * @param Request $request The request
@@ -328,32 +336,37 @@ class ProjectApiController extends AbstractApiController
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      *
-     * @Doc\ApiDoc(
-     *     section="Projects",
-     *     description="Delete a project.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         }
-     *     },
-     *     statusCodes={
-     *         204="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Projects"},
+     *     summary="Delete a project.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X DELETE</code></pre>",
+     *     @SWG\Parameter(
+     *         name="X-CIR-TKN",
+     *         in="header",
+     *         required=true,
+     *         description="Private token",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function deleteProjectAction(Project $project, Request $request)

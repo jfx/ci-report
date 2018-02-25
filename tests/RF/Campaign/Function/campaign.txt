@@ -1,5 +1,7 @@
 *** Settings ***
 Library           Selenium2Library
+Library           RequestsLibrary
+Library           ../../API/Function/RequestsUploadFile.py
 Resource          ../Conf/campaign.txt
 Resource          ../../Common/Function/common.txt
 Resource          ../../Common/Function/check.txt

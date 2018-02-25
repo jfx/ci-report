@@ -198,6 +198,17 @@ class Suite
     protected $datetime;
 
     /**
+     * UID of attach zip documents.
+     *
+     * @var string
+     *
+     * @ORM\Column(name="doc_uid", type="string", length=50, nullable=true)
+     *
+     * @Serializer\Exclude
+     */
+    private $documentUid;
+
+    /**
      * @Gedmo\SortablePosition
      * @ORM\Column(name="position", type="integer")
      *
@@ -491,6 +502,30 @@ class Suite
         $this->position = $position;
 
         return $this;
+    }
+
+    /**
+     * Set document Uid.
+     *
+     * @param string $uid Document Uid
+     *
+     * @return Suite
+     */
+    public function setDocumentUid(?string $uid): self
+    {
+        $this->documentUid = $uid;
+
+        return $this;
+    }
+
+    /**
+     * Get document Uid.
+     *
+     * @return string
+     */
+    public function getDocumentUid(): ?string
+    {
+        return $this->documentUid;
     }
 
     /**

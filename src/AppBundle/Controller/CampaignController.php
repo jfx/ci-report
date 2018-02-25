@@ -24,6 +24,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Suite;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -57,11 +58,7 @@ class CampaignController extends Controller
      * )
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      */
     public function indexAction(Project $project, Campaign $campaign): Response
     {

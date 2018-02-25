@@ -7,8 +7,10 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    container.autowiring.strict_mode: true
     locale: en
     app.upload_dir: '%kernel.project_dir%/var/tmp'
+    app.storage_dir: '%kernel.project_dir%/var/documents'
 
 framework:
     #esi: ~
@@ -90,6 +92,63 @@ swiftmailer:
     spool: { type: memory }
 
 nelmio_api_doc:
-    name: ci-report API documentation
-    sandbox:
-        enabled:  false
+    documentation:
+        info:
+            title: ci-report API documentation
+            version: 1.0.0
+            description: "This is the documentation of API of ci-report."
+        parameters:
+            prefid:
+                in: path
+                name: prefid
+                description: "Unique short name of project defined on project creation."
+                type: string              
+        definitions:
+            ProjectDataModel:
+                title: "Project data input"
+                type: "object"
+                properties:
+                    name:
+                        type: "string"
+                        description: "Name of the project."
+                    warning:
+                        type: "integer"
+                        description: "Tests warning limit. Integer between 0 and 100 %."
+                    success:
+                        type: "integer"
+                        description: "Tests success limit. Integer between 0 and 100 %."
+                    email:
+                        type: "string"
+                        description: "Email."
+                required:
+                    - name
+                    - warning
+                    - success
+                    - email
+            CampaignDataModel:
+                title: "Campaign data input"
+                type: "object"
+                properties:
+                    start:
+                        type: "string"
+                        description: "Start Date time of the campaign in format (2017-07-01 12:30:01). Now by default."
+                    end:
+                        type: "string"
+                        description: "End Date time of the campaign in format (2017-07-01 12:30:01). Null by default."
+            ErrorModel:
+                title: "Error"
+                type: "object"
+                properties:
+                    code:
+                        type: "integer"
+                        description: "Error code"
+                    message:
+                        type: "string"
+                        description: "Error message"
+                required:
+                    - code
+                    - message
+    areas:
+        path_patterns: # an array of regexps
+            - ^/api(?!/doc$)
+                    

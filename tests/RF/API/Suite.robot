@@ -26,13 +26,18 @@ Resource          Function/api.txt
     And Item of list should not countains label    ${resp.content}    id
     And Item of list should not countains label    ${resp.content}    position
 
-"GET Suites" request with unknown project returns "404" error
+"GET Suites" request with unknown project refid returns "404" error
     ${resp} =    When Get Request    cir    /projects/XXX/campaigns/${P1C4S1.crefid}/suites
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"GET Suites" request with unknown campaign for project returns "404" error
+"GET Suites" request with unknown campaign refid for project returns "404" error
     ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/0/suites
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"GET Suites" request with not numeric campaign refid for project returns "404" error
+    ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/X/suites
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
@@ -271,7 +276,7 @@ Resource          Function/api.txt
     And Dictionary Should Contain Item    ${resp.json()[0]}    property_path    junitfile
     And Dictionary Should Contain Item    ${resp.json()[0]}    message    Please upload a valid XML file
 
-"POST suites" upload junit file request with unknown project returns "404" error
+"POST suites" upload junit file request with unknown project refid returns "404" error
     &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
@@ -279,11 +284,19 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"POST suites" upload junit file request with unknown campaign returns "404" error
+"POST suites" upload junit file request with unknown campaign refid returns "404" error
     &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
     &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
     &{data} =    And Create Dictionary
     ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/0/suites/junit    ${file}    headers=${headers}    data=${data}
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
+"POST suites" upload junit file request with not numeric campaign refid returns "404" error
+    &{file} =    Create Dictionary    form_field=junitfile    path_file=${CURDIR}/../../files/junit-ok1.xml
+    &{headers} =    When Create Dictionary    X-CIR-TKN=${P1.token}
+    &{data} =    And Create Dictionary
+    ${resp}=    Post Request With File Upload    ${API_URL}/projects/${P1C4Ja.prefid}/campaigns/X/suites/junit    ${file}    headers=${headers}    data=${data}
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 

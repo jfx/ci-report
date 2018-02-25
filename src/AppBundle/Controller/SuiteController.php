@@ -25,10 +25,14 @@ use AppBundle\Entity\Campaign;
 use AppBundle\Entity\Project;
 use AppBundle\Entity\Suite;
 use AppBundle\Entity\Test;
+use AppBundle\Service\DocumentStorageService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * Suite controller class.
@@ -59,16 +63,8 @@ class SuiteController extends Controller
      * )
      *
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
-     * @ParamConverter("campaign", class="AppBundle:Campaign", options={
-     *    "repository_method" = "findCampaignByProjectRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid"},
-     *    "map_method_signature" = true
-     * })
-     * @ParamConverter("suite", class="AppBundle:Suite", options={
-     *    "repository_method" = "findSuiteByProjectRefidCampaignRefidAndRefid",
-     *    "mapping": {"prefid": "prefid", "crefid": "crefid", "srefid": "srefid"},
-     *    "map_method_signature" = true
-     * })
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
+     * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      */
     public function indexAction(Project $project, Campaign $campaign, Suite $suite): Response
     {
@@ -94,5 +90,45 @@ class SuiteController extends Controller
                 'tests' => $testsList,
             )
         );
+    }
+
+    /**
+     * Download document action.
+     *
+     * @param Project  $project  Project
+     * @param Campaign $campaign Campaign
+     * @param Suite    $suite    The suite to display
+     *
+     * @return BinaryFileResponse The file to download
+     *
+     * @Route(
+     *    "/project/{prefid}/campaign/{crefid}/suite/{srefid}/doc",
+     *    requirements={"crefid" = "\d+", "srefid" = "\d+"},
+     *    name="suite-doc"
+     * )
+     *
+     * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
+     * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
+     * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
+     */
+    public function docAction(Project $project, Campaign $campaign, Suite $suite): BinaryFileResponse
+    {
+        if (null === $suite->getDocumentUid()) {
+            throw $this->createNotFoundException('The zip document does not exist');
+        }
+        $docStoreService = $this->get(DocumentStorageService::class);
+        $filePath = $docStoreService->getFullPath(
+            $project,
+            $campaign,
+            $suite->getDocumentUid()
+        );
+        $response = new BinaryFileResponse($filePath);
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            'documents.zip'
+        );
+        $response->headers->set('Content-Type', 'application/zip');
+
+        return $response;
     }
 }

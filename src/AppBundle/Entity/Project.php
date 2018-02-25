@@ -95,7 +95,7 @@ class Project
     private $token;
 
     /**
-     * Tests warning limit.
+     * Default tests warning limit.
      *
      * @var int
      *
@@ -110,7 +110,7 @@ class Project
     private $warning;
 
     /**
-     * Tests success limit.
+     * Default tests success limit.
      *
      * @var int
      *
