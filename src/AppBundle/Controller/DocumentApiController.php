@@ -30,7 +30,9 @@ use AppBundle\Entity\ZipFile;
 use AppBundle\Service\DocumentStorageService;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation as Doc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,9 +55,9 @@ class DocumentApiController extends AbstractApiController
 {
     /**
      * Attach a zip archive to a suite. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/doc/zip -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST -F 'zipfile=@/path/to/myfile.zip'
-     * </code></pre>
-     * <p style="font-size:10px;">(@ symbol is mandatory at the beginning of the file path)</p>.
+     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">
+     * </code></pre>.
+     *
      *
      * @param Project  $project  Project
      * @param Campaign $campaign Campaign
@@ -73,51 +75,58 @@ class DocumentApiController extends AbstractApiController
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @Doc\ApiDoc(
-     *     section="Documents",
-     *     description="Attach a zip archive to a suite.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     input= { "class"=ZipFileDTO::class },
-     *     output= {
-     *         "class"=ZipFile::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         201="Returned when created",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project, campaign or suite not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Documents"},
+     *     summary="Attach a zip archive to a suite.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/doc/zip -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X POST -F 'zipfile=@/path/to/myfile.zip'</code></pre><p>(@ symbol is mandatory at the beginning of the file path)</p>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="srefid",
+     *         in="path",
+     *         description="Reference id of the suite.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="zipfile",
+     *         in="formData",
+     *         description="Zip file.",
+     *         required=true,
+     *         type="file"
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when created",
+     *         @Model(type=ZipFile::class, groups={"public"})
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project, campaign or suite not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function postZipDocumentAction(Project $project, Campaign $campaign, Suite $suite, Request $request)
@@ -153,9 +162,7 @@ class DocumentApiController extends AbstractApiController
     }
 
     /**
-     * Delete a zip archive from a suite. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/doc/zip -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
-     * </code></pre>.
+     * Delete a zip archive from a suite.
      *
      * @param Project  $project  Project
      * @param Campaign $campaign Campaign
@@ -174,44 +181,42 @@ class DocumentApiController extends AbstractApiController
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @Doc\ApiDoc(
-     *     section="Documents",
-     *     description="Delete a zip archive from a suite.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     statusCodes={
-     *         204="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when suite not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Documents"},
+     *     summary="Delete a zip archive from a suite.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/doc/zip -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X DELETE</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="srefid",
+     *         in="path",
+     *         description="Reference id of the suite.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when suite not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function deleteZipDocumentAction(Project $project, Campaign $campaign, Suite $suite, Request $request)

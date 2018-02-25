@@ -34,7 +34,9 @@ use AppBundle\Service\RefreshService;
 use DOMDocument;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\View;
-use Nelmio\ApiDocBundle\Annotation as Doc;
+use Nelmio\ApiDocBundle\Annotation\Operation;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Swagger\Annotations as SWG;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,9 +58,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SuiteApiController extends AbstractApiController
 {
     /**
-     * Get list of suites for a project and a campaign. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites -X GET
-     * </code></pre>.
+     * Get list of suites for a project and a campaign.
      *
      * @param Campaign $campaign Campaign
      *
@@ -71,32 +71,35 @@ class SuiteApiController extends AbstractApiController
      *
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @Doc\ApiDoc(
-     *     section="Suites",
-     *     description="Get the list of all suites for a campaign.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         }
-     *     },
-     *     output={
-     *         "class"=Suite::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful array of public data of campaigns",
-     *         404="Returned when project not found"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Get the list of all suites for a campaign.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful array of public data of campaigns",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @Model(type=Suite::class, groups={"public"})
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project or campaign not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function getSuitesAction(Campaign $campaign): array
@@ -109,9 +112,7 @@ class SuiteApiController extends AbstractApiController
     }
 
     /**
-     * Get suite data. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -X GET
-     * </code></pre>.
+     * Get suite data.
      *
      * @param Suite $suite Suite
      *
@@ -125,38 +126,38 @@ class SuiteApiController extends AbstractApiController
      *
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @Doc\ApiDoc(
-     *     section="Suites",
-     *     description="Get suite data.",
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     output= {
-     *         "class"=Suite::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         404="Returned when project or campaign not found"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Get suite data.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -X GET</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="srefid",
+     *         in="path",
+     *         description="Reference id of the suite.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type=Suite::class, groups={"public"})
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project or campaign not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function getSuiteAction(Suite $suite): Suite
@@ -165,10 +166,7 @@ class SuiteApiController extends AbstractApiController
     }
 
     /**
-     * Create suites for a campaign by uploading a junit file. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/junit -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X POST -F warning=80 -F success=95 -F 'junitfile=@/path/to/junit.xml'
-     * </code></pre>
-     * <p style="font-size:10px;">(@ symbol is mandatory at the beginning of the file path)</p>.
+     * Create suites for a campaign by uploading a junit file.
      *
      * @param Project  $project  Project
      * @param Campaign $campaign Campaign
@@ -184,45 +182,66 @@ class SuiteApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @Entity("campaign", expr="repository.findCampaignByProjectRefidAndRefid(prefid, crefid)")
      *
-     * @Doc\ApiDoc(
-     *     section="Suites",
-     *     description="Create suites by uploading a junit file.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         }
-     *     },
-     *     input= { "class"=SuiteLimitsFilesDTO::class },
-     *     output= {
-     *         "class"=Suite::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         201="Returned when created",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when project or campaign not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Create suites by uploading a junit file.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/junit -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X POST -F warning=80 -F success=95 -F 'junitfile=@/path/to/junit.xml'</code></pre><p>(@ symbol is mandatory at the beginning of the file path)</p>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="junitfile",
+     *         in="formData",
+     *         description="XML junit file.",
+     *         required=true,
+     *         type="file"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="warning",
+     *         in="formData",
+     *         description="Tests warning limit. Integer between 0 and 100 %. Limit defined on project by default.",
+     *         required=false,
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="success",
+     *         in="formData",
+     *         description="Tests success limit. Integer between 0 and 100 %. Limit defined on project by default.",
+     *         required=false,
+     *         type="integer"
+     *     ),
+     *     @SWG\Response(
+     *         response="201",
+     *         description="Returned when created",
+     *         @Model(type=Suite::class, groups={"public"})
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when project or campaign not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function postSuiteAction(Project $project, Campaign $campaign, Request $request)
@@ -297,9 +316,7 @@ class SuiteApiController extends AbstractApiController
     }
 
     /**
-     * Update suite warning and success limits. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/limits -H "Content-Type: application/json" -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X PUT --data '{"warning":80, "success":95}'
-     * </code></pre>.
+     * Update suite warning and success limits.
      *
      * @param Project        $project        Project
      * @param Suite          $suiteDB        Suite to update
@@ -318,56 +335,68 @@ class SuiteApiController extends AbstractApiController
      * @Entity("suiteDB", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      * @ParamConverter("suiteLimitsDTO", converter="fos_rest.request_body")
      *
-     * @Doc\ApiDoc(
-     *     section="Suites",
-     *     description="Update suite warning and success limits.",
-     *     headers={
-     *         {
-     *             "name"="Content-Type",
-     *             "required"=true,
-     *             "description"="Type of content: application/json"
-     *         },
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     input= { "class"=SuiteLimitsDTO::class },
-     *     output= {
-     *         "class"=Suite::class,
-     *         "groups"={"public"},
-     *         "parsers"={"Nelmio\ApiDocBundle\Parser\JmsMetadataParser"}
-     *     },
-     *     statusCodes={
-     *         200="Returned when successful",
-     *         400="Returned when a violation is raised by validation",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when suite not found"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Update suite warning and success limits.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1/limits -H &quot;Content-Type: application/json&quot; -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X PUT --data '{&quot;warning&quot;:80, &quot;success&quot;:95}'</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="srefid",
+     *         in="path",
+     *         description="Reference id of the suite.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="data",
+     *         in="body",
+     *         @SWG\Schema(
+     *            type="object",
+     *            @SWG\Property(
+     *                property="warning",
+     *                type="integer",
+     *                description="Tests warning limit. Integer between 0 and 100 %. Limit defined on project by default."
+     *            ),
+     *            @SWG\Property(
+     *                property="success",
+     *                type="integer",
+     *                description="Tests success limit. Integer between 0 and 100 %. Limit defined on project by default."
+     *            )
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response="200",
+     *         description="Returned when successful",
+     *         @Model(type=Suite::class, groups={"public"})
+     *     ),
+     *     @SWG\Response(
+     *         response="400",
+     *         description="Returned when a violation is raised by validation",
+     *         @SWG\Schema(
+     *            type="array",
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
+     *         )
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when suite not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function putSuiteLimitsAction(Project $project, Suite $suiteDB, SuiteLimitsDTO $suiteLimitsDTO, Request $request)
@@ -404,9 +433,7 @@ class SuiteApiController extends AbstractApiController
     }
 
     /**
-     * Delete a suite. Example: </br>
-     * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -H "X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001" -X DELETE
-     * </code></pre>.
+     * Delete a suite.
      *
      * @param Project $project Project
      * @param Suite   $suite   Suite to delete
@@ -423,45 +450,47 @@ class SuiteApiController extends AbstractApiController
      * @ParamConverter("project", options={"mapping": {"prefid": "refid"}})
      * @Entity("suite", expr="repository.findSuiteByProjectRefidCampaignRefidAndRefid(prefid, crefid, srefid)")
      *
-     * @Doc\ApiDoc(
-     *     section="Suites",
-     *     description="Delete a suite.",
-     *     headers={
-     *         {
-     *             "name"="X-CIR-TKN",
-     *             "required"=true,
-     *             "description"="Private token"
-     *         }
-     *     },
-     *     requirements={
-     *         {
-     *             "name"="prefid",
-     *             "dataType"="string",
-     *             "requirement"="string",
-     *             "description"="Unique short name of project defined on project creation."
-     *         },
-     *         {
-     *             "name"="crefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the campaign."
-     *         },
-     *         {
-     *             "name"="srefid",
-     *             "dataType"="int",
-     *             "requirement"="int",
-     *             "description"="Reference id of the suite."
-     *         }
-     *     },
-     *     statusCodes={
-     *         204="Returned when successful",
-     *         401="Returned when X-CIR-TKN private token value is invalid",
-     *         404="Returned when suite not found",
-     *         405="Returned when suite refid is not set in URL"
-     *     },
-     *     tags={
-     *         "token" = "#2c3e50"
-     *     }
+     * @Operation(
+     *     tags={"Suites"},
+     *     summary="Delete a suite.",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/1 -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X DELETE</code></pre>",
+     *     @SWG\Parameter(
+     *         name="prefid",
+     *         in="path",
+     *         description="Unique short name of project defined on project creation.",
+     *         type="string"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="crefid",
+     *         in="path",
+     *         description="Reference id of the campaign.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Parameter(
+     *         name="srefid",
+     *         in="path",
+     *         description="Reference id of the suite.",
+     *         type="integer"
+     *     ),
+     *     @SWG\Response(
+     *         response="204",
+     *         description="Returned when successful"
+     *     ),
+     *     @SWG\Response(
+     *         response="401",
+     *         description="Returned when X-CIR-TKN private token value is invalid",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="404",
+     *         description="Returned when suite not found",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     ),
+     *     @SWG\Response(
+     *         response="405",
+     *         description="Returned when suite refid is not set in URL",
+     *         @SWG\Schema(ref="#/definitions/ErrorModel")
+     *     )
      * )
      */
     public function deleteSuiteAction(Project $project, Suite $suite, Request $request)
