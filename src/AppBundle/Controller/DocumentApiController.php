@@ -56,8 +56,8 @@ class DocumentApiController extends AbstractApiController
     /**
      * Attach a zip archive to a suite. Example: </br>
      * <pre style="background:black; color:white; font-size:10px;"><code style="background:black;">
-     * </code></pre>
-     * 
+     * </code></pre>.
+     *
      *
      * @param Project  $project  Project
      * @param Campaign $campaign Campaign
@@ -114,7 +114,7 @@ class DocumentApiController extends AbstractApiController
      *         description="Returned when a violation is raised by validation",
      *         @SWG\Schema(
      *            type="array",
-     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
      *         )
      *     ),
      *     @SWG\Response(
@@ -128,7 +128,6 @@ class DocumentApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function postZipDocumentAction(Project $project, Campaign $campaign, Suite $suite, Request $request)
     {
@@ -219,7 +218,6 @@ class DocumentApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function deleteZipDocumentAction(Project $project, Campaign $campaign, Suite $suite, Request $request)
     {

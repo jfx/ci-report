@@ -86,7 +86,6 @@ class CampaignApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function getCampaignsAction(Project $project): array
     {
@@ -139,7 +138,6 @@ class CampaignApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function getCampaignAction(Campaign $campaign): Campaign
     {
@@ -179,7 +177,6 @@ class CampaignApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function getLastCampaignAction(Campaign $campaign): Campaign
     {
@@ -227,7 +224,7 @@ class CampaignApiController extends AbstractApiController
      *         description="Returned when a violation is raised by validation",
      *         @SWG\Schema(
      *            type="array",
-     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
      *         )
      *     ),
      *     @SWG\Response(
@@ -241,7 +238,6 @@ class CampaignApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function postCampaignAction(Project $project, CampaignDTO $campaignDTO, Request $request)
     {
@@ -321,7 +317,7 @@ class CampaignApiController extends AbstractApiController
      *         description="Returned when a violation is raised by validation",
      *         @SWG\Schema(
      *            type="array",
-     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
      *         )
      *     ),
      *     @SWG\Response(
@@ -335,7 +331,6 @@ class CampaignApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function putCampaignAction(Project $project, Campaign $campaignDB, CampaignDTO $campaignDTO, Request $request)
     {
@@ -414,7 +409,6 @@ class CampaignApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function deleteCampaignAction(Project $project, Campaign $campaign, Request $request)
     {

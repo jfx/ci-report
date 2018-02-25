@@ -101,7 +101,6 @@ class SuiteApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function getSuitesAction(Campaign $campaign): array
     {
@@ -160,7 +159,6 @@ class SuiteApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function getSuiteAction(Suite $suite): Suite
     {
@@ -231,7 +229,7 @@ class SuiteApiController extends AbstractApiController
      *         description="Returned when a violation is raised by validation",
      *         @SWG\Schema(
      *            type="array",
-     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
      *         )
      *     ),
      *     @SWG\Response(
@@ -245,7 +243,6 @@ class SuiteApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function postSuiteAction(Project $project, Campaign $campaign, Request $request)
     {
@@ -362,7 +359,7 @@ class SuiteApiController extends AbstractApiController
      *     ),
      *     @SWG\Parameter(
      *         name="data",
-     *         in="body",      
+     *         in="body",
      *         @SWG\Schema(
      *            type="object",
      *            @SWG\Property(
@@ -387,7 +384,7 @@ class SuiteApiController extends AbstractApiController
      *         description="Returned when a violation is raised by validation",
      *         @SWG\Schema(
      *            type="array",
-     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
      *         )
      *     ),
      *     @SWG\Response(
@@ -401,7 +398,6 @@ class SuiteApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function putSuiteLimitsAction(Project $project, Suite $suiteDB, SuiteLimitsDTO $suiteLimitsDTO, Request $request)
     {
@@ -496,7 +492,6 @@ class SuiteApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function deleteSuiteAction(Project $project, Suite $suite, Request $request)
     {

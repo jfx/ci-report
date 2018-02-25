@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcf6e6599e460a8b83424b0dbc987974",
+    "content-hash": "01e470f9852e6ac084cd52bdce6e6a22",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1713,12 +1713,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/nelmio/NelmioApiDocBundle.git",
-                "reference": "37dfb8ef0d1eb9ae2eb8f9d9ad76c29fc73c72e6"
+                "reference": "37dfb8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/37dfb8ef0d1eb9ae2eb8f9d9ad76c29fc73c72e6",
-                "reference": "37dfb8ef0d1eb9ae2eb8f9d9ad76c29fc73c72e6",
+                "url": "https://api.github.com/repos/nelmio/NelmioApiDocBundle/zipball/37dfb8e",
+                "reference": "37dfb8e",
                 "shasum": ""
             },
             "require": {

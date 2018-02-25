@@ -76,7 +76,6 @@ class ProjectApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function getProjectsAction(): array
     {
@@ -86,7 +85,7 @@ class ProjectApiController extends AbstractApiController
 
         return $projects;
     }
-    
+
     /**
      * Get public project data.
      *
@@ -120,16 +119,15 @@ class ProjectApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function getProjectAction(Project $project): Project
     {
         return $project;
     }
-    
+
     /**
      * Get private project data.
-     * 
+     *
      * @param Project $project Project
      * @param Request $request The request
      *
@@ -173,7 +171,6 @@ class ProjectApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function getProjectPrivateAction(Project $project, Request $request)
     {
@@ -183,7 +180,7 @@ class ProjectApiController extends AbstractApiController
 
         return $project;
     }
-    
+
     /**
      * Create a project. Private token is sent by email.
      *
@@ -217,11 +214,10 @@ class ProjectApiController extends AbstractApiController
      *         description="Returned when a violation is raised by validation",
      *         @SWG\Schema(
      *            type="array",
-     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
      *         )
      *     )
      * )
-     *
      */
     public function postProjectAction(Project $project, ConstraintViolationList $violations)
     {
@@ -239,7 +235,7 @@ class ProjectApiController extends AbstractApiController
 
         return $project;
     }
-    
+
     /**
      * Update a project.
      *
@@ -288,7 +284,7 @@ class ProjectApiController extends AbstractApiController
      *         description="Returned when a violation is raised by validation",
      *         @SWG\Schema(
      *            type="array",
-     *            @SWG\Items(ref="#/definitions/ErrorModel")          
+     *            @SWG\Items(ref="#/definitions/ErrorModel")
      *         )
      *     ),
      *     @SWG\Response(
@@ -302,7 +298,6 @@ class ProjectApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function putProjectAction(Project $projectDB, ProjectDTO $projectDTO, Request $request)
     {
@@ -327,7 +322,7 @@ class ProjectApiController extends AbstractApiController
 
         return $projectDB;
     }
-    
+
     /**
      * Delete a project.
      *
@@ -373,7 +368,6 @@ class ProjectApiController extends AbstractApiController
      *         @SWG\Schema(ref="#/definitions/ErrorModel")
      *     )
      * )
-     *
      */
     public function deleteProjectAction(Project $project, Request $request)
     {
