@@ -187,7 +187,7 @@ class SuiteApiController extends AbstractApiController
      * @Operation(
      *     tags={"Suites"},
      *     summary="Create suites by uploading a junit file.",
-     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/junit -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X POST -F warning=80 -F success=95 -F 'junitfile=@/path/to/junit.xml'</code></pre></br><p>(@ symbol is mandatory at the beginning of the file path)</p>",
+     *     description="Example: </br><pre><code>curl https://www.ci-report.io/api/projects/project-one/campaigns/1/suites/junit -H &quot;X-CIR-TKN: 1f4ffb19e4b9-02278af07b7d-4e370a76f001&quot; -X POST -F warning=80 -F success=95 -F 'junitfile=@/path/to/junit.xml'</code></pre><p>(@ symbol is mandatory at the beginning of the file path)</p>",
      *     @SWG\Parameter(
      *         name="prefid",
      *         in="path",
