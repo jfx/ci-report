@@ -4,7 +4,7 @@
   "description": "A web application to display tests reports from CI tools like Travis or Gitlab-ci",
   "devDependencies": {
     "@symfony/webpack-encore": "^0.17.0",
-    "bootstrap": "4.0.0-beta",
+    "bootstrap": "4.0.0",
     "chart.js": "^2.7.0",
     "font-awesome": "^4.7.0",
     "imports-loader": "^0.7.1",
