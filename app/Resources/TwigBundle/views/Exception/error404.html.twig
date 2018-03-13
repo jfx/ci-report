@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - 404 Not Found{% endblock %}
+
+{% block breadcrumb %}
+  <div class="jumbotron jumbotron-error">
+    <h1><i class="fa fa-frown-o red"></i> 404 Not Found</h1>
+    <p class="lead">We couldn't find what you're looking for on <em>ci-report</em>.</p>
+    <p><a id="a_home" href="{{ path('homepage') }}" class="btn btn-outline-success">Take me to the Projects list page</a>
+    </p>
+  </div>
+{% endblock %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-6">
+          <h2>What happened?</h2>
+          <p class="lead">A 404 error status implies that the page or resource that you're looking for could not be found.</p>
+        </div>
+        <div class="col-6">
+          <h2>What can I do?</h2>
+          <p>Please use your browser's back button and check that you're in the right place. If you need immediate assistance, please send us an email instead.</p>
+       </div>
+   </div>
+{% endblock %}

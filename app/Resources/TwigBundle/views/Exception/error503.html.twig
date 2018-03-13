@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - 503 Service Unavailable{% endblock %}
+
+{% block breadcrumb %}
+  <div class="jumbotron jumbotron-error">
+    <h1><i class="fa fa-exclamation-triangle orange"></i> 503 Service Unavailable</h1>
+    <p class="lead">The web server is returning an unexpected temporary error for <em>ci-report</em>.</p>
+    <p><a id="a_reload" href="javascript:document.location.reload(true);" class="btn btn-outline-success">Try this page again</a>
+    </p>
+  </div>
+{% endblock %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-6">
+          <h2>What happened?</h2>
+          <p class="lead">A 503 error status implies that this is a temporary condition due to a temporary overloading or maintenance of the server. This error is normally a brief temporary interruption.</p>
+        </div>
+        <div class="col-6">
+          <h2>What can I do?</h2>
+          <p>If you need immediate assistance, please send us an email instead. We apologize for any inconvenience.</p>
+       </div>
+   </div>
+{% endblock %}
