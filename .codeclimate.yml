@@ -3,6 +3,7 @@ exclude_paths:
  - "/var/*"
  - "/vendor/*"
  - "/web/*"
+ - "/src/AppBundle/DataFixtures/*"
 engines:
   phpmd:
     enabled: true
