@@ -21,6 +21,7 @@ jobs:
         - yarn install
         - yarn build
         - bin/setBuildId.sh ${BUILD_ID}
+        - bin/generateSecretKey.sh
         - bin/console lint:yaml app/config
         - bin/console lint:twig app/Resources/views
         - bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction

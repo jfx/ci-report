@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - 500 Internal Server Error{% endblock %}
+
+{% block breadcrumb %}
+  <div class="jumbotron jumbotron-error">
+    <h1><i class="fa fa-fire red"></i> 500 Internal Server Error</h1>
+    <p class="lead">The web server is returning an internal error for <em>ci-report</em>.</p>
+    <p><a id="a_reload" href="javascript:document.location.reload(true);" class="btn btn-outline-success">Try this page again</a>
+    </p>
+  </div>
+{% endblock %}
+
+{% block container %}
+    <div class="row">
+        <div class="col-6">
+          <h2>What happened?</h2>
+          <p class="lead">A 500 error status implies there is a problem with the web server's software causing it to malfunction.</p>
+        </div>
+        <div class="col-6">
+          <h2>What can I do?</h2>
+          <p>Nothing you can do at the moment. If you need immediate assistance, please send us an email instead. We apologize for any inconvenience.</p>
+       </div>
+   </div>
+{% endblock %}

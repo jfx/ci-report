@@ -31,6 +31,11 @@ body {
    text-align: center;   
 }
 
+.jumbotron-error {
+  text-align: center;
+  background-color: transparent;
+}
+
 footer {
   margin-top: 1em;
   padding-top: 1em;
@@ -39,4 +44,11 @@ footer {
     font-size: $font-size-small;
     margin-bottom: .25em;
   }
+}
+
+.orange {
+  color:#f0ad4e;
+}
+.red {
+  color:#d9534f;
 }

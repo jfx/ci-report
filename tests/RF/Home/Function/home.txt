@@ -7,3 +7,10 @@ Resource          ../../Common/Function/check.txt
 *** Keywords ***
 I go to Home
     Go to    ${WEB_URL}${location_home}
+
+Error page should contain and button should go to
+    [Arguments]    ${error}    ${message}    ${button}    ${page}
+    Go To    ${error}
+    Then Page Should Contain    ${message}
+    When Click Element    ${button}
+    And Location Should Be    ${page}

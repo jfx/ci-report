@@ -16,7 +16,7 @@
 /web/bundles/
 /web/build/
 /node_modules/
-/nbproject/private/
+/nbproject/
 /.php_cs.cache
 tests/RF/Common/Conf/mail.txt
 *.pyc
