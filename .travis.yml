@@ -57,6 +57,16 @@ jobs:
         - robot -i MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG1} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v IMAP_SERVER:${RF_IMAP_SERVER} -v MAIL_USER:${RF_MAIL_USER} -v MAIL_PASSWORD:${RF_MAIL_PASSWORD} -v MAIL_SENDER:${RF_MAIL_SENDER} tests/RF
         - robot -i EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG1} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
 
+    - stage: "Release"
+      language: node_js
+      node_js: 9
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npx semantic-release
+
 notifications:
   slack:
     secure: VoxTm0ES0rknLxynTfwWrnv4o9WBKD3aNKVCXYeXmsvhgsuWj9XVoKXGQc9xFrvYFmH/Ymd3sVhyVYOYDGc6FprY6UEpkwhpAWKj8AM+vUIC71doAhprMwns1jLCWFT/AYeqsRjKX42bg3Y7ml9ChdiPU4FDPRpnvVAYz4MR1XTHuWPz6g7TWahyU4WAIxuo+Is6iKLJwuISNysf2+zv2PjUCpGyJYByEBbgcqIn9ZoWIYgcT2eDxd4zULipt5hiY3LRrkDuw0rhVkD0QjN3dhFejDJ3xrjckjDuKOJ/q5HiZwMZ8F2dlRB4rFKXAWqUvUzYXyltIugnHuMg8EJb7CebLEPfCW1HYxDUTM4ZligeHndT9zTl7xZGz7+BTX/vaaefYZTzTdNMIpqU4f5kAxJS0fxev/nWmreBQ6o67cI9UYZHrM7/9kOD8uQG7eXAbJY/1RGrSkMdTc3lLIiYfQosZhJVdp60G9UjPqI8kRWoFENm3/5zypLpVrBrJobcr+z+hcD99ZOsXSAwpPgSVyMmEq3ijKJOP9+KnkJi5/BEAvhnxS6CelCFyqb+zKPgox+jOdIbxBbRwlxTV0InObdedGGL5/wfo/+WEKVd9lcTz+kJFV2EEoCRmQjPb3aC7I1G4J1mjigkL2WDI7J7oNHtFxjWJ5mXNmuWEovTkyg=
