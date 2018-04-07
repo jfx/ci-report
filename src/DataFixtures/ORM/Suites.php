@@ -23,6 +23,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\Suite;
 use DateTime;
+use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -38,7 +39,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  *
  * @see      https://www.ci-report.io
  */
-class Suites extends AbstractFixture implements OrderedFixtureInterface
+class Suites extends AbstractFixture implements OrderedFixtureInterface, ORMFixtureInterface
 {
     /**
      * Load data fixtures with the passed EntityManager.

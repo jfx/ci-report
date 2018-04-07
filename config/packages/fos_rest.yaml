@@ -18,6 +18,7 @@ fos_rest:
         include_format: false
     exception:
         enabled: true
+#        exception_controller: 'fos_rest.exception.controller:showAction'
         messages:
             'Symfony\Component\HttpKernel\Exception\HttpException' : true
     body_converter:

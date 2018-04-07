@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Test;
+use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -37,7 +38,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  *
  * @see      https://www.ci-report.io
  */
-class Tests extends AbstractFixture implements OrderedFixtureInterface
+class Tests extends AbstractFixture implements OrderedFixtureInterface,  ORMFixtureInterface
 {
     /**
      * Load data fixtures with the passed EntityManager.

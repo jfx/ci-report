@@ -48,7 +48,7 @@ class JunitParserService
     /**
      * @var string
      */
-    protected $schemaRelativePath = '/../../../junit/xsd/junit-10.xsd';
+    protected $schemaRelativePath = '/../../junit/xsd/junit-10.xsd';
 
     /**
      * @var string
