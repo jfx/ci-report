@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Service;
+namespace App\Tests\Service;
 
-use AppBundle\Service\UtilService;
+use App\Service\UtilService;
 use PHPUnit\Framework\TestCase;
 
 class UtilServiceTest extends TestCase

@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace App\Tests\Controller;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class DocumentApiEditControllerTest extends AbstractKernelControllerTest
 {
-    protected $testFilesDir = __DIR__.'/../../../files';
+    protected $testFilesDir = __DIR__.'/../../files';
 
     public function testPostDocuments()
     {

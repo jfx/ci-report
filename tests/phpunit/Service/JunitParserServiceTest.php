@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Service;
+namespace App\Tests\Service;
 
-use AppBundle\Entity\Test;
-use AppBundle\Service\JunitParserService;
+use App\Entity\Test;
+use App\Service\JunitParserService;
 use DateInterval;
 use DateTime;
 use DOMDocument;
@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class JunitParserServiceTest extends TestCase
 {
     protected $junitParserService;
-    protected $testFilesDir = __DIR__.'/../../../files';
+    protected $testFilesDir = __DIR__.'/../../files';
 
     public function setUp()
     {

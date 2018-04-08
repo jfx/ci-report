@@ -63,7 +63,16 @@ test-files: clean-test-files
 	@cp tests/files/zipfile-ok.zip var/documents/1/1/d8329fc1cc938780ffdd9f94e0d364e0ea74f579
 	@cp tests/files/zipfile-ok.zip var/documents/1/4/1f7a7a472abf3dd9643fd615f6da379c4acb3e3a
 
-.PHONY: db db-dump test-files
+.PHONY: db db-dump db-import test-files
+
+## QA
+## --
+
+unit-test: ## Run unit tests with phpunit
+unit-test:
+	bin/phpunit
+
+.PHONY: unit-test
 
 .DEFAULT_GOAL := help
 help:
