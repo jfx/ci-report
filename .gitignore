@@ -32,3 +32,7 @@ log.html
 report.html
 output.xml
 /pabot_results/
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###

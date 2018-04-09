@@ -84,15 +84,35 @@ test-files: clean-test-files
 ## QA
 ## --
 
+php-cs-fixer: ## Run PHP Coding Standards Fixer 
+php-cs-fixer:
+	vendor/bin/php-cs-fixer fix --using-cache=no --rules=@Symfony tests/phpunit
+	vendor/bin/php-cs-fixer fix --config=standards/.php_cs
+
+lint: ## Check syntax of files 
+lint:
+	$(SYMFONY) lint:yaml config
+	$(SYMFONY) lint:twig templates
+	$(SYMFONY) security:check
+	$(COMPOSER) validate --strict
+	$(SYMFONY) doctrine:schema:validate --skip-sync -vvv --no-interaction
+
 phpcs: ## Run PHP CodeSniffer 
 phpcs:
 	vendor/bin/phpcs src --standard=standards/ruleset-cs.xml
+
+phpmd: ## Run PHPMD
+phpmd:
+	vendor/bin/phpmd src text standards/ruleset-pmd.xml  --exclude src/DataFixtures
 
 unit-test: ## Run unit tests with phpunit
 unit-test:
 	bin/phpunit
 
-.PHONY: phpcs unit-test
+check: ## Run all QA checks 
+check: php-cs-fixer lint phpcs phpmd unit-test
+
+.PHONY: php-cs-fixer lint phpcs phpmd unit-test check
 
 .DEFAULT_GOAL := help
 help:
