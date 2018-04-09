@@ -1,6 +1,5 @@
 
 EXEC_PHP    = php
-EXEC_JS     = npx
 
 SYMFONY     = $(EXEC_PHP) bin/console
 COMPOSER    = composer
@@ -20,11 +19,28 @@ clean-log:
 	@rm -rf var/tmp
 	@mkdir var/tmp
 
+clean-cache: ## Clean Symfony cache
+clean-cache:
+	$(SYMFONY) cache-clear
+
 clean-test-files: ## Remove test attached documents
 clean-test-files:
 	@rm -rf var/documents
 
-.PHONY: clean clean-test-files
+.PHONY: clean clean-log clean-cache clean-test-files
+
+## Update
+## ------
+
+update-composer: ## Update composer packages
+update-composer:
+	$(COMPOSER) update
+
+update-yarn: ## Update nodejs packages with yarn
+update-yarn:
+	$(YARN) upgrade
+
+.PHONY: update-composer update-yarn
 
 ## Data
 ## ----
