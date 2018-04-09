@@ -1,5 +1,12 @@
 <?php
-
+/*
+ * This file is part of the Symfony package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace App;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -9,22 +16,44 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
+/**
+ * The Kernel is the heart of the Symfony system.
+ *
+ * It manages an environment made of bundles.
+ *
+ * @author Fabien Potencier <fabien@symfony.com>
+ */
 class Kernel extends BaseKernel
 {
     use MicroKernelTrait;
 
     const CONFIG_EXTS = '.{php,xml,yaml,yml}';
 
+    /**
+     * Gets the cache directory.
+     *
+     * @return string The cache directory
+     */
     public function getCacheDir()
     {
         return $this->getProjectDir().'/var/cache/'.$this->environment;
     }
 
+    /**
+     * Gets the log directory.
+     *
+     * @return string The log directory
+     */
     public function getLogDir()
     {
         return $this->getProjectDir().'/var/log';
     }
 
+    /**
+     * Returns an array of bundles to register.
+     *
+     * @return iterable|BundleInterface[] An iterable of bundle instances
+     */
     public function registerBundles()
     {
         $contents = require $this->getProjectDir().'/config/bundles.php';
@@ -35,6 +64,26 @@ class Kernel extends BaseKernel
         }
     }
 
+    /**
+     * Configures the container.
+     *
+     * You can register extensions:
+     *
+     * $c->loadFromExtension('framework', array(
+     *     'secret' => '%secret%'
+     * ));
+     *
+     * Or services:
+     *
+     * $c->register('halloween', 'FooBundle\HalloweenProvider');
+     *
+     * Or parameters:
+     *
+     * $c->setParameter('halloween', 'lot of fun');
+     *
+     * @param ContainerBuilder $container
+     * @param LoaderInterface  $loader
+     */
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader)
     {
         $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
@@ -50,6 +99,14 @@ class Kernel extends BaseKernel
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
 
+    /**
+     * Add or import routes into your application.
+     *
+     *     $routes->import('config/routing.yml');
+     *     $routes->add('/admin', 'AppBundle:Admin:dashboard', 'admin_dashboard');
+     *
+     * @param RouteCollectionBuilder $routes
+     */
     protected function configureRoutes(RouteCollectionBuilder $routes)
     {
         $confDir = $this->getProjectDir().'/config';

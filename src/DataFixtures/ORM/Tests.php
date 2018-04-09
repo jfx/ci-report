@@ -38,7 +38,7 @@ use Doctrine\Common\Persistence\ObjectManager;
  *
  * @see      https://www.ci-report.io
  */
-class Tests extends AbstractFixture implements OrderedFixtureInterface,  ORMFixtureInterface
+class Tests extends AbstractFixture implements OrderedFixtureInterface, ORMFixtureInterface
 {
     /**
      * Load data fixtures with the passed EntityManager.

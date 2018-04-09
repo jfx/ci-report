@@ -84,11 +84,15 @@ test-files: clean-test-files
 ## QA
 ## --
 
+phpcs: ## Run PHP CodeSniffer 
+phpcs:
+	vendor/bin/phpcs src --standard=standards/ruleset-cs.xml
+
 unit-test: ## Run unit tests with phpunit
 unit-test:
 	bin/phpunit
 
-.PHONY: unit-test
+.PHONY: phpcs unit-test
 
 .DEFAULT_GOAL := help
 help:

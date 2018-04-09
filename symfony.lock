@@ -83,6 +83,9 @@
     "egulias/email-validator": {
         "version": "2.1.3"
     },
+    "escapestudios/symfony2-coding-standard": {
+        "version": "3.x-dev"
+    },
     "exsyst/swagger": {
         "version": "v0.4.0"
     },
@@ -178,6 +181,9 @@
             "version": "4.0",
             "ref": "aaddfdf43cdecd4cf91f992052d76c2cadc04543"
         }
+    },
+    "squizlabs/php_codesniffer": {
+        "version": "3.2.3"
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.0.2"
