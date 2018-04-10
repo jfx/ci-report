@@ -15,7 +15,8 @@
         <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
         <!-- define your env variables for the test env here -->
-        <env name="DATABASE_URL" value="mysql://db_user:db_password@127.0.0.1:3306/db_name"/>
+        <env name="LOG_PATH" value="%kernel.logs_dir%/%kernel.environment%.log"/>
+        <env name="DATABASE_URL" value="mysql://root@127.0.0.1:3306/ci-report"/>
         <env name="MAILER_URL" value="null://localhost"/>
         <env name="MAILER_SENDER" value="ci-report.sender@example.com"/>
         <env name="WEB_HOST" value="http://127.0.0.1:8000"/>

@@ -12,7 +12,7 @@ jobs:
         directories:
           - "$HOME/.composer/cache/files"
       env:
-        - SYMFONY_VERSION="4.0.*" DB=mysql DATABASE_URL="mysql://root@127.0.0.1:3306/symfony" BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
+        - SYMFONY_VERSION="4.0.*" DB=mysql DATABASE_URL="mysql://root@127.0.0.1:3306/ci-report" BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
       before_install:
         - phpenv config-add php-config-travis.ini
         - composer self-update
@@ -22,11 +22,11 @@ jobs:
         - yarn build
         - cp phpunit.xml.dist phpunit.xml
         - bin/setBuildId.sh ${BUILD_ID}
-        - make check
+        - make lint
         - make db
       script:
-        - bin/phpunit
-        - cat var/logs/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException'
+        - make unit-test
+        - cat var/log/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException' || true
       deploy:
         provider: heroku
         api_key: $HEROKU_AUTH_TOKEN
