@@ -1,6 +1,6 @@
 {
     "name": "jfx/ci-report",
-    "license": "GPL-3.0",
+    "license": "GPL-3.0-or-later",
     "type": "project",
     "description": "A web application to display tests reports for CI tools",
     "require": {
