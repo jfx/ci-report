@@ -12,24 +12,20 @@ jobs:
         directories:
           - "$HOME/.composer/cache/files"
       env:
-        - SYMFONY_VERSION="3.3.*" DB=mysql BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
-      before-install:
+        - SYMFONY_VERSION="4.0.*" DB=mysql DATABASE_URL="mysql://root@127.0.0.1:3306/symfony" BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
+      before_install:
         - phpenv config-add php-config-travis.ini
         - composer self-update
       install:
         - composer install
         - yarn install
         - yarn build
+        - cp phpunit.xml.dist phpunit.xml
         - bin/setBuildId.sh ${BUILD_ID}
-        - bin/generateSecretKey.sh
-        - bin/console lint:yaml app/config
-        - bin/console lint:twig app/Resources/views
-        - bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
-        - bin/console doctrine:database:create --no-interaction --env=test
-        - bin/console doctrine:schema:create --no-interaction --env=test
-        - bin/console doctrine:fixtures:load --no-interaction --env=test
+        - make check
+        - make db
       script:
-        - vendor/bin/phpunit
+        - bin/phpunit
         - cat var/logs/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException'
       deploy:
         provider: heroku
@@ -37,9 +33,7 @@ jobs:
         app: $HEROKU_APP_STAG1
         skip_cleanup: true
         run:
-          - "rm web/app_dev.php"
           - "bin/console cache:clear --env=prod"
-          - "bin/loadDBFixtures.sh"
         on:
           all_branches: true
 
