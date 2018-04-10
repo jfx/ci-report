@@ -93,7 +93,7 @@ lint: ## Check syntax of files
 lint:
 	$(SYMFONY) lint:yaml config
 	$(SYMFONY) lint:twig templates
-	$(SYMFONY) security:check
+	$(SYMFONY) security:check --end-point=http://security.sensiolabs.org/check_lock
 	$(COMPOSER) validate --strict
 	$(SYMFONY) doctrine:schema:validate --skip-sync -vvv --no-interaction
 
