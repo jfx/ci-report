@@ -1,6 +1,6 @@
 {
   "name": "ci-report",
-  "version": "0.11.0",
+  "version": "0.0.0-semantic-release",
   "description": "A web application to display tests reports from CI tools like Travis or Gitlab-ci",
   "devDependencies": {
     "@semantic-release/git": "^4.0.1",

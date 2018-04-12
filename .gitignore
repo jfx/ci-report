@@ -1,21 +1,27 @@
-/.web-server-pid
-/app/config/parameters.yml
-/build/
-/var/*
-!/var/cache
-/var/cache/*
-!var/cache/.gitkeep
-!/var/logs
-/var/logs/*
-!var/logs/.gitkeep
-!/var/sessions
-/var/sessions/*
-!var/sessions/.gitkeep
-!var/SymfonyRequirements.php
+
+###> symfony/framework-bundle ###
+/.env
+/public/bundles/
+/var/
 /vendor/
-/web/bundles/
-/web/build/
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-pack ###
 /node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-pack ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###
+
 /nbproject/
 /.php_cs.cache
 tests/RF/Common/Conf/mail.txt
@@ -26,3 +32,7 @@ log.html
 report.html
 output.xml
 /pabot_results/
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###

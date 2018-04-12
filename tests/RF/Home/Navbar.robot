@@ -42,4 +42,4 @@ Click to open dropdown menu
     And Click Element    a-dropdown
     When Click Element    a-dropdown-api
     And Select Window    NEW
-    Then Location Should Be    ${WEB_URL}/doc/api
+    Then Location Should Be    ${WEB_URL}/api/doc

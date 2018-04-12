@@ -12,4 +12,4 @@ if [ "${BUILD:0:7}" == "master/" ]; then
 fi
 BUILD_ESCAPED="${BUILD//\//\\/}"
 
-sed -i "s/^.*app.build:.*/    app.build: ${BUILD_ESCAPED}/" $PROJECT_DIR/app/config/parameters.yml
+sed -i "s/^.*app.build:.*/    app.build: ${BUILD_ESCAPED}/" $PROJECT_DIR/config/services.yaml

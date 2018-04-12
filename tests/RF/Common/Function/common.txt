@@ -57,7 +57,7 @@ Load DB
 
 Load fixtures DB
     Log    -- Load fixtures DB --
-    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadDBFixtures.sh
+    ${rc} =    Run And Return Rc    make -C ${PROJECT_DIR} db
     Should Be Equal As Integers    ${rc}    0
 
 Load dump DB
