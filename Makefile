@@ -40,7 +40,11 @@ update-yarn: ## Update nodejs packages with yarn
 update-yarn:
 	$(YARN) upgrade
 
-.PHONY: update-composer update-yarn
+commit: ## Commit with Commitizen command line
+commit:
+	$(YARN) commit
+
+.PHONY: update-composer update-yarn commit
 
 ## Data
 ## ----
