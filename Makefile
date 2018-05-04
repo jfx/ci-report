@@ -3,14 +3,23 @@ EXEC_PHP    = php
 
 SYMFONY     = $(EXEC_PHP) bin/console
 COMPOSER    = composer
+
 YARN        = yarn
+
+DOCKER         = docker
+DOCKER-COMPOSE = docker-compose
 
 ## Clean
 ## -----
 
 clean: ## Remove generated files
-clean: clean-log
-	rm -rf .env vendor node_modules
+clean: clean-log clean-assets
+	rm -rf .env vendor node_modules var
+	mkdir var
+
+clean-assets: ## Remove web assets
+clean-assets:
+	cd public && ls | grep -v index.php | xargs rm -rf
 
 clean-log: ## Remove log and tmp files
 clean-log:
@@ -21,13 +30,74 @@ clean-log:
 
 clean-cache: ## Clean Symfony cache
 clean-cache:
-	$(SYMFONY) cache-clear
+	$(SYMFONY) cache:clear
 
 clean-test-files: ## Remove test attached documents
 clean-test-files:
 	@rm -rf var/documents
 
-.PHONY: clean clean-log clean-cache clean-test-files
+.PHONY: clean clean-log clean-assets clean-cache clean-test-files
+
+## Install
+## ------
+
+install-prod: ## Production installation
+install-prod: clean composer-install-prod yarn-install assets-install
+
+composer-install-prod: ## Composer install for production
+composer-install-prod:
+	export APP_ENV=prod; \
+	$(COMPOSER) install --no-dev --optimize-autoloader
+
+composer-install: ## Composer install with dev dependencies
+composer-install:
+	$(COMPOSER) install
+
+yarn-install: ## Yarn install
+yarn-install:
+	$(YARN) install
+
+assets-install: ## Deploy web assets
+assets-install: clean-assets
+	@cp -r assets/static/* public
+	$(SYMFONY) assets:install public
+	$(YARN) run encore production
+
+.PHONY: install-prod composer-install-prod composer-install yarn-install assets-install
+
+## Docker
+## -----
+
+docker-build: ## Build application docker image
+docker-build:
+	docker build -f Dockerfile-php-fpm . 2>&1 | tee docker-build-php-fpm.log
+	docker build -f Dockerfile-nginx . 2>&1 | tee docker-build-nginx.log
+
+docker-rm: ## Remove all unused containers
+docker-rm:
+	docker container prune -f
+
+docker-rmi: ## Remove all untagged images
+docker-rmi: docker-rm
+	docker image prune -f
+
+dc-build: ## Docker compose build
+dc-build:
+	docker-compose build
+
+dc-up: ## Docker compose up
+dc-up:
+	docker-compose up -d
+
+dc-ps: ## Docker compose ps
+dc-ps:
+	docker-compose ps
+
+dc-down: ## Docker compose shutdown
+dc-down:
+	docker-compose down
+
+.PHONY: docker-build docker-rm docker-rmi dc-up dc-ps dc-down
 
 ## Update
 ## ------
