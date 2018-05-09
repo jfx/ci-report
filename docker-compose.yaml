@@ -1,0 +1,12 @@
+version: '3'
+services:
+    php:
+        image: ci-report-app:latest
+        env_file:
+            - .env-docker-compose
+    nginx:
+        image: ci-report-web:latest
+        ports:
+            - '8080:80'
+        links:
+            - php

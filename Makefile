@@ -69,9 +69,11 @@ assets-install: clean-assets
 ## -----
 
 docker-build: ## Build application docker image
-docker-build:
-	docker build -f Dockerfile-php-fpm . 2>&1 | tee docker-build-php-fpm.log
-	docker build -f Dockerfile-nginx . 2>&1 | tee docker-build-nginx.log
+docker-build: docker-rmi
+	docker build --target builder-app -t builder-app:latest -f Dockerfile-php-fpm . 2>&1 | tee docker-builder-app.log
+	docker build --target ci-report-app -t ci-report-app:latest -f Dockerfile-php-fpm . 2>&1 | tee docker-ci-report-app.log
+	docker build --target builder-web -t builder-web:latest -f Dockerfile-nginx . 2>&1 | tee docker-builder-web.log
+	docker build --target ci-report-web -t ci-report-web:latest -f Dockerfile-nginx . 2>&1 | tee docker-ci-report-web.log
 
 docker-rm: ## Remove all unused containers
 docker-rm:
@@ -81,23 +83,15 @@ docker-rmi: ## Remove all untagged images
 docker-rmi: docker-rm
 	docker image prune -f
 
-dc-build: ## Docker compose build
-dc-build:
-	docker-compose build
-
 dc-up: ## Docker compose up
 dc-up:
 	docker-compose up -d
-
-dc-ps: ## Docker compose ps
-dc-ps:
-	docker-compose ps
 
 dc-down: ## Docker compose shutdown
 dc-down:
 	docker-compose down
 
-.PHONY: docker-build docker-rm docker-rmi dc-up dc-ps dc-down
+.PHONY: docker-build docker-rm docker-rmi dc-up dc-down
 
 ## Update
 ## ------
@@ -158,12 +152,12 @@ test-files: clean-test-files
 ## QA
 ## --
 
-php-cs-fixer: ## Run PHP Coding Standards Fixer 
+php-cs-fixer: ## Run PHP Coding Standards Fixer
 php-cs-fixer:
 	vendor/bin/php-cs-fixer fix --using-cache=no --rules=@Symfony tests/phpunit
 	vendor/bin/php-cs-fixer fix --config=standards/.php_cs
 
-lint: ## Check syntax of files 
+lint: ## Check syntax of files
 lint:
 	$(SYMFONY) lint:yaml config
 	$(SYMFONY) lint:twig templates
@@ -171,7 +165,7 @@ lint:
 	$(COMPOSER) validate --strict
 	$(SYMFONY) doctrine:schema:validate --skip-sync -vvv --no-interaction
 
-phpcs: ## Run PHP CodeSniffer 
+phpcs: ## Run PHP CodeSniffer
 phpcs:
 	vendor/bin/phpcs src --standard=standards/ruleset-cs.xml
 
@@ -183,7 +177,7 @@ unit-test: ## Run unit tests with phpunit
 unit-test:
 	bin/phpunit
 
-check: ## Run all QA checks 
+check: ## Run all QA checks
 check: php-cs-fixer lint phpcs phpmd unit-test
 
 .PHONY: php-cs-fixer lint phpcs phpmd unit-test check

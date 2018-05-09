@@ -23,6 +23,7 @@ yarn-error.log
 ###< symfony/web-server-bundle ###
 
 /nbproject/
+/.env-docker-compose
 /.php_cs.cache
 tests/RF/Common/Conf/mail.txt
 *.pyc
