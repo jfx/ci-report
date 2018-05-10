@@ -1,8 +1,8 @@
-sudo: false
+sudo: true
 
 jobs:
   include:
-    - stage: "Unit tests & staging 1 deploy"
+    - stage: "Unit tests"
       language: php
       php: 7.2
       services:
@@ -27,17 +27,34 @@ jobs:
       script:
         - make unit-test
         - cat var/log/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException' || true
+
+    - stage: "Build docker images"
+      script:
+      services:
+        - docker
+      before_install:
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - sudo apt-get update
+        - sudo apt-get -y install docker-ce
+      script:
+        - make docker-build
+
+    - stage: "Staging : deploy"
+      script:
+        - yarn install
+        - make assets-install
+        - ls | grep -v public | xargs rm -rf
+        - rm public/index.php
       deploy:
         provider: heroku
         api_key: $HEROKU_AUTH_TOKEN
         app: $HEROKU_APP_STAG
         skip_cleanup: true
-        run:
-          - "rm -rf assets bin config docker junit src standards templates tests translations var vendor"
         on:
           all_branches: true
 
-    - stage: "Staging 1 : e2e tests"
+    - stage: "Staging : e2e tests"
       language: python
       python: 2.7
       env:
