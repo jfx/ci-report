@@ -42,10 +42,11 @@ jobs:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
         - make docker-build
         - docker images
-        - docker tag ci-report-app:latest cireport/ci-report-app:${BUILD_ID}
-        - docker tag ci-report-web:latest cireport/ci-report-web:${BUILD_ID}
-        - docker push cireport/ci-report-app:${BUILD_ID}
-        - docker push cireport/ci-report-web:${BUILD_ID}
+        - TAG_ID=`echo ${BUILD_ID} | tr -dc a-zA-Z0-9-._`
+        - docker tag ci-report-app:latest cireport/ci-report-app:${TAG_ID}
+        - docker tag ci-report-web:latest cireport/ci-report-web:${TAG_ID}
+        - docker push cireport/ci-report-app:${TAG_ID}
+        - docker push cireport/ci-report-web:${TAG_ID}
 
     - stage: "Staging : deploy"
       language: php
