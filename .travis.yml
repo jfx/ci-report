@@ -29,19 +29,31 @@ jobs:
         - cat var/log/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException' || true
 
     - stage: "Build docker images"
-      script:
       services:
         - docker
+      env:
+        - BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
       before_install:
         - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
         - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
         - sudo apt-get update
         - sudo apt-get -y install docker-ce
       script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
         - make docker-build
+        - docker images
+        - docker tag ci-report-app:latest cireport/ci-report-app:${BUILD_ID}
+        - docker tag ci-report-web:latest cireport/ci-report-web:${BUILD_ID}
+        - docker push cireport/ci-report-app:${BUILD_ID}
+        - docker push cireport/ci-report-web:${BUILD_ID}
 
     - stage: "Staging : deploy"
+      language: php
+      php: 7.2
+      before_install:
+        - composer self-update
       script:
+        - composer-install-prod
         - yarn install
         - make assets-install
         - ls | grep -v public | xargs rm -rf
