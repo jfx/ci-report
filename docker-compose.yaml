@@ -8,5 +8,5 @@ services:
         image: ci-report-web:latest
         ports:
             - '8080:80'
-        links:
+        depends_on:
             - php

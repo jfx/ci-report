@@ -1,0 +1,22 @@
+version: '3'
+services:
+    db:
+        image: mariadb:10
+        ports:
+            - '3307:3306'
+        volumes:
+            - "./data/db:/var/lib/mysql"
+        env_file:
+            - .env-docker-compose-local
+    php:
+        image: ci-report-app:latest
+        env_file:
+            - .env-docker-compose-local
+        depends_on:
+            - db
+    nginx:
+        image: ci-report-web:latest
+        ports:
+            - '8080:80'
+        depends_on:
+            - php

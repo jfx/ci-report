@@ -83,6 +83,14 @@ docker-rmi: ## Remove all untagged images
 docker-rmi: docker-rm
 	docker image prune -f
 
+dc-local-up: ## Docker compose up
+dc-local-up:
+	docker-compose -f docker-compose-local.yaml up -d
+
+dc-local-down: ## Docker compose shutdown
+dc-local-down:
+	docker-compose -f docker-compose-local.yaml down
+
 dc-up: ## Docker compose up
 dc-up:
 	docker-compose up -d
@@ -91,7 +99,7 @@ dc-down: ## Docker compose shutdown
 dc-down:
 	docker-compose down
 
-.PHONY: docker-build docker-rm docker-rmi dc-up dc-down
+.PHONY: docker-build docker-rm docker-rmi dc-local-up dc-local-down dc-up dc-down
 
 ## Update
 ## ------

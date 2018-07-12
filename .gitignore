@@ -24,6 +24,8 @@ yarn-error.log
 
 /nbproject/
 /.env-docker-compose
+/.env-docker-compose-dev
+/data
 /.php_cs.cache
 tests/RF/Common/Conf/mail.txt
 *.pyc
