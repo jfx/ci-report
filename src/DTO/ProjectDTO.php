@@ -82,7 +82,7 @@ class ProjectDTO
      * @Type("string")
      *
      * @Assert\NotBlank
-     * @Assert\Email(strict=true)
+     * @Assert\Email(mode="strict")
      */
     private $email;
 

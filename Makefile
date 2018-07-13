@@ -63,7 +63,15 @@ assets-install: clean-assets
 	$(SYMFONY) assets:install public
 	$(YARN) run encore production
 
-.PHONY: install-prod composer-install-prod composer-install yarn-install assets-install
+server-dev-start: ## Start built-in php server
+server-dev-start:
+	$(SYMFONY) server:start
+
+server-dev-stop: ## Stop built-in php server
+server-dev-stop:
+	$(SYMFONY) server:stop
+
+.PHONY: install-prod composer-install-prod composer-install yarn-install assets-install server-dev-start server-dev-stop
 
 ## Docker
 ## -----
@@ -112,11 +120,15 @@ update-yarn: ## Update nodejs packages with yarn
 update-yarn:
 	$(YARN) upgrade
 
+outdated-js: ## Check outdated npm packages
+outdated-js:
+	$(YARN) outdated || true
+
 commit: ## Commit with Commitizen command line
 commit:
 	$(YARN) commit
 
-.PHONY: update-composer update-yarn commit
+.PHONY: update-composer update-yarn outdated-js commit
 
 ## Data
 ## ----

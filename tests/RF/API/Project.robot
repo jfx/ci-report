@@ -4,6 +4,11 @@ Test Teardown     Teardown
 Resource          Function/api.txt
 
 *** Test Cases ***
+"GET" request with unknown route returns "404" error
+    ${resp} =    When Get Request    cir    /wrong_url
+    Then Should Be Equal As Strings    ${resp.status_code}    404
+    And Dictionary Should Contain Item    ${resp.json()}    code    404
+
 "GET Projects" request contains Project One
     ${resp} =    When Get Request    cir    /projects
     Then Should Be Equal As Strings    ${resp.status_code}    200
@@ -18,11 +23,6 @@ Resource          Function/api.txt
     And Item of list should not countains label    ${resp.content}    id
     And Item of list should not countains label    ${resp.content}    token
     And Item of list should not countains label    ${resp.content}    email
-
-"GET Projects" request with unknown route returns "404" error
-    ${resp} =    When Get Request    cir    /projects/
-    Then Should Be Equal As Strings    ${resp.status_code}    404
-    And Dictionary Should Contain Item    ${resp.json()}    code    404
 
 "GET project" request returns public project data
     ${resp} =    When Get Request    cir    /projects/${P1.prefid}
