@@ -5,7 +5,7 @@ services:
         ports:
             - '3307:3306'
         volumes:
-            - "./data/db:/var/lib/mysql"
+            - "/var/data/db:/var/lib/mysql"
         env_file:
             - .env-docker-compose-local
     php:
@@ -17,6 +17,6 @@ services:
     nginx:
         image: ci-report-web:latest
         ports:
-            - '8080:80'
+            - '8080:8080'
         depends_on:
             - php

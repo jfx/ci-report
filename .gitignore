@@ -23,6 +23,9 @@ yarn-error.log
 ###< symfony/web-server-bundle ###
 
 /nbproject/
+.buildpath
+/.project
+/.settings/
 /.env-docker-compose
 /.env-docker-compose-dev
 /data
