@@ -78,11 +78,11 @@ server-dev-stop:
 
 docker-build: ## Build application docker images
 docker-build: docker-rmi
-	docker build --target base-app -t base-app:latest -f Dockerfile-app . 2>&1 | tee docker-base-app.log
-	docker build --target builder-app -t builder-app:latest -f Dockerfile-app . 2>&1 | tee docker-builder-app.log
-	docker build --target ci-report-app -t ci-report-app:latest -f Dockerfile-app . 2>&1 | tee docker-ci-report-app.log
-	docker build --target builder-web -t builder-web:latest -f Dockerfile-web . 2>&1 | tee docker-builder-web.log
-	docker build --target ci-report-web -t ci-report-web:latest -f Dockerfile-web . 2>&1 | tee docker-ci-report-web.log
+	docker build --target base-app -t base-app:latest -f Dockerfile-app .
+	docker build --target builder-app -t builder-app:latest -f Dockerfile-app .
+	docker build --target ci-report-app -t ci-report-app:latest -f Dockerfile-app .
+	docker build --target builder-web -t builder-web:latest -f Dockerfile-web .
+	docker build --target ci-report-web -t ci-report-web:latest -f Dockerfile-web .
 
 docker-rm: ## Remove all unused containers
 docker-rm:

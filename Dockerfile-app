@@ -13,6 +13,7 @@ RUN apk add --update \
     php7 \
     php7-ctype\
     php7-dom \
+    php7-fileinfo \
     php7-iconv \
     php7-intl \
     php7-json \
@@ -103,8 +104,9 @@ ENV APP_DEBUG=0 \
     WEB_HOST=http://127.0.0.1:8080
 
 RUN addgroup nobody root && \
-    chgrp -R 0 var/cache/prod && \
-    chmod -R g=u /etc/passwd var/cache/prod
+    mkdir -p var/documents && \
+    chgrp -R 0 var/cache/prod var/documents && \
+    chmod -R g=u /etc/passwd var/cache/prod var/documents
 COPY docker/uid-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["uid-entrypoint.sh"]
 
