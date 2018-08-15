@@ -1,0 +1,113 @@
+ARG  CIR_BASE_APP_IMG=base-app
+ARG  CIR_BUILD_APP_IMG=builder-app
+ARG  CIR_TAG=latest
+
+FROM alpine:3.8 as base-app
+
+LABEL name="ci-report php base"
+LABEL maintainer="soubirou@yahoo.fr"
+LABEL website="https://www.ci-report.io"
+LABEL description="Base docker image for php application of ci-report project"
+
+RUN apk add --update \
+    php7 \
+    php7-ctype\
+    php7-dom \
+    php7-iconv \
+    php7-intl \
+    php7-json \
+    php7-fpm \
+    php7-gd \
+    php7-mbstring \
+    php7-opcache \
+    php7-openssl \
+    php7-pdo_mysql \
+    php7-session \
+    php7-simplexml \
+    php7-tokenizer \
+    php7-xml \
+    php7-zip && \
+    rm -rf /var/cache/apk/*
+
+
+FROM ${CIR_BASE_APP_IMG}:${CIR_TAG} as builder-app
+
+LABEL name="ci-report php builder"
+LABEL maintainer="soubirou@yahoo.fr"
+LABEL website="https://www.ci-report.io"
+LABEL description="Builder docker image for php application of ci-report project"
+
+RUN apk add --update \
+    composer \
+    git \
+    unzip && \
+    rm -rf /var/cache/apk/*
+
+WORKDIR /symfony
+
+COPY composer.json composer.lock symfony.lock ./
+COPY bin/console bin/console
+COPY config config
+COPY public/index.php public/index.php
+COPY src src
+COPY templates templates
+COPY translations translations
+RUN find config -name '*dev*' -exec rm -rf {} + && \
+    find config -name '*test*' -exec rm -rf {} + && \
+    rm -rf src/DataFixtures && \
+    mkdir var
+
+ENV APP_DEBUG=0 \
+    APP_ENV=prod \
+    APP_SECRET=253307d07e2b0b2aab453f89e31111ba \
+    DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name \
+    LOG_PATH=php://stderr \
+    MAILER_SENDER=ci-report.sender@example.com \
+    MAILER_URL=null://localhost \
+    WEB_HOST=http://127.0.0.1:8000
+
+RUN composer install --no-dev --optimize-autoloader && bin/console assets:install public
+
+
+FROM ${CIR_BUILD_APP_IMG}:${CIR_TAG} as builder-app-tag
+
+FROM ${CIR_BASE_APP_IMG}:${CIR_TAG} as ci-report-app
+
+LABEL name="ci-report php application"
+LABEL maintainer="soubirou@yahoo.fr"
+LABEL website="https://www.ci-report.io"
+LABEL description="php-fpm docker image of ci-report project"
+
+COPY docker/app/opcache.ini /etc/php7/conf.d/
+COPY docker/app/symfony.ini /etc/php7/php-fpm.d/
+COPY docker/app/symfony.ini /etc/php7/cli/conf.d/
+COPY docker/app/fpm.conf docker/app/zz-fpm.conf /etc/php7/php-fpm.d/
+
+WORKDIR /symfony
+
+COPY --from=builder-app-tag /symfony/composer.json .
+COPY --from=builder-app-tag /symfony/config config
+COPY --from=builder-app-tag /symfony/public/index.php public/index.php
+COPY --from=builder-app-tag /symfony/src src
+COPY --from=builder-app-tag /symfony/templates templates
+COPY --from=builder-app-tag /symfony/translations translations
+COPY --from=builder-app-tag /symfony/var/cache var/cache
+COPY --from=builder-app-tag /symfony/vendor vendor
+
+ENV APP_DEBUG=0 \
+    APP_ENV=prod \
+    APP_SECRET=253307d07e2b0b2aab453f89e31111ba \
+    DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name \
+    MAILER_SENDER=ci-report.sender@example.com \
+    MAILER_URL=null://localhost \
+    WEB_HOST=http://127.0.0.1:8080
+
+RUN addgroup nobody root && \
+    chgrp -R 0 var/cache/prod && \
+    chmod -R g=u /etc/passwd var/cache/prod
+COPY docker/uid-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["uid-entrypoint.sh"]
+
+USER 65534
+EXPOSE 9000
+CMD ["php-fpm7", "--nodaemonize"]

@@ -51,7 +51,7 @@ class SuiteTests
     /**
      * Constructor.
      *
-     * @param Suite $suite The suite
+     * @param SuiteDTO $suite The suite
      */
     public function __construct(SuiteDTO $suite)
     {

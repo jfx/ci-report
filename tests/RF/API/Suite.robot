@@ -41,11 +41,6 @@ Resource          Function/api.txt
     Then Should Be Equal As Strings    ${resp.status_code}    404
     And Dictionary Should Contain Item    ${resp.json()}    code    404
 
-"GET Suites" request with unknown route returns "404" error
-    ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/
-    Then Should Be Equal As Strings    ${resp.status_code}    404
-    And Dictionary Should Contain Item    ${resp.json()}    code    404
-
 "GET suite" request returns suite data
     ${resp} =    When Get Request    cir    /projects/${P1C4S1.prefid}/campaigns/${P1C4S1.crefid}/suites/${P1C4S1.srefid}
     Then Should Be Equal As Strings    ${resp.status_code}    200

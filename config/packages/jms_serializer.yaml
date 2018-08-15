@@ -2,7 +2,12 @@ jms_serializer:
     visitors:
         xml:
             format_output: '%kernel.debug%'
-#    metadata:
+    metadata:
+        warmup:
+            # list of directories to scan searching for php classes to use when warming up the cache
+            paths:
+                included: [ "src/DTO", "src/Entity" ]
+                excluded: []
 #        auto_detection: false
 #        directories:
 #            any-name:

@@ -3,14 +3,23 @@ EXEC_PHP    = php
 
 SYMFONY     = $(EXEC_PHP) bin/console
 COMPOSER    = composer
+
 YARN        = yarn
+
+DOCKER         = docker
+DOCKER-COMPOSE = docker-compose
 
 ## Clean
 ## -----
 
 clean: ## Remove generated files
-clean: clean-log
-	rm -rf .env vendor node_modules
+clean: clean-log clean-assets
+	rm -rf .env vendor node_modules var
+	mkdir var
+
+clean-assets: ## Remove web assets
+clean-assets:
+	cd public && ls | grep -v index.php | xargs rm -rf
 
 clean-log: ## Remove log and tmp files
 clean-log:
@@ -21,13 +30,85 @@ clean-log:
 
 clean-cache: ## Clean Symfony cache
 clean-cache:
-	$(SYMFONY) cache-clear
+	$(SYMFONY) cache:clear
 
 clean-test-files: ## Remove test attached documents
 clean-test-files:
 	@rm -rf var/documents
 
-.PHONY: clean clean-log clean-cache clean-test-files
+.PHONY: clean clean-log clean-assets clean-cache clean-test-files
+
+## Install
+## ------
+
+install-prod: ## Production installation
+install-prod: clean composer-install-prod yarn-install assets-install
+
+composer-install-prod: ## Composer install for production
+composer-install-prod:
+	export APP_ENV=prod; \
+	$(COMPOSER) install --no-dev --optimize-autoloader
+
+composer-install: ## Composer install with dev dependencies
+composer-install:
+	$(COMPOSER) install
+
+yarn-install: ## Yarn install
+yarn-install:
+	$(YARN) install
+
+assets-install: ## Deploy web assets
+assets-install: clean-assets
+	@cp -r assets/static/* public
+	$(SYMFONY) assets:install public
+	$(YARN) run encore production
+
+server-dev-start: ## Start built-in php server
+server-dev-start:
+	$(SYMFONY) server:start
+
+server-dev-stop: ## Stop built-in php server
+server-dev-stop:
+	$(SYMFONY) server:stop
+
+.PHONY: install-prod composer-install-prod composer-install yarn-install assets-install server-dev-start server-dev-stop
+
+## Docker
+## -----
+
+docker-build: ## Build application docker images
+docker-build: docker-rmi
+	docker build --target base-app -t base-app:latest -f Dockerfile-app . 2>&1 | tee docker-base-app.log
+	docker build --target builder-app -t builder-app:latest -f Dockerfile-app . 2>&1 | tee docker-builder-app.log
+	docker build --target ci-report-app -t ci-report-app:latest -f Dockerfile-app . 2>&1 | tee docker-ci-report-app.log
+	docker build --target builder-web -t builder-web:latest -f Dockerfile-web . 2>&1 | tee docker-builder-web.log
+	docker build --target ci-report-web -t ci-report-web:latest -f Dockerfile-web . 2>&1 | tee docker-ci-report-web.log
+
+docker-rm: ## Remove all unused containers
+docker-rm:
+	docker container prune -f
+
+docker-rmi: ## Remove all untagged images
+docker-rmi: docker-rm
+	docker image prune -f
+
+dc-local-up: ## Docker compose up
+dc-local-up:
+	docker-compose -f docker-compose-local.yaml up -d
+
+dc-local-down: ## Docker compose shutdown
+dc-local-down:
+	docker-compose -f docker-compose-local.yaml down
+
+dc-up: ## Docker compose up
+dc-up:
+	docker-compose up -d
+
+dc-down: ## Docker compose shutdown
+dc-down:
+	docker-compose down
+
+.PHONY: docker-build docker-rm docker-rmi dc-local-up dc-local-down dc-up dc-down
 
 ## Update
 ## ------
@@ -40,11 +121,15 @@ update-yarn: ## Update nodejs packages with yarn
 update-yarn:
 	$(YARN) upgrade
 
+outdated-js: ## Check outdated npm packages
+outdated-js:
+	$(YARN) outdated || true
+
 commit: ## Commit with Commitizen command line
 commit:
 	$(YARN) commit
 
-.PHONY: update-composer update-yarn commit
+.PHONY: update-composer update-yarn outdated-js commit
 
 ## Data
 ## ----
@@ -88,12 +173,12 @@ test-files: clean-test-files
 ## QA
 ## --
 
-php-cs-fixer: ## Run PHP Coding Standards Fixer 
+php-cs-fixer: ## Run PHP Coding Standards Fixer
 php-cs-fixer:
 	vendor/bin/php-cs-fixer fix --using-cache=no --rules=@Symfony tests/phpunit
 	vendor/bin/php-cs-fixer fix --config=standards/.php_cs
 
-lint: ## Check syntax of files 
+lint: ## Check syntax of files
 lint:
 	$(SYMFONY) lint:yaml config
 	$(SYMFONY) lint:twig templates
@@ -101,7 +186,7 @@ lint:
 	$(COMPOSER) validate --strict
 	$(SYMFONY) doctrine:schema:validate --skip-sync -vvv --no-interaction
 
-phpcs: ## Run PHP CodeSniffer 
+phpcs: ## Run PHP CodeSniffer
 phpcs:
 	vendor/bin/phpcs src --standard=standards/ruleset-cs.xml
 
@@ -113,7 +198,7 @@ unit-test: ## Run unit tests with phpunit
 unit-test:
 	bin/phpunit
 
-check: ## Run all QA checks 
+check: ## Run all QA checks
 check: php-cs-fixer lint phpcs phpmd unit-test
 
 .PHONY: php-cs-fixer lint phpcs phpmd unit-test check

@@ -1,8 +1,8 @@
-sudo: false
+sudo: true
 
 jobs:
   include:
-    - stage: "Unit tests & staging 1 deploy"
+    - stage: "Unit tests"
       language: php
       php: 7.2
       services:
@@ -12,14 +12,14 @@ jobs:
         directories:
           - "$HOME/.composer/cache/files"
       env:
-        - SYMFONY_VERSION="4.0.*" DB=mysql DATABASE_URL="mysql://root@127.0.0.1:3306/ci-report" BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
+        - SYMFONY_VERSION="4.1.*" DB=mysql DATABASE_URL="mysql://root@127.0.0.1:3306/ci-report" BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
       before_install:
         - phpenv config-add php-config-travis.ini
         - composer self-update
       install:
-        - composer install
-        - yarn install
-        - yarn build
+        - make composer-install
+        - make yarn-install
+        - make assets-install
         - cp phpunit.xml.dist phpunit.xml
         - bin/setBuildId.sh ${BUILD_ID}
         - make lint
@@ -27,29 +27,59 @@ jobs:
       script:
         - make unit-test
         - cat var/log/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException' || true
+
+    - stage: "Build docker images"
+      services:
+        - docker
+      env:
+        - BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
+      before_install:
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - sudo apt-get update
+        - sudo apt-get -y install docker-ce
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+        - make docker-build
+        - docker images
+        - TAG_ID=`echo ${BUILD_ID} | tr -dc a-zA-Z0-9-._`
+        - docker tag ci-report-app:latest cireport/ci-report-app:${TAG_ID}
+        - docker tag ci-report-web:latest cireport/ci-report-web:${TAG_ID}
+        - docker push cireport/ci-report-app:${TAG_ID}
+        - docker push cireport/ci-report-web:${TAG_ID}
+
+    - stage: "Staging : deploy"
+      language: php
+      php: 7.2
+      before_install:
+        - composer self-update
+      script:
+        - composer-install-prod
+        - yarn install
+        - make assets-install
+        - ls | grep -v public | xargs rm -rf
+        - rm public/index.php
       deploy:
         provider: heroku
         api_key: $HEROKU_AUTH_TOKEN
-        app: $HEROKU_APP_STAG1
+        app: $HEROKU_APP_STAG
         skip_cleanup: true
-        run:
-          - "bin/console cache:clear --env=prod"
         on:
           all_branches: true
 
-    - stage: "Staging 1 : e2e tests"
+    - stage: "Staging : e2e tests"
       language: python
       python: 2.7
       env:
-        - BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
+        - BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
       install:
         - pip install -r tests/RF/requirements.txt
         - mv tests/RF/Common/Conf/mail.txt.dist tests/RF/Common/Conf/mail.txt
-        - bin/dumpDB.sh -d ${DATABASE_URL_STAG1} dump-stag1.sql
+        - bin/dumpDB.sh -d ${DATABASE_URL_STAG} dump-stag.sql
       script:
-        - pabot --processes 5 -e EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG1} -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
-        # - robot -i MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG1} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v IMAP_SERVER:${RF_IMAP_SERVER} -v MAIL_USER:${RF_MAIL_USER} -v MAIL_PASSWORD:${RF_MAIL_PASSWORD} -v MAIL_SENDER:${RF_MAIL_SENDER} tests/RF
-        - robot -i EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG1} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
+        - pabot --processes 5 -e EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
+        # - robot -i MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v DB_DUMP_FILE:dump-stag.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v IMAP_SERVER:${RF_IMAP_SERVER} -v MAIL_USER:${RF_MAIL_USER} -v MAIL_PASSWORD:${RF_MAIL_PASSWORD} -v MAIL_SENDER:${RF_MAIL_SENDER} tests/RF
+        - robot -i EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v DB_DUMP_FILE:dump-stag.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
 
     - stage: "Release"
       language: node_js

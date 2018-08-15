@@ -23,6 +23,12 @@ yarn-error.log
 ###< symfony/web-server-bundle ###
 
 /nbproject/
+.buildpath
+/.project
+/.settings/
+/.env-docker-compose
+/.env-docker-compose-dev
+/data
 /.php_cs.cache
 tests/RF/Common/Conf/mail.txt
 *.pyc
@@ -32,6 +38,8 @@ log.html
 report.html
 output.xml
 /pabot_results/
+/public/*
+!/public/index.php
 ###> friendsofphp/php-cs-fixer ###
 /.php_cs
 /.php_cs.cache
