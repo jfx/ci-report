@@ -27,7 +27,7 @@ yarn-error.log
 /.project
 /.settings/
 /.env-docker-compose
-/.env-docker-compose-dev
+/.env-docker-compose-local
 /data
 /.php_cs.cache
 tests/RF/Common/Conf/mail.txt

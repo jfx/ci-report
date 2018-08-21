@@ -1,0 +1,16 @@
+kind: "Endpoints"
+apiVersion: "v1"
+metadata:
+   labels:
+      app: ci-report-ext-db
+      name: ci-report-ext-db-staging
+   name: "external-mysql-service" 
+subsets: 
+   -
+      addresses:
+         -
+            ip: "__IP__" 
+      ports:
+         -
+            port: 3306 
+            name: "mysql"

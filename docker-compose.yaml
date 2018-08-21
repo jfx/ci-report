@@ -8,5 +8,7 @@ services:
         image: ci-report-web:latest
         ports:
             - '8080:8080'
+        env_file:
+            - .env-docker-compose-local
         depends_on:
             - php

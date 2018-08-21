@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Route
+metadata:
+  labels:
+    app: ci-report-web
+    name: ci-report-web-staging
+  name: ci-report-web
+  namespace: ci-report
+spec:
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: ci-report-web
+    weight: 100
+  wildcardPolicy: None

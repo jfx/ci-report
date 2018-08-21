@@ -8,6 +8,7 @@ YARN        = yarn
 
 DOCKER         = docker
 DOCKER-COMPOSE = docker-compose
+OC             = oc
 
 ## Clean
 ## -----
@@ -78,37 +79,66 @@ server-dev-stop:
 
 docker-build: ## Build application docker images
 docker-build: docker-rmi
-	docker build --target base-app -t base-app:latest -f Dockerfile-app .
-	docker build --target builder-app -t builder-app:latest -f Dockerfile-app .
-	docker build --target ci-report-app -t ci-report-app:latest -f Dockerfile-app .
-	docker build --target builder-web -t builder-web:latest -f Dockerfile-web .
-	docker build --target ci-report-web -t ci-report-web:latest -f Dockerfile-web .
+	$(DOCKER) build --target base-app -t base-app:latest -f Dockerfile-app .
+	$(DOCKER) build --target builder-app -t builder-app:latest -f Dockerfile-app .
+	$(DOCKER) build --target ci-report-app -t ci-report-app:latest -f Dockerfile-app .
+	$(DOCKER) build --target builder-web -t builder-web:latest -f Dockerfile-web .
+	$(DOCKER) build --target ci-report-web -t ci-report-web:latest -f Dockerfile-web .
+	$(DOCKER) image prune -f
 
 docker-rm: ## Remove all unused containers
 docker-rm:
-	docker container prune -f
+	$(DOCKER) container prune -f
 
 docker-rmi: ## Remove all untagged images
 docker-rmi: docker-rm
-	docker image prune -f
+	$(DOCKER) image prune -f
 
 dc-local-up: ## Docker compose up
 dc-local-up:
-	docker-compose -f docker-compose-local.yaml up -d
+	$(DOCKER-COMPOSE) -f docker-compose-local.yaml up -d
 
 dc-local-down: ## Docker compose shutdown
 dc-local-down:
-	docker-compose -f docker-compose-local.yaml down
+	$(DOCKER-COMPOSE) -f docker-compose-local.yaml down
 
 dc-up: ## Docker compose up
 dc-up:
-	docker-compose up -d
+	$(DOCKER-COMPOSE) up -d
 
 dc-down: ## Docker compose shutdown
 dc-down:
-	docker-compose down
+	$(DOCKER-COMPOSE) down
 
 .PHONY: docker-build docker-rm docker-rmi dc-local-up dc-local-down dc-up dc-down
+
+## Openshift
+## ---------
+openshift-stag-deploy: ## Deploy web and app staging on Openshift with DB endpoint. Arguments: tag=test, endpoint=x3zerfds.eu-west-1.rds.amazonaws.com url=mysql://username:password@127.0.0.1:3306/database, token=Yidhzoh
+openshift-stag-deploy:
+	test -n "${tag}"  # Tag parameter is not set
+	test -n "${endpoint}"  # Endpoint host parameter is not set
+	test -n "${url}"  # url parameter is not set
+	test -n "${token}"  # Token parameter is not set
+	$(eval ip := $(shell getent hosts ${endpoint} | awk '{ print $$1 }'))
+	cp -f openshift/ExternalEndpointMysql.yaml /tmp/ExternalEndpointMysql.yaml
+	sed -i 's/__IP__/'"${ip}"'/g' /tmp/ExternalEndpointMysql.yaml
+	$(OC) login https://api.starter-ca-central-1.openshift.com --token=${token}
+	$(OC) apply -f openshift/ExternalServiceMysql.yaml
+	$(OC) apply -f /tmp/ExternalEndpointMysql.yaml
+	$(OC) new-app -e DATABASE_URL=${url} cireport/ci-report-app:${tag} -l name=ci-report-app-staging
+	$(OC) new-app -e APP_HOST=ci-report-app.ci-report.svc:9000 cireport/ci-report-web:${tag} -l name=ci-report-web-staging
+	$(OC) apply -f openshift/RouteWeb.yaml
+
+openshift-stag-undeploy: ## Undeploy staging on Openshift. Arguments: token=Yidhzoh
+openshift-stag-undeploy:
+	test -n "${token}"  # Token parameter is not set
+	$(OC) login https://api.starter-ca-central-1.openshift.com --token=${token}
+	$(OC) delete all -l name=ci-report-web-staging
+	$(OC) delete all -l name=ci-report-app-staging
+	$(OC) delete all -l name=ci-report-ext-db-staging
+
+.PHONY: openshift-stag-deploy openshift-stag-undeploy
 
 ## Update
 ## ------
@@ -143,6 +173,8 @@ db:
 
 db-dump: ## Dump database in a file. Arguments: url=mysql://username:password@127.0.0.1:3306/database, file=file_path
 db-dump:
+	test -n "${url}"  # url parameter is not set
+	test -n "${file}"  # file parameter is not set
 	$(eval user := $(shell echo ${url} | sed 's/mysql:\/\/\(.*\):.*@.*/\1/'))
 	$(eval password := $(shell echo ${url} | sed 's/mysql:\/\/.*:\(.*\).*@.*/\1/'))
 	$(eval host := $(shell echo ${url} | sed 's/mysql:\/\/.*:.*@\(.*\):.*/\1/'))
@@ -153,6 +185,8 @@ db-dump:
 
 db-import: ## Import a mysql dump in database. Arguments: url=mysql://username:password@127.0.0.1:3306/database, file=file_path
 db-import:
+	test -n "${url}"  # url parameter is not set
+	test -n "${file}"  # file parameter is not set
 	$(eval user := $(shell echo ${url} | sed 's/mysql:\/\/\(.*\):.*@.*/\1/'))
 	$(eval password := $(shell echo ${url} | sed 's/mysql:\/\/.*:\(.*\).*@.*/\1/'))
 	$(eval host := $(shell echo ${url} | sed 's/mysql:\/\/.*:.*@\(.*\):.*/\1/'))
