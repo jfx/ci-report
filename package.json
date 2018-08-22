@@ -2,6 +2,10 @@
   "name": "ci-report",
   "version": "0.0.0-semantic-release",
   "description": "A web application to display tests reports from CI tools like Travis or Gitlab-ci",
+  "engines": {
+    "node": ">=9.0",
+    "yarn": ">=1.9"
+  },
   "devDependencies": {
     "@semantic-release/git": "^4.0.1",
     "@semantic-release/github": "^4.2.8",
