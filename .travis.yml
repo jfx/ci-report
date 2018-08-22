@@ -1,4 +1,5 @@
-sudo: true
+dist: trusty
+sudo: required
 
 jobs:
   include:
@@ -16,6 +17,7 @@ jobs:
       before_install:
         - phpenv config-add php-config-travis.ini
         - composer self-update
+        - nvm install 9
       install:
         - make composer-install
         - make yarn-install
@@ -49,23 +51,13 @@ jobs:
         - docker push cireport/ci-report-web:${TAG_ID}
 
     - stage: "Staging : deploy"
-      language: php
-      php: 7.2
+      env:
+        - OC_VERSION="3.10.27" BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
       before_install:
-        - composer self-update
+        - curl -fsSLO https://mirror.openshift.com/pub/openshift-v3/clients/${OC_VERSION}/linux/oc.tar.gz
+        - tar xzf oc.tar.gz -C /usr/local/bin
       script:
-        - composer-install-prod
-        - yarn install
-        - make assets-install
-        - ls | grep -v public | xargs rm -rf
-        - rm public/index.php
-      deploy:
-        provider: heroku
-        api_key: $HEROKU_AUTH_TOKEN
-        app: $HEROKU_APP_STAG
-        skip_cleanup: true
-        on:
-          all_branches: true
+        - make openshift-stag-undeploy token=${OPENSHIFT_TOKEN}
 
     - stage: "Staging : e2e tests"
       language: python

@@ -521,7 +521,7 @@ class Suite
     /**
      * Get document Uid.
      *
-     * @return string
+     * @return string|null
      */
     public function getDocumentUid(): ?string
     {
