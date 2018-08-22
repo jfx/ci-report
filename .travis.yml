@@ -18,6 +18,11 @@ jobs:
         - phpenv config-add php-config-travis.ini
         - composer self-update
         - nvm install 9
+        - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+        - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+        - sudo apt-get update -qq && sudo apt-get install -y -qq yarn
+        - sudo rm /usr/local/bin/yarn
+        - which yarn
       install:
         - make composer-install
         - make yarn-install
@@ -38,8 +43,7 @@ jobs:
       before_install:
         - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
         - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-        - sudo apt-get update
-        - sudo apt-get -y install docker-ce
+        - sudo apt-get update && sudo apt-get -y install docker-ce
       script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
         - make docker-build
@@ -55,7 +59,7 @@ jobs:
         - OC_VERSION="3.10.27" BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
       before_install:
         - curl -fsSLO https://mirror.openshift.com/pub/openshift-v3/clients/${OC_VERSION}/linux/oc.tar.gz
-        - tar xzf oc.tar.gz -C /usr/local/bin
+        - sudo tar xzf oc.tar.gz -C /usr/local/bin
       script:
         - make openshift-stag-undeploy token=${OPENSHIFT_TOKEN}
 
