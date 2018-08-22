@@ -230,10 +230,11 @@ phpmd:
 
 unit-test: ## Run unit tests with phpunit
 unit-test:
-	bin/phpunit
+	export SYMFONY_DEPRECATIONS_HELPER=disabled; bin/phpunit
 
 check: ## Run all QA checks
-check: php-cs-fixer lint phpcs phpmd unit-test
+check: php-cs-fixer lint phpcs phpmd
+	bin/phpunit
 
 .PHONY: php-cs-fixer lint phpcs phpmd unit-test check
 
