@@ -65,7 +65,7 @@ ENV APP_DEBUG=0 \
     LOG_PATH=php://stderr \
     MAILER_SENDER=ci-report.sender@example.com \
     MAILER_URL=null://localhost \
-    WEB_HOST=http://127.0.0.1:8000
+    WEB_HOST=http://127.0.0.1:8080
 
 RUN composer install --no-dev --optimize-autoloader && bin/console assets:install public
 
