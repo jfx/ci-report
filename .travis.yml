@@ -61,7 +61,9 @@ jobs:
         - curl -fsSLO https://mirror.openshift.com/pub/openshift-v3/clients/${OC_VERSION}/linux/oc.tar.gz
         - sudo tar xzf oc.tar.gz -C /usr/local/bin
       script:
+        - TAG_ID=`echo ${BUILD_ID} | tr -dc a-zA-Z0-9-._`
         - make openshift-stag-undeploy token=${OPENSHIFT_TOKEN}
+        - make openshift-stag-deploy tag=${TAG_ID} endpoint=${OPENSHIFT_ENDPOINT_HOST} url=${OPENSHIFT_DATABASE_URL} token=${OPENSHIFT_TOKEN}
 
     - stage: "Staging : e2e tests"
       language: python
