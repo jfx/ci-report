@@ -1,8 +1,8 @@
--- MySQL dump 10.16  Distrib 10.1.30-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.16  Distrib 10.1.35-MariaDB, for debian-linux-gnu (x86_64)
 --
 -- Host: 127.0.0.1    Database: ci_reportdb
 -- ------------------------------------------------------
--- Server version	10.1.30-MariaDB-1~xenial
+-- Server version	10.1.35-MariaDB-1~xenial
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -37,7 +37,7 @@ CREATE TABLE `cir_campaign` (
   PRIMARY KEY (`id`),
   KEY `IDX_2AE0C69C166D1F9C` (`project_id`),
   CONSTRAINT `FK_2AE0C69C166D1F9C` FOREIGN KEY (`project_id`) REFERENCES `cir_project` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,17 +59,17 @@ DROP TABLE IF EXISTS `cir_project`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cir_project` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `refid` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `token` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `refid` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `warning` smallint(6) NOT NULL,
   `success` smallint(6) NOT NULL,
-  `email` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6FCF6BC65E237E06` (`name`),
   UNIQUE KEY `UNIQ_6FCF6BC6FB7281BE` (`refid`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,7 +78,7 @@ CREATE TABLE `cir_project` (
 
 LOCK TABLES `cir_project` WRITE;
 /*!40000 ALTER TABLE `cir_project` DISABLE KEYS */;
-INSERT INTO `cir_project` VALUES (1,'Project One','project-one','1f4ffb19e4b9-02278af07b7d-4e370a76f001',80,95,'email1@example.com','2018-01-21 08:16:19'),(2,'Project Two','project-two','1f4ffb19e4b9-02278af07b7d-4e370a76f002',80,95,'email2@example.com','2018-01-21 08:16:19'),(3,'Project Three','project-three','1f4ffb19e4b9-02278af07b7d-4e370a76f003',80,95,'email3@example.com','2018-01-21 08:16:19'),(4,'Project Four','project-four','1f4ffb19e4b9-02278af07b7d-4e370a76f004',80,95,'email4@example.com','2018-01-21 08:16:19'),(5,'Project Five','project-five','1f4ffb19e4b9-02278af07b7d-4e370a76f005',80,95,'email5@example.com','2018-01-21 08:16:19'),(6,'Project Six','project-six','1f4ffb19e4b9-02278af07b7d-4e370a76f006',80,95,'email6@example.com','2018-01-21 08:16:19'),(7,'Project Seven','project-seven','1f4ffb19e4b9-02278af07b7d-4e370a76f007',80,95,'email7@example.com','2018-01-21 08:16:19'),(8,'Project Eight','project-eight','1f4ffb19e4b9-02278af07b7d-4e370a76f008',80,95,'email8@example.com','2018-01-21 08:16:19');
+INSERT INTO `cir_project` VALUES (1,'Project One','project-one','1f4ffb19e4b9-02278af07b7d-4e370a76f001',80,95,'email1@example.com','2018-08-23 13:01:37'),(2,'Project Two','project-two','1f4ffb19e4b9-02278af07b7d-4e370a76f002',80,95,'email2@example.com','2018-08-23 13:01:37'),(3,'Project Three','project-three','1f4ffb19e4b9-02278af07b7d-4e370a76f003',80,95,'email3@example.com','2018-08-23 13:01:37'),(4,'Project Four','project-four','1f4ffb19e4b9-02278af07b7d-4e370a76f004',80,95,'email4@example.com','2018-08-23 13:01:37'),(5,'Project Five','project-five','1f4ffb19e4b9-02278af07b7d-4e370a76f005',80,95,'email5@example.com','2018-08-23 13:01:37'),(6,'Project Six','project-six','1f4ffb19e4b9-02278af07b7d-4e370a76f006',80,95,'email6@example.com','2018-08-23 13:01:37'),(7,'Project Seven','project-seven','1f4ffb19e4b9-02278af07b7d-4e370a76f007',80,95,'email7@example.com','2018-08-23 13:01:37'),(8,'Project Eight','project-eight','1f4ffb19e4b9-02278af07b7d-4e370a76f008',80,95,'email8@example.com','2018-08-23 13:01:37');
 /*!40000 ALTER TABLE `cir_project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -92,7 +92,7 @@ DROP TABLE IF EXISTS `cir_suite`;
 CREATE TABLE `cir_suite` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `campaign_id` int(11) NOT NULL,
-  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `warning` smallint(6) NOT NULL,
   `success` smallint(6) NOT NULL,
   `passed` int(11) NOT NULL,
@@ -102,12 +102,12 @@ CREATE TABLE `cir_suite` (
   `disabled` int(11) NOT NULL,
   `duration` double NOT NULL,
   `datetime_suite` datetime NOT NULL,
-  `doc_uid` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `doc_uid` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `position` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_19727A44F639F774` (`campaign_id`),
   CONSTRAINT `FK_19727A44F639F774` FOREIGN KEY (`campaign_id`) REFERENCES `cir_campaign` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,22 +130,22 @@ DROP TABLE IF EXISTS `cir_test`;
 CREATE TABLE `cir_test` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `suite_id` int(11) NOT NULL,
-  `name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `classname` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `package` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `classname` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `package` varchar(256) COLLATE utf8mb4_unicode_ci NOT NULL,
   `passed` smallint(6) NOT NULL,
   `failed` smallint(6) NOT NULL,
   `errored` smallint(6) NOT NULL,
   `skipped` smallint(6) NOT NULL,
   `duration` double NOT NULL,
-  `system_out` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `system_err` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `failure_msg` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `system_out` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `system_err` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failure_msg` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
   `position` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_20FA24C74FFCB518` (`suite_id`),
   CONSTRAINT `FK_20FA24C74FFCB518` FOREIGN KEY (`suite_id`) REFERENCES `cir_suite` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1354 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1354 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -167,4 +167,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-21  9:23:12
+-- Dump completed on 2018-08-23 15:01:48
