@@ -76,7 +76,7 @@ jobs:
       script:
         - pabot --processes 5 -e EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:${OPENSHIFT_WEB_HOST} -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
         # - robot -i MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v DB_DUMP_FILE:dump-stag.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v IMAP_SERVER:${RF_IMAP_SERVER} -v MAIL_USER:${RF_MAIL_USER} -v MAIL_PASSWORD:${RF_MAIL_PASSWORD} -v MAIL_SENDER:${RF_MAIL_SENDER} tests/RF
-        - robot -i EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v DB_DUMP_FILE:tests/dump-test-data.sq -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:${OPENSHIFT_WEB_HOST} -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
+        - robot -i EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v DB_DUMP_FILE:tests/dump-test-data.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:${OPENSHIFT_WEB_HOST} -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
 
     - stage: "Release"
       language: node_js

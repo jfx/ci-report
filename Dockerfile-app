@@ -49,6 +49,7 @@ WORKDIR /symfony
 COPY composer.json composer.lock symfony.lock ./
 COPY bin/console bin/console
 COPY config config
+COPY junit junit
 COPY public/index.php public/index.php
 COPY src src
 COPY templates templates
@@ -88,6 +89,7 @@ WORKDIR /symfony
 
 COPY --from=builder-app-tag /symfony/composer.json .
 COPY --from=builder-app-tag /symfony/config config
+COPY --from=builder-app-tag /symfony/junit junit
 COPY --from=builder-app-tag /symfony/public/index.php public/index.php
 COPY --from=builder-app-tag /symfony/src src
 COPY --from=builder-app-tag /symfony/templates templates
@@ -104,9 +106,9 @@ ENV APP_DEBUG=0 \
     WEB_HOST=http://127.0.0.1:8080
 
 RUN addgroup nobody root && \
-    mkdir -p var/documents && \
-    chgrp -R 0 var/cache/prod var/documents && \
-    chmod -R g=u /etc/passwd var/cache/prod var/documents
+    mkdir -p var/documents var/tmp && \
+    chgrp -R 0 var/cache/prod var/documents var/tmp && \
+    chmod -R g=u /etc/passwd var/cache/prod var/documents var/tmp
 COPY docker/uid-entrypoint.sh /usr/local/bin/
 ENTRYPOINT ["uid-entrypoint.sh"]
 
