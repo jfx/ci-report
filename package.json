@@ -4,7 +4,7 @@
   "description": "A web application to display tests reports from CI tools like Travis or Gitlab-ci",
   "engines": {
     "node": ">=9.0",
-    "yarn": ">=1.9"
+    "yarn": ">=1.5"
   },
   "devDependencies": {
     "@semantic-release/git": "^4.0.1",
