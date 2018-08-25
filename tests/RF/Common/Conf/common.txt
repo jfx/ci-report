@@ -15,6 +15,7 @@ ${DC_VERSION}     63
 ${DC_OS}          Windows 10
 ${SHORT_SLEEP}    2s
 ${TIMEOUT}        20s
+${PROJECT_DIR}    ${CURDIR}/../../../..
 ${BIN_DIR}        ${CURDIR}/../../../../bin
 ${UPLOAD_TMP_DIR}    ${CURDIR}/../../../../var/tmp
 ${STORAGE_DIR}    ${CURDIR}/../../../../var/documents

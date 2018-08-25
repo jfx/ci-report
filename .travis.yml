@@ -1,8 +1,9 @@
-sudo: false
+dist: trusty
+sudo: required
 
 jobs:
   include:
-    - stage: "Unit tests & staging 1 deploy"
+    - stage: "Unit tests"
       language: php
       php: 7.2
       services:
@@ -12,50 +13,85 @@ jobs:
         directories:
           - "$HOME/.composer/cache/files"
       env:
-        - SYMFONY_VERSION="3.3.*" DB=mysql BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
-      before-install:
+        - SYMFONY_VERSION="4.1.*" DB=mysql DATABASE_URL="mysql://root@127.0.0.1:3306/ci-report" BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
+      before_install:
         - phpenv config-add php-config-travis.ini
         - composer self-update
+        - nvm install 9
+        - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+        - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+        - sudo apt-get update -qq && sudo apt-get install -y -qq yarn
+        - sudo rm /usr/local/bin/yarn
       install:
-        - composer install
-        - yarn install
-        - yarn build
+        - make composer-install
+        - make yarn-install
+        - make assets-install
+        - cp phpunit.xml.dist phpunit.xml
         - bin/setBuildId.sh ${BUILD_ID}
-        - bin/generateSecretKey.sh
-        - bin/console lint:yaml app/config
-        - bin/console lint:twig app/Resources/views
-        - bin/console doctrine:schema:validate --skip-sync -vvv --no-interaction
-        - bin/console doctrine:database:create --no-interaction --env=test
-        - bin/console doctrine:schema:create --no-interaction --env=test
-        - bin/console doctrine:fixtures:load --no-interaction --env=test
+        - make lint
+        - make db
       script:
-        - vendor/bin/phpunit
-        - cat var/logs/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException'
-      deploy:
-        provider: heroku
-        api_key: $HEROKU_AUTH_TOKEN
-        app: $HEROKU_APP_STAG1
-        skip_cleanup: true
-        run:
-          - "rm web/app_dev.php"
-          - "bin/console cache:clear --env=prod"
-          - "bin/loadDBFixtures.sh"
-        on:
-          all_branches: true
+        - make unit-test
+        - cat var/log/test.log | grep -Ev 'NotFoundHttpException|MethodNotAllowedHttpException|BadRequestHttpException' || true
 
-    - stage: "Staging 1 : e2e tests"
+    - stage: "Build docker images"
+      services:
+        - docker
+      env:
+        - BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
+      before_install:
+        - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+        - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+        - sudo apt-get update && sudo apt-get -y install docker-ce
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+        - make docker-build
+        - docker images
+        - TAG_ID=`echo ${BUILD_ID} | tr -dc a-zA-Z0-9-._`
+        - docker tag ci-report-app:latest cireport/ci-report-app:${TAG_ID}
+        - docker tag ci-report-web:latest cireport/ci-report-web:${TAG_ID}
+        - docker push cireport/ci-report-app:${TAG_ID}
+        - docker push cireport/ci-report-web:${TAG_ID}
+
+    - stage: "Staging : deploy"
+      env:
+        - OC_VERSION="3.10.27" BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
+      before_install:
+        - curl -fsSLO https://mirror.openshift.com/pub/openshift-v3/clients/${OC_VERSION}/linux/oc.tar.gz
+        - sudo tar xzf oc.tar.gz -C /usr/local/bin
+      script:
+        - TAG_ID=`echo ${BUILD_ID} | tr -dc a-zA-Z0-9-._`
+        - make openshift-stag-undeploy token=${OPENSHIFT_TOKEN}
+        - make openshift-stag-deploy tag=${TAG_ID} endpoint=${OPENSHIFT_ENDPOINT_HOST} url=${OPENSHIFT_DATABASE_URL} token=${OPENSHIFT_TOKEN}
+
+    - stage: "Staging : e2e tests"
       language: python
       python: 2.7
       env:
-        - BUILD_ID=${TRAVIS_BRANCH}/${TRAVIS_COMMIT:0:7}/${TRAVIS_BUILD_NUMBER}
+        - BUILD_ID=${TRAVIS_BRANCH}-${TRAVIS_COMMIT:0:7}-${TRAVIS_BUILD_NUMBER}
       install:
         - pip install -r tests/RF/requirements.txt
         - mv tests/RF/Common/Conf/mail.txt.dist tests/RF/Common/Conf/mail.txt
-        - bin/dumpDB.sh -d ${DATABASE_URL_STAG1} dump-stag1.sql
+        - make db-import url=${DATABASE_URL_STAG} file=tests/dump-test-data.sql
       script:
-        - pabot --processes 5 -e EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG1} -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
-        - robot -i MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG1} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v IMAP_SERVER:${RF_IMAP_SERVER} -v MAIL_USER:${RF_MAIL_USER} -v MAIL_PASSWORD:${RF_MAIL_PASSWORD} -v MAIL_SENDER:${RF_MAIL_SENDER} tests/RF
-        - robot -i EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG1} -v DB_DUMP_FILE:dump-stag1.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG1}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
+        - pabot --processes 5 -e EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:${OPENSHIFT_WEB_HOST} -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
+        # - robot -i MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v DB_DUMP_FILE:dump-stag.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:https://${HEROKU_APP_STAG}.herokuapp.com -v GRID:True -v GRID_URL:${GRID_URL} -v IMAP_SERVER:${RF_IMAP_SERVER} -v MAIL_USER:${RF_MAIL_USER} -v MAIL_PASSWORD:${RF_MAIL_PASSWORD} -v MAIL_SENDER:${RF_MAIL_SENDER} tests/RF
+        - robot -i EDIT -e MAIL -e STORAGE -e LOCAL -v DB_URL:${DATABASE_URL_STAG} -v DB_DUMP_FILE:tests/dump-test-data.sql -v BUILD_ID:${BUILD_ID} -v REMOTE:True -v ENV:PROD -v WEB_HOST:${OPENSHIFT_WEB_HOST} -v GRID:True -v GRID_URL:${GRID_URL} -v MAIL_USER:${RF_MAIL_USER} tests/RF
+
+    - stage: "Release"
+      language: node_js
+      node_js: 9
+      before_install:
+        - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+        - echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+        - sudo apt-get update -qq && sudo apt-get install -y -qq yarn
+        - sudo rm /usr/local/bin/yarn
+      script: skip
+      deploy:
+        provider: script
+        skip_cleanup: true
+        script:
+          - npx semantic-release
 
 notifications:
   slack:

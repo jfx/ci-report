@@ -1,0 +1,54 @@
+ARG  CIR_BUILD_APP_IMG=builder-app
+ARG  CIR_BUILD_WEB_IMG=builder-web
+ARG  CIR_TAG=latest
+
+FROM node:9 as builder-web
+
+LABEL name="ci-report web assets builder"
+LABEL maintainer="soubirou@yahoo.fr"
+LABEL url="https://github.com/jfx/ci-report"
+LABEL website="https://www.ci-report.io"
+LABEL description="Builder docker image for web assets of ci-report project"
+
+WORKDIR /symfony
+
+COPY webpack.config.js .
+COPY assets assets
+COPY package.json .
+COPY yarn.lock .
+
+RUN mkdir /symfony/public
+RUN yarn install && yarn run encore production
+
+
+FROM ${CIR_BUILD_APP_IMG}:${CIR_TAG} as builder-app-tag
+FROM ${CIR_BUILD_WEB_IMG}:${CIR_TAG} as builder-web-tag
+
+FROM nginx:stable-alpine as ci-report-web
+
+LABEL name="ci-report web assets"
+LABEL maintainer="soubirou@yahoo.fr"
+LABEL url="https://github.com/jfx/ci-report"
+LABEL website="https://www.ci-report.io"
+LABEL description="nginx docker image of ci-report project"
+
+COPY docker/web/default.conf /etc/nginx/conf.d/
+RUN mkdir -p /symfony/public
+COPY assets/static /symfony/public
+COPY --from=builder-app-tag /symfony/public/bundles /symfony/public/bundles
+COPY --from=builder-web-tag /symfony/public/build /symfony/public/build
+
+RUN sed -i 's/^user/#user/' /etc/nginx/nginx.conf
+
+ENV APP_HOST=php:9000
+
+RUN chgrp -R 0 /var/cache/nginx /var/log/nginx /var/run && \
+    chmod -R g=u /var/cache/nginx /var/log/nginx /var/run && \
+    chgrp 0 /etc/nginx/conf.d && \
+    chmod g=u /etc/passwd /etc/nginx/conf.d /etc/nginx/conf.d/default.conf
+COPY docker/web/web-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["web-entrypoint.sh"]
+
+USER 10010
+EXPOSE 8080
+CMD ["nginx", "-g", "daemon off;"]

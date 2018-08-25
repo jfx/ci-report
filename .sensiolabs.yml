@@ -2,4 +2,4 @@ php_version: 7.1
 
 pre_composer_script: |
     #!/bin/bash
-    cp app/config/parameters.yml.dist app/config/parameters.yml
+    cp .env.dist .env

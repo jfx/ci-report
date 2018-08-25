@@ -57,12 +57,12 @@ Load DB
 
 Load fixtures DB
     Log    -- Load fixtures DB --
-    ${rc} =    Run And Return Rc    ${BIN_DIR}/loadDBFixtures.sh
+    ${rc} =    Run And Return Rc    make -C ${PROJECT_DIR} db
     Should Be Equal As Integers    ${rc}    0
 
 Load dump DB
     Log    -- Load dump DB --
-    ${rc} =    Run And Return Rc    ${BIN_DIR}/dumpDB.sh -i ${DB_URL} \ ${DB_DUMP_FILE}
+    ${rc} =    Run And Return Rc    make -C ${PROJECT_DIR} db-import url=${DB_URL} \ file=${DB_DUMP_FILE}
     Should Be Equal As Integers    ${rc}    0
 
 Setup
