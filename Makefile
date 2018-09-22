@@ -9,6 +9,7 @@ YARN        = yarn
 DOCKER         = docker
 DOCKER-COMPOSE = docker-compose
 OC             = oc
+CURL           = curl
 
 ## Clean
 ## -----
@@ -114,11 +115,12 @@ dc-down:
 
 ## Openshift
 ## ---------
-openshift-stag-deploy: ## Deploy web and app staging on Openshift with DB endpoint. Arguments: tag=test, endpoint=x3zerfds.eu-west-1.rds.amazonaws.com url=mysql://username:password@127.0.0.1:3306/database, token=Yidhzoh
+openshift-stag-deploy: ## Deploy web and app staging on Openshift with DB endpoint. Arguments: tag=test, endpoint=x3zerfds.eu-west-1.rds.amazonaws.com, db_url=mysql://username:password@127.0.0.1:3306/database, web_url=xxx.openshiftapps.com, token=Yidhzoh
 openshift-stag-deploy:
 	test -n "${tag}"  # Tag parameter is not set
 	test -n "${endpoint}"  # Endpoint host parameter is not set
-	test -n "${url}"  # url parameter is not set
+	test -n "${db_url}"  # DB url parameter is not set
+	test -n "${web_url}"  # DB url parameter is not set
 	test -n "${token}"  # Token parameter is not set
 	$(eval ip := $(shell getent hosts ${endpoint} | awk '{ print $$1 }'))
 	cp -f openshift/ExternalEndpointMysql.yaml /tmp/ExternalEndpointMysql.yaml
@@ -126,9 +128,13 @@ openshift-stag-deploy:
 	$(OC) login https://api.starter-ca-central-1.openshift.com --token=${token}
 	$(OC) apply -f openshift/ExternalServiceMysql.yaml
 	$(OC) apply -f /tmp/ExternalEndpointMysql.yaml
-	$(OC) new-app -e DATABASE_URL=${url} cireport/ci-report-app:${tag} -l name=ci-report-app-staging
+	$(OC) new-app -e DATABASE_URL=${db_url} cireport/ci-report-app:${tag} -l name=ci-report-app-staging
 	$(OC) new-app -e APP_HOST=ci-report-app.ci-report.svc:9000 cireport/ci-report-web:${tag} -l name=ci-report-web-staging
 	$(OC) apply -f openshift/RouteWeb.yaml
+	$(eval wud_url := $(shell curl -s https://api.github.com/repos/jfx/wud/releases/latest | grep browser_download_url | grep sh | cut -d '"' -f 4) )
+	curl -fsSLo /tmp/wud.tar.gz  $(wud_url)
+	tar -C /tmp -xzf /tmp/wud.tar.gz
+	/tmp/wud.sh -u ${web_url}
 
 openshift-stag-undeploy: ## Undeploy staging on Openshift. Arguments: token=Yidhzoh
 openshift-stag-undeploy:
